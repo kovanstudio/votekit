@@ -30,7 +30,7 @@ internal static class HotReloadManager
   public static void ClearCache(Type[]? types)
   {
     if (types?.All(t => t.Namespace == "AspNetCoreGeneratedDocument") ?? false) return;
-    
+
     Program.Restart();
   }
 }
@@ -51,7 +51,7 @@ public static class Program
     do
     {
       _restarting = false;
-      
+
       _app = BuildApplication(args);
       _app.Run();
     } while (_restarting);
@@ -60,11 +60,11 @@ public static class Program
   private static WebApplication BuildApplication(string[] args)
   {
     var builder = WebApplication.CreateBuilder();
-    
+
     // Config
     builder.Configuration.AddEnvironmentVariables("VK_");
     builder.Configuration["DataDir"] ??= Path.Combine(builder.Environment.ContentRootPath, "data");
-    builder.Configuration.AddJsonFile(Path.Join(builder.Configuration["DataDir"], "votekit.config.json"), true, true);
+    builder.Configuration.AddJsonFile(Path.Join(builder.Configuration["DataDir"], "votekit.config.json"));
 
     if (!Directory.Exists(builder.Configuration["DataDir"]))
       Directory.CreateDirectory(builder.Configuration["DataDir"]);
@@ -73,21 +73,17 @@ public static class Program
     builder.Services.AddHttpContextAccessor();
 
     if (builder.Configuration["DB"] == "pg")
-    {
       builder.Services.AddDbContextFactory<VotekitCtx>(options =>
         options.UseNpgsql(builder.Configuration["PG"], o => { o.MigrationsAssembly("VoteKit.Migrations.PostgreSQL"); })
       );
-    }
     else
-    {
       builder.Services.AddDbContextFactory<VotekitCtx>(options =>
         options.UseSqlite(
           $"Filename={Path.Join(builder.Configuration["DataDir"], "database.db")}",
           o => { o.MigrationsAssembly("VoteKit.Migrations.SQLite"); }
         )
       );
-    }
-    
+
     builder.Services.AddScoped<ProjectLoaderMiddleware>();
     builder.Services.AddScoped<UserAuthenticationEvents>();
 
@@ -113,7 +109,7 @@ public static class Program
       options.AddPolicy("Editor", p => p.RequireClaim(ClaimTypes.Role, "Editor", "Admin"));
       options.AddPolicy("Admin", p => p.RequireClaim(ClaimTypes.Role, "Admin"));
     });
-    
+
     builder.Services.AddSingleton<IImageProvider, ImageProvider>();
     builder.Services.AddImageSharp();
 
@@ -125,15 +121,12 @@ public static class Program
 
     builder.Services.AddApplicationServices(builder.Configuration);
     builder.Services.AddApiServer();
-    
+
     // Application
 
     var app = builder.Build();
-    
-    if (app.Environment.IsDevelopment())
-    {
-      app.UseDeveloperExceptionPage();
-    }
+
+    if (app.Environment.IsDevelopment()) app.UseDeveloperExceptionPage();
 
     app.UseImageSharp();
     app.UseStaticFiles();
@@ -150,7 +143,7 @@ public static class Program
       endpoints.MapControllers();
       endpoints.MapApiServer();
     });
-    
+
     using (var db = app.Services.GetRequiredService<IDbContextFactory<VotekitCtx>>().CreateDbContext())
     {
       db.Database.Migrate();
