@@ -2,6 +2,8 @@ import * as React from "react";
 import { schema } from "../../gql/client";
 import { useMe, useProject } from "../../state";
 import { confirmDialog } from "../../../lib/dialog";
+import { Radio } from "../../../components/form";
+import { UserRole } from "../../../gql/feed/schema";
 
 export function ProjectTeamSettings() {
   const project = useProject();
@@ -35,7 +37,7 @@ export function ProjectTeamSettings() {
               <th>Name</th>
               <th>Email</th>
               <th>Role</th>
-              <th></th>
+              <th/>
             </tr>
           </thead>
 
@@ -80,26 +82,27 @@ export function ProjectTeamSettings() {
                 <td>{m.email}</td>
                 <td>Admin</td>
                 <td className="text-right">
-                  {me.id != m.id ? (
-                    <a
-                      href="#"
-                      onClick={async (e) => {
-                        e.preventDefault();
+                  <a href={`/dashboard/register/${m.token}`}>Invite Link</a>
 
-                        if (!(await confirmDialog("Are you sure?"))) return;
+                  <a
+                    href="#"
+                    className="m-l-20"
+                    onClick={async (e) => {
+                      e.preventDefault();
 
-                        await removeInvite({
-                          variables: {
-                            input: {
-                              inviteId: m.id,
-                            },
+                      if (!(await confirmDialog("Are you sure?"))) return;
+
+                      await removeInvite({
+                        variables: {
+                          input: {
+                            inviteId: m.id,
                           },
-                        });
-                      }}
-                    >
-                      Delete
-                    </a>
-                  ) : null}
+                        },
+                      });
+                    }}
+                  >
+                    Delete
+                  </a>
                 </td>
               </tr>
             ))}
@@ -114,7 +117,9 @@ export function ProjectTeamSettings() {
 
 function Invite() {
   const project = useProject();
+
   const [email, setEmail] = React.useState("");
+  const [role, setRole] = React.useState(UserRole.Editor);
 
   const [addInvite, { loading, error, data }] = schema.useAddInviteMutation({
     refetchQueries: ["projectMembersAndInvites"],
@@ -140,6 +145,7 @@ function Invite() {
               variables: {
                 input: {
                   email,
+                  role
                 },
               },
             });
@@ -162,6 +168,21 @@ function Invite() {
             value={email}
             placeholder="foo@example.com"
             onChange={(e) => setEmail(e.target.value)}
+          />
+        </div>
+
+        <div className="flex flex-row m-gap-t-def">
+          <Radio
+            checked={role == UserRole.Editor}
+            onChange={(e) => setRole(UserRole.Editor)}
+            label="Editor"
+          />
+
+          <Radio
+            checked={role == UserRole.Admin}
+            onChange={(e) => setRole(UserRole.Admin)}
+            label="Administrator"
+            className="m-l-20"
           />
         </div>
 

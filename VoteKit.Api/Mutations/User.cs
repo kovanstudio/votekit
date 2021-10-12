@@ -204,7 +204,7 @@ public partial class Mutation
       .FirstOrDefaultAsync(x => x.ProjectId == project.Id && x.Id == input.UserId);
 
     if (user == null)
-      throw GqlException.NotFound;
+      throw VoteKitException.NotFound;
 
     db.Users.Remove(user);
 

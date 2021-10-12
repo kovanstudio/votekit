@@ -79,11 +79,7 @@ namespace VoteKit.Data.Models
         }
 
         PasswordSalt = Hex.ToHex(salt);
-
-        if (value != "")
-          PasswordHash = Hash.HashPassword(value, salt);
-        else
-          PasswordHash = null;
+        PasswordHash = value != "" ? Hash.HashPassword(value, salt) : null;
       }
     }
 

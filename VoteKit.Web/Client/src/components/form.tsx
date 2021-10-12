@@ -4,25 +4,30 @@ import ReactSelect from "react-select";
 let id = 0;
 
 export function Checkbox({
-  label = null,
-  labelComponent = null,
-  ...rest
-}: { label?: string; labelComponent?: any } & React.InputHTMLAttributes<HTMLInputElement>) {
+                           label = null,
+                           labelComponent = null,
+                           className = "",
+                           ...rest
+                         }: { label?: string; labelComponent?: any } & React.InputHTMLAttributes<HTMLInputElement>) {
   let selfid = React.useRef(`checkbox-id-${id++}`);
 
   return (
-    <div className="input-checkbox">
+    <div className={`input-checkbox ${className}`}>
       <input type="checkbox" id={selfid.current} {...rest} />
       {label ?? labelComponent ? <label htmlFor={selfid.current}>{labelComponent || label}</label> : null}
     </div>
   );
 }
 
-export function Radio({ label = null, ...rest }: { label: string } & React.InputHTMLAttributes<HTMLInputElement>) {
+export function Radio({
+                        label = null,
+                        className = "",
+                        ...rest
+                      }: { label: string } & React.InputHTMLAttributes<HTMLInputElement>) {
   let selfid = React.useRef(`radio-id-${id++}`);
 
   return (
-    <div className="input-radio">
+    <div className={`input-radio ${className}`}>
       <input type="radio" id={selfid.current} {...rest} />
       {label ? <label htmlFor={selfid.current}>{label}</label> : null}
     </div>
@@ -63,5 +68,5 @@ export const defaultStyles = {
 };
 
 export function Select({ ...props }) {
-  return <ReactSelect classNamePrefix={"r-select"} {...props} styles={defaultStyles} />;
+  return <ReactSelect classNamePrefix={"r-select"} {...props} styles={defaultStyles}/>;
 }

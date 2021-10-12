@@ -240,6 +240,7 @@ export type Invite = {
   createdAt: Scalars['DateTime'];
   email: Scalars['String'];
   id: Scalars['UUID'];
+  token?: Maybe<Scalars['String']>;
 };
 
 export type LoginInput = {

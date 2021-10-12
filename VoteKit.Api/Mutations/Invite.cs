@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using VoteKit.Api.Validation;
 using VoteKit.Data;
 using VoteKit.Data.Models;
+using VoteKit.Data.Services;
 
 namespace VoteKit.Api.Mutations;
 
@@ -14,14 +15,18 @@ public partial class Mutation
 {
   public class AddInviteInput
   {
-    [Required]
-    [EmailAddress]
-    public string Email { get; set; } = string.Empty;
+    [Required] [EmailAddress] public string Email { get; set; } = string.Empty;
+    public UserRole Role { get; set; } = UserRole.Editor;
   }
-    
+
   [Authorize(Policy = "Admin")]
   [UseVotekitCtx]
-  public async Task<Invite> AddInvite([Project] Project project, [ScopedService] VotekitCtx db, [Validatable] AddInviteInput input)
+  public async Task<Invite> AddInvite(
+    [Project] Project project,
+    [Service] IInviteService inviteService,
+    [ScopedService] VotekitCtx db,
+    [Validatable] AddInviteInput input
+  )
   {
     var invite = await db.Invites.FirstOrDefaultAsync(x => x.ProjectId == project.Id && x.Email == input.Email);
 
@@ -37,6 +42,7 @@ public partial class Mutation
         Id = Guid.NewGuid(),
         ProjectId = project.Id,
         Email = input.Email,
+        Role = input.Role,
       };
 
       await db.Invites.AddAsync(invite);
@@ -47,9 +53,12 @@ public partial class Mutation
 
     //TODO: Send mail
 
+    var token = inviteService.EncodeToken(invite);
+    Console.WriteLine(token);
+
     return invite;
   }
-    
+
   public class RemoveInviteInput
   {
     [Required]

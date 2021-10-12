@@ -240,6 +240,7 @@ export type Invite = {
   createdAt: Scalars['DateTime'];
   email: Scalars['String'];
   id: Scalars['UUID'];
+  token?: Maybe<Scalars['String']>;
 };
 
 export type LoginInput = {
@@ -893,12 +894,12 @@ export type SaveProjectMutationVariables = Exact<{
 
 export type SaveProjectMutation = { __typename?: 'Mutation', saveProject: { __typename?: 'Project', id: any, name: string, website?: string | null | undefined, logoURL: string, faviconURL: string } };
 
-export type InviteFragment = { __typename?: 'Invite', id: any, email: string, createdAt: any };
+export type InviteFragment = { __typename?: 'Invite', id: any, email: string, createdAt: any, token?: string | null | undefined };
 
 export type ProjectMembersAndInvitesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ProjectMembersAndInvitesQuery = { __typename?: 'Query', members: Array<{ __typename?: 'User', email: string, createdAt: any, seenAt: any, id: any, displayName?: string | null | undefined, avatar: string, stats: { __typename?: 'UserStats', votes: number, comments: number } }>, invites: Array<{ __typename?: 'Invite', id: any, email: string, createdAt: any }> };
+export type ProjectMembersAndInvitesQuery = { __typename?: 'Query', members: Array<{ __typename?: 'User', email: string, createdAt: any, seenAt: any, id: any, displayName?: string | null | undefined, avatar: string, stats: { __typename?: 'UserStats', votes: number, comments: number } }>, invites: Array<{ __typename?: 'Invite', id: any, email: string, createdAt: any, token?: string | null | undefined }> };
 
 export type RemoveUserMutationVariables = Exact<{
   input: RemoveUserInput;
@@ -1146,6 +1147,7 @@ export const InviteFragmentDoc = gql`
   id
   email
   createdAt
+  token
 }
     `;
 export const UserFragmentDoc = gql`
