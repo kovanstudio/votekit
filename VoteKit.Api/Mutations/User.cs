@@ -14,6 +14,7 @@ using Npgsql;
 using VoteKit.Api.Validation;
 using VoteKit.Data;
 using VoteKit.Data.Models;
+using VoteKit.Data.Services;
 using VoteKit.Services;
 using VoteKit.Util;
 
@@ -70,11 +71,14 @@ public partial class Mutation
     [Required]
     [MinLength(4, ErrorMessage = "Password should be at least 4 characters long")]
     public string Password { get; set; } = null!;
+    
+    public string? InviteToken { get; set; }
   }
 
   [UseVotekitCtx]
   public async Task<User> RegisterAsync(
     [Service] IAccessor accessor,
+    [Service] IInviteService inviteService,
     [ScopedService] VotekitCtx db,
     [Project] Project project,
     [Validatable] RegisterInput input
@@ -86,8 +90,26 @@ public partial class Mutation
       Email = input.Email,
       Password = input.Password,
       DisplayName = input.DisplayName,
-      ProjectId = project.Id
+      ProjectId = project.Id,
+      Role = UserRole.User
     };
+
+    if (input.InviteToken != null)
+    {
+      var data = inviteService.DecodeToken(input.InviteToken);
+
+      if (!data.HasValue)
+        throw new VoteKitException("Invalid invite token", "INVALID_INVITE_TOKEN");
+
+      var (id, createdAt) = data.Value;
+      var invite = await db.Invites.FirstOrDefaultAsync(i => i.ProjectId == project.Id && i.Id == id);
+      
+      if (invite == null)
+        throw new VoteKitException("Invalid invite token", "INVALID_INVITE_TOKEN");
+
+      user.Role = invite.Role;
+      db.Invites.Remove(invite);
+    }
 
     await db.Users.AddAsync(user);
 

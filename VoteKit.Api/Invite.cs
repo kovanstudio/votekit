@@ -25,7 +25,7 @@ public class InviteResolversOnQuery
   }
   
   [UseVotekitCtx]
-  public async Task<Invite> LookupInvite(
+  public async Task<Invite?> LookupInvite(
     [Project] Project project, 
     [ScopedService] VotekitCtx db,
     [Service] IInviteService inviteService,
@@ -35,15 +35,10 @@ public class InviteResolversOnQuery
     var data = inviteService.DecodeToken(token);
 
     if (!data.HasValue)
-      throw VoteKitException.NotFound;
+      return null;
 
     var (id, createdAt) = data.Value;
-    var invite = await db.Invites.FirstOrDefaultAsync(i => i.ProjectId == project.Id && i.Id == id);
-    
-    if (invite == null)
-      throw VoteKitException.NotFound;
-
-    return invite;
+    return await db.Invites.FirstOrDefaultAsync(i => i.ProjectId == project.Id && i.Id == id);
   }
 }
 

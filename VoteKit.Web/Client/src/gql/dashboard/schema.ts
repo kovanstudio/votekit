@@ -41,6 +41,7 @@ export type AddEntryInput = {
 
 export type AddInviteInput = {
   email: Scalars['String'];
+  role: UserRole;
 };
 
 export type AddStatusInput = {
@@ -450,6 +451,7 @@ export type Query = {
   image?: Maybe<Image>;
   invites: Array<Invite>;
   lookupEntry?: Maybe<Entry>;
+  lookupInvite?: Maybe<Invite>;
   me?: Maybe<User>;
   members: Array<User>;
   project?: Maybe<Project>;
@@ -496,6 +498,11 @@ export type QueryLookupEntryArgs = {
 };
 
 
+export type QueryLookupInviteArgs = {
+  token: Scalars['String'];
+};
+
+
 export type QueryMembersArgs = {
   input?: Maybe<UsersInput>;
   orderBy?: Maybe<UsersOrderByInput>;
@@ -519,6 +526,7 @@ export type QueryUsersArgs = {
 export type RegisterInput = {
   displayName?: Maybe<Scalars['String']>;
   email: Scalars['String'];
+  inviteToken?: Maybe<Scalars['String']>;
   password: Scalars['String'];
 };
 
@@ -895,6 +903,13 @@ export type SaveProjectMutationVariables = Exact<{
 export type SaveProjectMutation = { __typename?: 'Mutation', saveProject: { __typename?: 'Project', id: any, name: string, website?: string | null | undefined, logoURL: string, faviconURL: string } };
 
 export type InviteFragment = { __typename?: 'Invite', id: any, email: string, createdAt: any, token?: string | null | undefined };
+
+export type LookupInviteQueryVariables = Exact<{
+  token: Scalars['String'];
+}>;
+
+
+export type LookupInviteQuery = { __typename?: 'Query', lookupInvite?: { __typename?: 'Invite', id: any, email: string, createdAt: any, token?: string | null | undefined } | null | undefined };
 
 export type ProjectMembersAndInvitesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1879,6 +1894,41 @@ export function useSaveProjectMutation(baseOptions?: Apollo.MutationHookOptions<
 export type SaveProjectMutationHookResult = ReturnType<typeof useSaveProjectMutation>;
 export type SaveProjectMutationResult = Apollo.MutationResult<SaveProjectMutation>;
 export type SaveProjectMutationOptions = Apollo.BaseMutationOptions<SaveProjectMutation, SaveProjectMutationVariables>;
+export const LookupInviteDocument = gql`
+    query lookupInvite($token: String!) {
+  lookupInvite(token: $token) {
+    ...invite
+  }
+}
+    ${InviteFragmentDoc}`;
+
+/**
+ * __useLookupInviteQuery__
+ *
+ * To run a query within a React component, call `useLookupInviteQuery` and pass it any options that fit your needs.
+ * When your component renders, `useLookupInviteQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useLookupInviteQuery({
+ *   variables: {
+ *      token: // value for 'token'
+ *   },
+ * });
+ */
+export function useLookupInviteQuery(baseOptions: Apollo.QueryHookOptions<LookupInviteQuery, LookupInviteQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<LookupInviteQuery, LookupInviteQueryVariables>(LookupInviteDocument, options);
+      }
+export function useLookupInviteLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<LookupInviteQuery, LookupInviteQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<LookupInviteQuery, LookupInviteQueryVariables>(LookupInviteDocument, options);
+        }
+export type LookupInviteQueryHookResult = ReturnType<typeof useLookupInviteQuery>;
+export type LookupInviteLazyQueryHookResult = ReturnType<typeof useLookupInviteLazyQuery>;
+export type LookupInviteQueryResult = Apollo.QueryResult<LookupInviteQuery, LookupInviteQueryVariables>;
 export const ProjectMembersAndInvitesDocument = gql`
     query projectMembersAndInvites {
   members {

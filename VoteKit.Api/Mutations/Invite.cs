@@ -54,7 +54,6 @@ public partial class Mutation
     //TODO: Send mail
 
     var token = inviteService.EncodeToken(invite);
-    Console.WriteLine(token);
 
     return invite;
   }

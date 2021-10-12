@@ -33,7 +33,7 @@ export function AccountSettings() {
               </NavLink>
             </li>
             <li className="nav-item">
-              <Link exact to={`/logout`}>
+              <Link to={`/logout`}>
                 Sign Out
               </Link>
             </li>
@@ -63,11 +63,8 @@ export function AccountSettings() {
       <div className="group-settings-content">
         <Switch>
           <Route path={`/account/settings`} exact component={GeneralSettings} />
-
           <Route path={`/account/settings/password`} exact component={PasswordSettings} />
-
           <Route path={`/account/settings/disable`} exact component={DeleteAccountSettings} />
-
           <Route render={() => <Redirect to={`/account`} />} />
         </Switch>
       </div>

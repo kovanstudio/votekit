@@ -41,6 +41,7 @@ export type AddEntryInput = {
 
 export type AddInviteInput = {
   email: Scalars['String'];
+  role: UserRole;
 };
 
 export type AddStatusInput = {
@@ -450,6 +451,7 @@ export type Query = {
   image?: Maybe<Image>;
   invites: Array<Invite>;
   lookupEntry?: Maybe<Entry>;
+  lookupInvite?: Maybe<Invite>;
   me?: Maybe<User>;
   members: Array<User>;
   project?: Maybe<Project>;
@@ -496,6 +498,11 @@ export type QueryLookupEntryArgs = {
 };
 
 
+export type QueryLookupInviteArgs = {
+  token: Scalars['String'];
+};
+
+
 export type QueryMembersArgs = {
   input?: Maybe<UsersInput>;
   orderBy?: Maybe<UsersOrderByInput>;
@@ -519,6 +526,7 @@ export type QueryUsersArgs = {
 export type RegisterInput = {
   displayName?: Maybe<Scalars['String']>;
   email: Scalars['String'];
+  inviteToken?: Maybe<Scalars['String']>;
   password: Scalars['String'];
 };
 

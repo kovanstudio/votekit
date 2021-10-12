@@ -1,11 +1,13 @@
 import * as React from "react";
-import { Redirect, useLocation } from "react-router-dom";
+import { Redirect, useHistory, useParams } from "react-router-dom";
 import { schema } from "../gql/client";
+import { useEffect } from "react";
 
 export default Register;
 
 export function Register() {
-  const location = useLocation();
+  const params = useParams();
+  const history = useHistory();
 
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
@@ -15,13 +17,18 @@ export function Register() {
     refetchQueries: ["me"],
     awaitRefetchQueries: true,
   });
+  
+  const lookupInvite = schema.useLookupInviteQuery({ variables: { token: params.inviteId } });
+  
+  useEffect(() => {
+    if (lookupInvite.data?.lookupInvite?.email)
+      setEmail(lookupInvite.data.lookupInvite.email);
+  }, [lookupInvite.data?.lookupInvite?.email]);
 
-  const { data, loading } = schema.useMeQuery();
-
-  if (loading) {
+  if (lookupInvite.loading) {
     return <div className="spinner-overlay"/>;
-  } else if (data.me) {
-    return <Redirect to={location.state?.afterauth || "/"} />;
+  } else if (!lookupInvite.data?.lookupInvite) {
+    return <Redirect to="/" />;
   }
 
   return (
@@ -33,8 +40,10 @@ export function Register() {
 
           try {
             await register({
-              variables: { input: { email, password, displayName } },
+              variables: { input: { email, password, displayName, inviteToken: lookupInvite.data.lookupInvite.token } },
             });
+            
+            history.push("/")
           } catch (e) {}
         }}
       >

@@ -40,7 +40,7 @@ function App() {
       <Switch>
         <Route path="/login" exact component={Login} />
         <Route path="/logout" exact component={Logout} />
-        <Route path="/register" exact component={Register} />
+        <Route path="/register/:inviteId" exact component={Register} />
 
         <Route component={AuthorizedRoutes} />
       </Switch>
