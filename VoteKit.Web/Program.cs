@@ -64,7 +64,7 @@ public static class Program
     // Config
     builder.Configuration.AddEnvironmentVariables("VK_");
     builder.Configuration["DataDir"] ??= Path.Combine(builder.Environment.ContentRootPath, "data");
-    builder.Configuration.AddJsonFile(Path.Join(builder.Configuration["DataDir"], "votekit.config.json"));
+    builder.Configuration.AddJsonFile(Path.Join(builder.Configuration["DataDir"], "votekit.config.json"), true, true);
 
     if (!Directory.Exists(builder.Configuration["DataDir"]))
       Directory.CreateDirectory(builder.Configuration["DataDir"]);
