@@ -1,0 +1,56 @@
+fragment comment on Comment {
+  id
+  content
+  createdAt
+
+  user {
+    ...userSummary
+  }
+
+  stats {
+    likes
+    replies
+  }
+
+  likedByMe
+}
+
+query entryComments($entryId: UUID!, $after: String, $before: String) {
+  entry(id: $entryId) {
+    id
+
+    comments(after: $after, before: $before, first: 10) {
+      pageInfo {
+        ...pageInfo
+      }
+
+      totalCount
+
+      nodes {
+        ...comment
+      }
+    }
+  }
+}
+
+mutation addComment($input: AddCommentInput!) {
+  addComment(input: $input) {
+    ...comment
+  }
+}
+
+mutation removeComment($input: RemoveCommentInput!) {
+  removeComment(input: $input)
+}
+
+mutation voteComment($input: VoteCommentInput!) {
+  voteComment(input: $input) {
+    ...comment
+  }
+}
+
+mutation saveComment($input: SaveCommentInput!) {
+  saveComment(input: $input) {
+    ...comment
+  }
+}

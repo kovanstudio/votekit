@@ -1,0 +1,43 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <LangVersion>10.0</LangVersion>
+    <Nullable>enable</Nullable>
+    <SpaRoot>Client\</SpaRoot>
+    <DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules\**</DefaultItemExcludes>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="$(SpaRoot)**" />
+    <None Remove="$(SpaRoot)**" />
+    <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="SixLabors.ImageSharp.Web" Version="1.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\VoteKit.Api\VoteKit.Api.csproj" />
+    <ProjectReference Include="..\VoteKit\VoteKit.csproj" />
+
+    <ProjectReference Include="..\Migrations\VoteKit.Migrations.PostgreSQL\VoteKit.Migrations.PostgreSQL.csproj" />
+    <ProjectReference Include="..\Migrations\VoteKit.Migrations.SQLite\VoteKit.Migrations.SQLite.csproj" />
+  </ItemGroup>
+
+<!--  <Target Name="PublishClient" AfterTargets="ComputeFilesToPublish">-->
+<!--    <Exec WorkingDirectory="$(SpaRoot)" Command="yarn install" />-->
+<!--    <Exec WorkingDirectory="$(SpaRoot)" Command="yarn run build" />-->
+<!--    -->
+<!--    <ItemGroup>-->
+<!--      <DistFiles Include="$(SpaRoot)build\**" />-->
+<!--      <ResolvedFileToPublish Include="@(DistFiles->'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">-->
+<!--        <RelativePath>%(DistFiles.Identity)</RelativePath>-->
+<!--        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>-->
+<!--        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>-->
+<!--      </ResolvedFileToPublish>-->
+<!--    </ItemGroup>-->
+<!--  </Target>  -->
+
+</Project>

@@ -1,0 +1,28 @@
+﻿@using Microsoft.Extensions.Configuration
+@model VoteKit.Web.Controllers.FeedController.IndexModel
+
+@{
+  Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>@Model!.Project.Name</title>
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap">
+  <link rel="stylesheet" href="~/client/feed.css">
+</head>
+
+<body>
+  @Html.Hidden("votekit-project", Json.Serialize(new
+  {
+    Model!.Project.Id, 
+    Model!.Project.Name
+  }))
+  <div id="app"></div>
+  <script src="~/client/feed.js"></script>
+</body>
+
+</html>

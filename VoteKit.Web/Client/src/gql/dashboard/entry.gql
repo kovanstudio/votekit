@@ -1,0 +1,108 @@
+fragment entry on Entry {
+  id
+  title
+  content
+  slug
+  createdAt
+
+  isPrivate
+  isArchived
+  isDeleted
+  isLocked
+
+  pathname
+  upvotedByMe
+  
+  user {
+    ...userSummary
+  }
+  
+  assignedUser {
+    ...userSummary
+  }
+
+  board {
+    ...boardSummary
+  }
+  
+  status {
+    ...status
+  }
+
+  stats {
+    votes
+    comments
+    subscriptions
+  }
+}
+
+query entry($id: UUID!) {
+  entry(id: $id) {
+    ...entry
+  }
+}
+
+query lookupEntry($boardSlug: String!, $entrySlug: String!) {
+  lookupEntry(boardSlug: $boardSlug, entrySlug: $entrySlug) {
+    ...entry
+  }
+}
+
+fragment entriesConnection on EntriesConnection {
+  totalCount
+
+  pageInfo {
+    ...pageInfo
+  }
+
+  nodes {
+    ...entry
+  }
+}
+
+query entries(
+  $input: EntriesInput
+  $orderBy: EntriesOrderByInput
+  $after: String
+  $before: String
+) {
+  entries(input: $input, orderBy: $orderBy, after: $after, before: $before) {
+    ...entriesConnection
+  }
+}
+
+query entryUpvoters($entryId: UUID!, $after: String, $before: String) {
+  entry(id: $entryId) {
+    id
+
+    upvoters(after: $after, before: $before) {
+      totalCount
+
+      pageInfo {
+        ...pageInfo
+      }
+
+      nodes {
+        ...user
+      }
+    }
+  }
+}
+
+mutation addEntry($input: AddEntryInput!) {
+  addEntry(input: $input) {
+    ...entry
+  }
+}
+
+mutation saveEntry($input: SaveEntryInput!) {
+  saveEntry(input: $input) {
+    ...entry
+  }
+}
+
+mutation voteEntry($input: VoteEntryInput!) {
+  voteEntry(input: $input) {
+    ...entry
+  }
+}

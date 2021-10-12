@@ -1,0 +1,244 @@
+﻿.group-entry {
+  .entry {
+    .entry-header {
+      display: flex;
+      flex-direction: column;
+      padding-bottom: 30px;
+
+      h2 {
+        font-size: 1.42em;
+        font-weight: 500;
+        margin-right: auto;
+      }
+
+      .actions {
+        font-size: 0.85em;
+        color: #b7b7b7;
+
+        a {
+          color: inherit;
+
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+      }
+
+      .voters {
+        display: flex;
+        align-items: center;
+
+        .more {
+          font-size: 0.85em;
+          color: #b7b7b7;
+          margin-right: 10px;
+        }
+
+        a {
+          display: inline-flex;
+
+          img {
+            width: 1.5rem;
+            height: 1.5rem;
+            border-radius: 50%;
+            box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.5);
+          }
+
+          & + a {
+            margin-left: -0.4rem;
+          }
+        }
+      }
+
+      .score {
+        margin-left: 15px;
+        display: flex;
+        flex-direction: column;
+
+        .entry-upvotes {
+          padding: 5px 10px;
+        }
+      }
+
+      .row {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        &.markdown {
+          display: block;
+        }
+
+        & + .row {
+          margin-top: 15px;
+        }
+      }
+    }   
+    
+    .entry-content {
+      background: #FCFCFC;
+      border-top: 1px solid #E4E4E4;
+      margin: 0 -30px;
+      padding: 30px;
+      
+      &:empty {
+        display: none;
+      }
+    }
+
+    .entry-comments {
+      .comment {
+        & + .comment {
+          margin-top: 10px;
+        }
+
+        padding: 10px;
+        border-radius: 3px;
+        display: grid;
+
+        grid-template:
+            [r1s] "icon body" auto [r1e]
+            [res] "icon footer" 0fr [r2e]
+            / 0fr auto;
+
+        column-gap: 15px;
+
+        .comment-icon {
+          grid-area: icon;
+
+          img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+          }
+        }
+
+        .comment-body {
+          grid-area: body;
+          display: flex;
+          flex-direction: column;
+          color: #4f4f4f;
+          font-size: 1.14em;
+        }
+
+        .comment-footer {
+          grid-area: footer;
+          display: flex;
+          align-items: center;
+          margin-top: 10px;
+          font-size: 1em;
+
+          a {
+            color: inherit;
+
+            &:hover {
+              color: #4f4f4f;
+            }
+          }
+
+          small,
+          a {
+            color: #b7b7b7;
+            display: flex;
+            align-items: center;
+            
+            &.emphasis {
+              color: var(--color-primary);
+            }
+          }
+        }
+      }
+
+      .load-more {
+        margin: 20px 0;
+        padding: 0.75rem 1.25rem;
+        border: 1px solid transparent;
+        border-radius: 0.25rem;
+        background-color: transparent;
+        text-align: center;
+        cursor: pointer;
+        font-weight: 600;
+        transition: 0.1s linear all;
+
+        &:hover {
+          background-color: rgba(0,0,0,0.1);
+        }
+      }
+    }
+    
+    .entry-footer {
+      border-top: 1px solid #E4E4E4;
+      margin: 0 -30px;
+      padding: 30px 30px 0;
+      
+      .entry-comment-form {
+        display: grid;
+
+        grid-template:
+          [r1s] "icon body" auto [r1e]
+          [res] "icon footer" 0fr [r2e]
+          / 0fr auto;
+
+        column-gap: 15px;
+
+        .comment-icon {
+          grid-area: icon;
+
+          img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+          }
+        }
+
+        .comment-body {
+          grid-area: body;
+          display: flex;
+          flex-direction: column;
+
+          textarea {
+            height: 40px;
+            line-height: 22px;
+          }
+        }
+
+        .comment-footer {
+          grid-area: footer;
+          display: flex;
+          margin-top: 10px;
+          align-items: center;
+
+          a.attach {
+            font-size: 90%;
+            color: #000000;
+          }
+        }
+      }
+    }
+  }
+}
+
+.group-entry-add {
+  display: flex;
+  flex-direction: row;
+
+  .group-entry-add-body {
+    width: 400px;
+    flex-shrink: 0;
+    flex-grow: 0;
+  }
+
+  .group-entry-add-sidebar {
+    flex-grow: 1;
+    margin-left: 50px;
+    
+    h3 {
+      font-weight: 500;
+      color: #6B6B6B;
+    }
+    
+    .entries {
+      margin-top: 30px;
+    }
+  }
+}

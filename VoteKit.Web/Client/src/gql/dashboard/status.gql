@@ -1,0 +1,34 @@
+fragment statusSummary on Status {
+  id
+  name
+  color
+}
+
+fragment status on Status {
+  ...statusSummary
+  sortIndex
+  isDefault
+  isInRoadmap
+}
+
+query statuses {
+  statuses {
+    ...status
+  }
+}
+
+mutation addStatus($input: AddStatusInput!) {
+  addStatus(input: $input) {
+    ...status
+  }
+}
+
+mutation saveStatus($input: SaveStatusInput!) {
+  saveStatus(input: $input) {
+    ...status
+  }
+}
+
+mutation removeStatus($input: RemoveStatusInput!) {
+  removeStatus(input: $input)
+}

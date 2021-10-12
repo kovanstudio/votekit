@@ -1,0 +1,42 @@
+fragment boardSummary on Board {
+  id
+  name
+  slug
+  color
+}
+
+fragment board on Board {
+  ...boardSummary
+
+  isPrivate
+  isListed
+  isSeoIndexed
+}
+
+query board($boardId: UUID, $boardSlug: String) {
+  board(id: $boardId, slug: $boardSlug) {
+    ...board
+  }
+}
+
+query boards {
+  boards {
+    ...board
+  }
+}
+
+mutation addBoard($input: AddBoardInput!) {
+  addBoard(input: $input) {
+    ...board
+  }
+}
+
+mutation saveBoard($input: SaveBoardInput!) {
+  saveBoard(input: $input) {
+    ...board
+  }
+}
+
+mutation removeBoard($input: RemoveBoardInput!) {
+  removeBoard(input: $input)
+}

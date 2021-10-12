@@ -1,0 +1,112 @@
+@use "../vars.scss" as vars;
+
+.group-settings {
+  display: flex;
+  flex-direction: row;
+
+  .group-settings-nav {
+    width: 220px;
+    margin-right: 100px;
+    flex-grow: 0;
+    flex-shrink: 0;
+  }
+
+  .group-settings-content {
+    flex-grow: 1;
+    @include vars.panel($padding: 40px);
+  }
+
+  .project-settings-general {
+    .project-logo,
+    .project-favicon {
+      border: 1px solid vars.$color-seperator;
+      outline: 0;
+      border-radius: 4px;
+      padding: 10px;
+      cursor: pointer;
+      transition: 0.1s linear all;
+
+      img {
+        width: 100%;
+      }
+
+      &.upload-active {
+        background-color: rgba(vars.$color-primary, 0.4);
+
+        img {
+          opacity: 0.6;
+        }
+      }
+    }
+
+    .project-favicon {
+      flex-basis: 60px;
+      flex-shrink: 0;
+    }
+  }
+
+  .project-settings-statuses .statuses-table {
+    margin: -5px;
+    table-layout: auto;
+
+    td {
+      padding: 5px;
+
+      input {
+        width: 100%;
+      }
+    }
+  }
+
+  .project-settings-team {
+
+    table.team-list {
+      .avatar {
+        width: 30px;
+        height: 30px;
+        border-radius: 15px;
+        margin-right: 10px;
+        position: relative;
+        top: -1px;
+      }
+    }
+  }
+
+  .project-settings-billing .project-settings-billing-cards {
+    .cards {
+      margin: 20px 0;
+    }
+
+    .card {
+      @include vars.panel();
+      background: #ffffff;
+      border: 1px solid #e9e9e9;
+      padding: 16px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      margin: 12px 0;
+
+      img {
+        width: 40px;
+        height: 25px;
+      }
+
+      span.info {
+        margin: 0 25px;
+        flex-grow: 1;
+        color: #363a52;
+
+        small {
+          color: #bac8d1;
+          margin-left: 50px;
+        }
+      }
+
+      span.btn-delete {
+        font-size: 13px;
+        color: #ff7e7e;
+      }
+    }
+  }
+}

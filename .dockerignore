@@ -1,0 +1,10 @@
+.git/
+
+**/bin/
+**/obj/
+**/out/
+
+**/node_modules/
+**/Client/build
+
+Dockerfile*

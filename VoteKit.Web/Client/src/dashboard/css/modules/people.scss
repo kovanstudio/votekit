@@ -1,0 +1,54 @@
+@use "../vars.scss" as vars;
+@use "./feed.scss" as feed;
+
+.group-people {
+  .group-people-nav {
+    width: 220px;
+    margin-right: 100px;
+    flex-grow: 0;
+    flex-shrink: 0;
+  }
+
+  .group-people-content {
+    flex-grow: 1;
+
+    table.people {
+      grid-template-columns:
+        10fr
+        minmax(200px, 1fr)
+        minmax(150px, 1fr)
+        minmax(100px, 1fr)
+        minmax(120px, 1fr)
+        100px;
+
+      tr {
+        &:hover td svg {
+          opacity: 1;
+        }
+      }
+
+      td {
+        color: black;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+
+        img.avatar {
+          width: 30px;
+          height: 30px;
+          border-radius: 15px;
+          margin-right: 10px;
+        }
+
+        time {
+          color: #7d7d7d;
+        }
+
+        svg {
+          transition: 0.1s linear opacity;
+          opacity: 0;
+        }
+      }
+    }
+  }
+}

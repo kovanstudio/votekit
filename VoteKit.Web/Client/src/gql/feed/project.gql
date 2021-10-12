@@ -1,0 +1,13 @@
+fragment project on Project {
+  id
+  name
+  website
+  logoURL
+  faviconURL
+}
+
+query project {
+  project {
+    ...project
+  }
+}

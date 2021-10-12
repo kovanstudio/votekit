@@ -1,0 +1,22 @@
+fragment boardSummary on Board {
+  id
+  name
+  slug
+  color
+}
+
+fragment board on Board {
+  ...boardSummary
+}
+
+query board($boardId: UUID, $boardSlug: String) {
+  board(id: $boardId, slug: $boardSlug) {
+    ...board
+  }
+}
+
+query boards {
+  boards {
+    ...board
+  }
+}

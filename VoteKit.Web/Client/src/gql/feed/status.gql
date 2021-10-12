@@ -1,0 +1,13 @@
+﻿fragment status on Status {
+  id
+  name
+  color
+  sortIndex
+  isInRoadmap
+}
+
+query statuses {
+  statuses {
+    ...status
+  }
+}

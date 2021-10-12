@@ -1,0 +1,85 @@
+fragment project on Project {
+  id
+  name
+  website
+  logoURL
+  faviconURL
+}
+
+query project {
+  project {
+    ...project
+  }
+}
+
+mutation saveProject($input: SaveProjectInput!) {
+  saveProject(input: $input) {
+    ...project
+  }
+}
+
+fragment invite on Invite {
+  id
+  email
+  createdAt
+}
+
+query projectMembersAndInvites {
+  members {
+    ...user
+  }
+
+  invites {
+    ...invite
+  }
+}
+
+mutation removeUser($input: RemoveUserInput!) {
+  removeUser(input: $input)
+}
+
+mutation addInvite($input: AddInviteInput!) {
+  addInvite(input: $input) {
+    id
+  }
+}
+
+mutation removeInvite($input: RemoveInviteInput!) {
+  removeInvite(input: $input)
+}
+
+#
+#fragment projectDomain on ProjectDomain {
+#  id
+#  hostname
+#  isVerified
+#}
+#
+#
+#
+#mutation createProject($input: CreateProjectInput!) {
+#  createProject(input: $input) {
+#    ...project
+#  }
+#}
+#
+
+#
+#query projectDomain($id: ID) {
+#  project(id: $id) {
+#    id
+#
+#    domain {
+#      ...projectDomain
+#    }
+#  }
+#}
+
+#mutation saveProjectDomain($input: SaveProjectDomainInput!) {
+#  saveProjectDomain(input: $input) {
+#    ...projectDomain
+#  }
+#}
+#
+#
+

@@ -1,0 +1,18 @@
+@use "../vars.scss" as vars;
+@use "../components/entries.scss";
+
+.group-feed {
+  display: flex;
+  flex-direction: row;
+
+  .group-feed-nav {
+    width: 220px;
+    margin-right: 100px;
+    flex-grow: 0;
+    flex-shrink: 0;
+  }
+
+  .group-feed-content {
+    flex-grow: 1;
+  }
+}

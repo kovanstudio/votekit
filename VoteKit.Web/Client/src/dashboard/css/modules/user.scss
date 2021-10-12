@@ -1,0 +1,51 @@
+@use "../vars.scss" as vars;
+@use "../components/entries.scss";
+
+.group-user {
+  .group-user-nav {
+    width: 280px;
+    margin-left: 30px;
+    flex-grow: 0;
+    flex-shrink: 0;
+
+    .user-header {
+      display: grid;
+
+      grid-template:
+        [r1s] "avatar name" 1fr [r1e]
+        [res] "avatar footer" 1fr [r2e]
+        / 0fr auto;
+
+      column-gap: 10px;
+      row-gap: 5px;
+
+      img.avatar {
+        width: 60px;
+        height: 60px;
+        border-radius: 8px;
+      }
+
+      .avatar {
+        grid-area: avatar;
+      }
+
+      .name {
+        grid-area: name;
+        font-weight: 600;
+        font-size: 1.15em;
+        display: flex;
+        align-items: flex-end;
+      }
+
+      .footer {
+        grid-area: footer;
+        color: #9b9b9b;
+        font-size: 0.85em;
+      }
+    }
+  }
+
+  .group-user-content {
+    flex-grow: 1;
+  }
+}

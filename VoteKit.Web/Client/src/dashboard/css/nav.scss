@@ -1,0 +1,55 @@
+@use "vars.scss" as *;
+
+.nav {
+  .nav-section {
+    & + .nav-section {
+      margin-top: 20px;
+    }
+
+    .nav-header {
+      color: #bbbbbb;
+      font-size: 0.85em;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+  }
+}
+
+.nav-items {
+  display: flex;
+  flex-direction: column;
+  margin: 0 -15px;
+}
+
+.nav-item {
+  a {
+    color: #565656;
+    display: block;
+    padding: 15px;
+    position: relative;
+
+    &.active {
+      background: white;
+      box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.157534);
+      border-radius: 4px;
+      font-weight: 600;
+      color: $color-primary;
+
+      &::after {
+        content: "";
+        position: absolute;
+        width: 6px;
+        height: 6px;
+        top: 50%;
+        margin-top: -3px;
+        right: 15px;
+        background-color: $color-primary;
+        border-radius: 3px;
+      }
+    }
+  }
+
+  & + .nav-item {
+    margin-top: 5px;
+  }
+}

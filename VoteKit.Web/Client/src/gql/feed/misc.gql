@@ -1,0 +1,17 @@
+fragment pageInfo on PageInfo {
+  hasNextPage
+  hasPreviousPage
+  startCursor
+  endCursor
+}
+
+fragment config on Config {
+  basePath
+  emptyGuid
+}
+
+query config {
+  config {
+    ...config
+  }
+}

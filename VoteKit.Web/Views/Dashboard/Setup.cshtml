@@ -1,0 +1,84 @@
+@using Microsoft.Extensions.Configuration
+@using Newtonsoft.Json
+@using JsonConverter = System.Text.Json.Serialization.JsonConverter
+@using JsonSerializer = System.Text.Json.JsonSerializer
+@inject IConfiguration _conf
+@model VoteKit.Web.Controllers.Dashboard.SetupData
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+  Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Dashboard</title>
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap">
+    <link rel="stylesheet" href="~/client/dashboard.css">
+    
+    <style>
+      .validation-summary-errors { 
+        color: #b0422c;
+        background-color: #f8d0c8;
+        border-color: #f8d0c8;
+        border-right: 0.25rem;
+        padding: 0 0.5rem;
+        border: 1px solid transparent;
+        border-radius: 0.25rem;
+        line-height: 1.25;
+        margin: 1rem 0 32px;
+      } 
+       
+      .validation-summary-errors li { 
+        margin: 0.5rem 0 0.5rem 1.5rem;
+        list-style: disc; 
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="app">
+      
+      <section class="container container-main place-center justify-center flex-col m-t-100">
+        <form action="/dashboard/setup" method="POST" enctype="multipart/form-data" class="panel w-50">
+          <header class="panel-title">
+            VoteKit Setup
+          </header>
+
+          <div class="flex flex-col m-gap-t-def">
+            <label>Project Name</label>
+            <input asp-for="ProjectName" class="input-control" placeholder="My Awesome App">
+          </div>
+
+          <hr/>
+
+          <div class="flex flex-col m-gap-t-def">
+            <label>Default User Email</label>
+            <input asp-for="Email" type="email" class="input-control" placeholder="me@example.com">
+          </div>
+
+          <div class="flex flex-col m-gap-t-def">
+            <label>Password</label>
+            <input asp-for="Password" class="input-control" type="password">
+          </div>
+
+          <div class="flex flex-col m-gap-t-def">
+            <label>Password (Repeat)</label>
+            <input asp-for="PasswordRepeat" class="input-control"  type="password">
+          </div>
+
+          <hr>
+
+          <div asp-validation-summary="All"></div>
+
+          <div class="flex flex-col m-gap-t-def">
+            <input type="submit" value="Start Using VoteKit"/>
+          </div>
+
+        </form>
+      </section>
+    </div>
+  </body>
+</html>

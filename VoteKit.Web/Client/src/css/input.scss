@@ -1,0 +1,183 @@
+﻿label {
+  font-weight: 500;
+  color: #5e5e5e;
+  margin: 0px 0 10px 0;
+  user-select: none;
+
+  &.label-muted {
+    color: #aaaaaa;
+  }
+}
+
+
+input {
+  font-family: "Inter", sans-serif;
+}
+
+$text-inputs: (
+  "[type='color']",
+  "[type='date']",
+  "[type='datetime']",
+  "[type='datetime-local']",
+  "[type='email']",
+  "[type='month']",
+  "[type='number']",
+  "[type='password']",
+  "[type='search']",
+  "[type='tel']",
+  "[type='text']",
+  "[type='time']",
+  "[type='url']",
+  "[type='week']",
+  "input:not([type])",
+  "textarea"
+);
+
+@each $text-input in $text-inputs {
+  #{$text-input}.input-control {
+    font-family: "Inter", sans-serif;
+    background: #ffffff;
+    padding: 8px 10px;
+    border: 1px solid var(--color-border);
+    box-shadow: none;
+    border-radius: 4px;
+    outline: none;
+    transition: 0.1s linear border-color;
+    resize: none;
+
+    &:focus {
+      border-color: var(--color-primary);
+    }
+
+    &::placeholder {
+      color: #dddddd;
+    }
+  }
+}
+
+div.input-text {
+  background: #ffffff;
+  padding: 8px 10px;
+  border: 1px solid var(--color-border);
+  box-shadow: none;
+  border-radius: 4px;
+  outline: none;
+  transition: 0.1s linear all;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  @each $text-input in $text-inputs {
+    #{$text-input}.input-control {
+      border: 0;
+      padding: 0;
+      border-radius: 0;
+      background: transparent;
+      flex-grow: 1;
+    }
+  }
+
+  .input-addon {
+    white-space: nowrap;
+  }
+
+  label.input-addon {
+    font-weight: inherit;
+    font-size: inherit;
+    color: inherit;
+    margin: inherit;
+  }
+
+  &:focus-within {
+    border-color: var(--color-primary);
+  }
+}
+
+div.input-checkbox,
+div.input-radio {
+  position: relative;
+
+  label {
+    font-weight: inherit;
+    font-size: inherit;
+    color: inherit;
+    position: relative;
+
+    &:before {
+      content: "";
+      top: 2px;
+      margin-right: 5px;
+      display: inline-block;
+      width: 1rem;
+      height: 1rem;
+      background: #ffffff;
+      border: 2px solid #e1e2e3;
+      pointer-events: none;
+      border-radius: 2px;
+      position: relative;
+    }
+  }
+
+  input[type="checkbox"],
+  input[type="radio"] {
+    position: absolute;
+    outline: none;
+    opacity: 0;
+
+    &:checked ~ label:before {
+      background-color: var(--color-primary);
+      border-color: var(--color-primary);
+      color: white;
+      background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3E%3Cpath fill='%23fff' d='M6.564.75l-3.59 3.612-1.538-1.55L0 4.26 2.974 7.25 8 2.193z'/%3E%3C/svg%3E");
+      background-position: center center;
+      background-size: 80% 80%;
+      background-repeat: no-repeat;
+    }
+
+    &[disabled] ~ label:before {
+      background-color: #e1e2e3;
+    }
+
+    &[disabled]:checked ~ label:before {
+      background-color: #e1e2e3;
+      border-color: #e1e2e3;
+    }
+  }
+
+  input[type="radio"] ~ label:before {
+    border-radius: 50%;
+  }
+
+  input[type="radio"]:checked ~ label:before {
+    background-image: none;
+  }
+}
+
+div.input-stripe-card {
+  padding: 8px 10px;
+  background: #ffffff;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+
+  &.focus {
+    border-color: var(--color-primary);
+  }
+}
+
+div.input-color {
+  position: relative;
+
+  input.input-control {
+    padding-left: 2rem;
+  }
+
+  .color-indicator {
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+    position: absolute;
+    top: 9px;
+    left: 9px;
+    width: 1rem;
+    height: 1rem;
+    border-radius: 4px;
+  }
+}

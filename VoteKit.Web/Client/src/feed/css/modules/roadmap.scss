@@ -1,0 +1,26 @@
+@use "../vars.scss" as vars;
+
+.group-roadmap {
+  display: flex;
+  width: 100%;
+  align-items: flex-start;
+  
+  .group-roadmap-board {
+    margin: 0 10px;
+    flex-basis: 30%;
+    flex-grow: 1;
+    flex-shrink: 0;
+    
+    &:first-child {
+      margin-left: 0;
+    }
+    
+    &:last-child {
+      margin-right: 0;
+    }
+    
+    .panel-body {
+      padding: 15px;
+    }
+  }
+}

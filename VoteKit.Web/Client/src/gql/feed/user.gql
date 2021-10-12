@@ -1,0 +1,48 @@
+﻿fragment user on User {
+  id
+  displayName
+  avatar
+  email
+}
+
+fragment me on User {
+  ...user
+  
+  hasPassword
+}
+
+query me {
+  me {
+    ...me
+  }
+}
+
+mutation saveUser($input: SaveUserInput!) {
+  saveUser(input: $input) {
+    ...me
+  }
+}
+
+mutation savePassword($input: SavePasswordInput!) {
+  savePassword(input: $input)
+}
+
+mutation login($input: LoginInput!) {
+  login(input: $input)
+}
+
+mutation logout {
+  logout
+}
+
+mutation beginPasswordlessLogin($input: BeginPasswordlessLoginInput!) {
+  beginPasswordlessLogin(input: $input)
+}
+
+mutation completePasswordlessLogin($input: CompletePasswordlessLoginInput!) {
+  completePasswordlessLogin(input: $input) {
+    ...user
+  }
+}
+
+

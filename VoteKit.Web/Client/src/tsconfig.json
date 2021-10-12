@@ -1,0 +1,12 @@
+﻿{
+  "include": ["**/*"],
+  "compilerOptions": {
+    "target": "es2015",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "lib": ["es2015", "es2016", "ES2017", "ES2018", "ES2019", "dom"],
+    "outDir": "./build",
+    "jsx": "react-jsx",
+    "esModuleInterop": true
+  }
+}

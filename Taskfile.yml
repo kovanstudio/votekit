@@ -1,0 +1,78 @@
+version: "2"
+
+tasks:
+  clean:
+    silent: true
+    cmds:
+      - rm -rf VoteKit.Web/wwwroot/client || true
+      - mkdir -p VoteKit.Web/wwwroot/client
+
+  codegen:
+    dir: VoteKit.Web/Client
+    cmds:
+      - npm run codegen --scripts-prepend-node-path
+
+  ef-optimize:
+    cmds:
+      - dotnet ef dbcontext optimize --output-dir Data/Compiled --namespace VoteKit.Data.Compiled --project VoteKit
+
+  ef-update:
+    dir: VoteKit/
+    cmds:
+      - dotnet tool run dotnet-ef database update
+
+  ef-migration:
+    cmds:
+      - dotnet ef migrations add -p Migrations/VoteKit.Migrations.SQLite {{.CLI_ARGS}}
+      - dotnet ef migrations add -p Migrations/VoteKit.Migrations.PostgreSQL {{.CLI_ARGS}}
+
+  ef-script:
+    cmds:
+      - dotnet ef --project VoteKit migrations script --idempotent --output migrate.sql
+
+  ngrok:
+    cmds:
+      - ngrok http -region eu --subdomain votekit-{{.USER}} --log=stdout 5000 > /dev/null || true
+
+  wait-server:
+    cmds:
+      - node scripts/checkserver.js
+
+  watch-client:
+    dir: VoteKit.Web/Client
+    env:
+      NODE_ENV: development
+    cmds:
+      - npm run watch --scripts-prepend-node-path
+
+  watch-client-esbuild:
+    dir: VoteKit.Web/Client
+    env:
+      NODE_ENV: development
+    cmds:
+      - npm run watch-esbuild --scripts-prepend-node-path
+
+  watch-codegen:
+    deps: [wait-server]
+    dir: VoteKit.Web/Client
+    env:
+      NODE_ENV: development
+    cmds:
+      - npm run watch-codegen --scripts-prepend-node-path
+
+  watch-web:
+    env:
+      ASPNETCORE_ENVIRONMENT: Development
+    cmds:
+      - mkdir -p VoteKit.Web/wwwroot/client
+      - dotnet watch run --no-hot-reload --project VoteKit.Web
+
+  watch-web-hot-reload:
+    dir: VoteKit.Web
+    env:
+      ASPNETCORE_ENVIRONMENT: Development
+    cmds:
+      - expect ../scripts/dotnet-watch.expect
+
+  watch:
+    deps: [watch-web-hot-reload, watch-client, watch-codegen, ngrok]

@@ -1,0 +1,24 @@
+[*]
+charset = utf-8
+end_of_line = lf
+indent_size = 2
+indent_style = space
+insert_final_newline = true
+max_line_length = 150
+tab_width = 2
+
+resharper_no_indent_inside_elements =
+
+[*.cs]
+dotnet_diagnostic.CA1822.severity = none
+dotnet_diagnostic.EF1001.severity = none
+
+[{*.js, *.jsx}]
+ij_javascript_spaces_within_object_literal_braces = true
+ij_javascript_spaces_within_object_type_braces = true
+ij_javascript_spaces_within_imports = true
+
+[{*.ts, *.tsx}]
+ij_typescript_spaces_within_object_literal_braces = true
+ij_typescript_spaces_within_object_type_braces = true
+ij_typescript_spaces_within_imports = true

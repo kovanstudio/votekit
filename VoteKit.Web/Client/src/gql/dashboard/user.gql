@@ -1,0 +1,87 @@
+fragment userSummary on User {
+  id
+  displayName
+  avatar
+}
+
+fragment user on User {
+  ...userSummary
+  
+  email
+  createdAt
+  seenAt
+
+  stats {
+    votes
+    comments
+  }
+}
+
+fragment me on User {
+  ...user
+}
+
+query me {
+  me {
+    ...me
+  }
+}
+
+mutation login($input: LoginInput!) {
+  login(input: $input)
+}
+
+mutation logout {
+  logout
+}
+
+mutation register($input: RegisterInput!) {
+  register(input: $input) {
+    ...me
+  }
+}
+
+mutation saveMember($input: SaveUserInput!) {
+  saveUser(input: $input) {
+    ...me
+  }
+}
+
+mutation savePassword($input: SavePasswordInput!) {
+  savePassword(input: $input)
+}
+
+query user($id: UUID!) {
+  user(id: $id) {
+    ...user
+  }
+}
+
+fragment usersConnection on UsersConnection {
+  totalCount
+
+  pageInfo {
+    ...pageInfo
+  }
+
+  nodes {
+    ...user
+  }
+}
+
+query users(
+  $orderBy: UsersOrderByInput
+  $input: UsersInput
+  $after: String
+  $before: String
+) {
+  users(orderBy: $orderBy, input: $input, after: $after, before: $before) {
+    ...usersConnection
+  }
+}
+
+query members {
+  members {
+    ...user
+  }
+}
