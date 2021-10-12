@@ -29,10 +29,10 @@ VoteKit has an official docker image and it is the recommended method for deploy
 
 ```
 # Run and bind to localhost:5000
-docker run -p 5000:80 votekit/votekit:latest
+docker run -p 5000:80 ghcr.io/kovanstudio/votekit:latest
 
 # Persist data on host filesystem
-docker run -v /path/to/host/directory:/app/data -p 5000:80 eknkc/votekit:latest
+docker run -v /path/to/host/directory:/app/data -p 5000:80 ghcr.io/kovanstudio/votekit:latest
 ```
 
 ## Configuration
