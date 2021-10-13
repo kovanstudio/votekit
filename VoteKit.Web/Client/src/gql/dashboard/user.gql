@@ -10,6 +10,7 @@ fragment user on User {
   email
   createdAt
   seenAt
+  role
 
   stats {
     votes

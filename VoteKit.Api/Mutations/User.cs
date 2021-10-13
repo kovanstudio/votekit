@@ -107,8 +107,14 @@ public partial class Mutation
       if (invite == null)
         throw new VoteKitException("Invalid invite token", "INVALID_INVITE_TOKEN");
 
+      if (invite.Status == InviteStatus.Accepted)
+        throw new VoteKitException("This invite token has already been accepted. You can not reuse the link.", "INVALID_INVITE_TOKEN");
+
+      if (invite.Status == InviteStatus.Rejected)
+        throw new VoteKitException("This invite token has been expired.", "INVALID_INVITE_TOKEN");
+
       user.Role = invite.Role;
-      db.Invites.Remove(invite);
+      invite.Status = InviteStatus.Accepted;
     }
 
     await db.Users.AddAsync(user);

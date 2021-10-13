@@ -49,7 +49,8 @@ public partial class Mutation
         Id = Guid.NewGuid(),
         ProjectId = project.Id,
         Email = input.Email,
-        Role = input.Role
+        Role = input.Role,
+        Status = InviteStatus.Waiting
       };
 
       await db.Invites.AddAsync(invite);

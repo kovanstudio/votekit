@@ -856,7 +856,7 @@ export type EntryUpvotersQueryVariables = Exact<{
 }>;
 
 
-export type EntryUpvotersQuery = { __typename?: 'Query', entry?: { __typename?: 'Entry', id: any, upvoters?: { __typename?: 'UpvotersConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: string | null | undefined, endCursor?: string | null | undefined }, nodes?: Array<{ __typename?: 'User', email: string, createdAt: any, seenAt: any, id: any, displayName?: string | null | undefined, avatar: string, stats: { __typename?: 'UserStats', votes: number, comments: number } }> | null | undefined } | null | undefined } | null | undefined };
+export type EntryUpvotersQuery = { __typename?: 'Query', entry?: { __typename?: 'Entry', id: any, upvoters?: { __typename?: 'UpvotersConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: string | null | undefined, endCursor?: string | null | undefined }, nodes?: Array<{ __typename?: 'User', email: string, createdAt: any, seenAt: any, role: UserRole, id: any, displayName?: string | null | undefined, avatar: string, stats: { __typename?: 'UserStats', votes: number, comments: number } }> | null | undefined } | null | undefined } | null | undefined };
 
 export type AddEntryMutationVariables = Exact<{
   input: AddEntryInput;
@@ -914,7 +914,7 @@ export type LookupInviteQuery = { __typename?: 'Query', lookupInvite?: { __typen
 export type ProjectMembersAndInvitesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ProjectMembersAndInvitesQuery = { __typename?: 'Query', members: Array<{ __typename?: 'User', email: string, createdAt: any, seenAt: any, id: any, displayName?: string | null | undefined, avatar: string, stats: { __typename?: 'UserStats', votes: number, comments: number } }>, invites: Array<{ __typename?: 'Invite', id: any, email: string, createdAt: any, token?: string | null | undefined }> };
+export type ProjectMembersAndInvitesQuery = { __typename?: 'Query', members: Array<{ __typename?: 'User', email: string, createdAt: any, seenAt: any, role: UserRole, id: any, displayName?: string | null | undefined, avatar: string, stats: { __typename?: 'UserStats', votes: number, comments: number } }>, invites: Array<{ __typename?: 'Invite', id: any, email: string, createdAt: any, token?: string | null | undefined }> };
 
 export type RemoveUserMutationVariables = Exact<{
   input: RemoveUserInput;
@@ -969,14 +969,14 @@ export type RemoveStatusMutation = { __typename?: 'Mutation', removeStatus: Oper
 
 export type UserSummaryFragment = { __typename?: 'User', id: any, displayName?: string | null | undefined, avatar: string };
 
-export type UserFragment = { __typename?: 'User', email: string, createdAt: any, seenAt: any, id: any, displayName?: string | null | undefined, avatar: string, stats: { __typename?: 'UserStats', votes: number, comments: number } };
+export type UserFragment = { __typename?: 'User', email: string, createdAt: any, seenAt: any, role: UserRole, id: any, displayName?: string | null | undefined, avatar: string, stats: { __typename?: 'UserStats', votes: number, comments: number } };
 
-export type MeFragment = { __typename?: 'User', email: string, createdAt: any, seenAt: any, id: any, displayName?: string | null | undefined, avatar: string, stats: { __typename?: 'UserStats', votes: number, comments: number } };
+export type MeFragment = { __typename?: 'User', email: string, createdAt: any, seenAt: any, role: UserRole, id: any, displayName?: string | null | undefined, avatar: string, stats: { __typename?: 'UserStats', votes: number, comments: number } };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', email: string, createdAt: any, seenAt: any, id: any, displayName?: string | null | undefined, avatar: string, stats: { __typename?: 'UserStats', votes: number, comments: number } } | null | undefined };
+export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', email: string, createdAt: any, seenAt: any, role: UserRole, id: any, displayName?: string | null | undefined, avatar: string, stats: { __typename?: 'UserStats', votes: number, comments: number } } | null | undefined };
 
 export type LoginMutationVariables = Exact<{
   input: LoginInput;
@@ -995,14 +995,14 @@ export type RegisterMutationVariables = Exact<{
 }>;
 
 
-export type RegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'User', email: string, createdAt: any, seenAt: any, id: any, displayName?: string | null | undefined, avatar: string, stats: { __typename?: 'UserStats', votes: number, comments: number } } };
+export type RegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'User', email: string, createdAt: any, seenAt: any, role: UserRole, id: any, displayName?: string | null | undefined, avatar: string, stats: { __typename?: 'UserStats', votes: number, comments: number } } };
 
 export type SaveMemberMutationVariables = Exact<{
   input: SaveUserInput;
 }>;
 
 
-export type SaveMemberMutation = { __typename?: 'Mutation', saveUser: { __typename?: 'User', email: string, createdAt: any, seenAt: any, id: any, displayName?: string | null | undefined, avatar: string, stats: { __typename?: 'UserStats', votes: number, comments: number } } };
+export type SaveMemberMutation = { __typename?: 'Mutation', saveUser: { __typename?: 'User', email: string, createdAt: any, seenAt: any, role: UserRole, id: any, displayName?: string | null | undefined, avatar: string, stats: { __typename?: 'UserStats', votes: number, comments: number } } };
 
 export type SavePasswordMutationVariables = Exact<{
   input: SavePasswordInput;
@@ -1016,9 +1016,9 @@ export type UserQueryVariables = Exact<{
 }>;
 
 
-export type UserQuery = { __typename?: 'Query', user?: { __typename?: 'User', email: string, createdAt: any, seenAt: any, id: any, displayName?: string | null | undefined, avatar: string, stats: { __typename?: 'UserStats', votes: number, comments: number } } | null | undefined };
+export type UserQuery = { __typename?: 'Query', user?: { __typename?: 'User', email: string, createdAt: any, seenAt: any, role: UserRole, id: any, displayName?: string | null | undefined, avatar: string, stats: { __typename?: 'UserStats', votes: number, comments: number } } | null | undefined };
 
-export type UsersConnectionFragment = { __typename?: 'UsersConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: string | null | undefined, endCursor?: string | null | undefined }, nodes?: Array<{ __typename?: 'User', email: string, createdAt: any, seenAt: any, id: any, displayName?: string | null | undefined, avatar: string, stats: { __typename?: 'UserStats', votes: number, comments: number } }> | null | undefined };
+export type UsersConnectionFragment = { __typename?: 'UsersConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: string | null | undefined, endCursor?: string | null | undefined }, nodes?: Array<{ __typename?: 'User', email: string, createdAt: any, seenAt: any, role: UserRole, id: any, displayName?: string | null | undefined, avatar: string, stats: { __typename?: 'UserStats', votes: number, comments: number } }> | null | undefined };
 
 export type UsersQueryVariables = Exact<{
   orderBy?: Maybe<UsersOrderByInput>;
@@ -1028,12 +1028,12 @@ export type UsersQueryVariables = Exact<{
 }>;
 
 
-export type UsersQuery = { __typename?: 'Query', users?: { __typename?: 'UsersConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: string | null | undefined, endCursor?: string | null | undefined }, nodes?: Array<{ __typename?: 'User', email: string, createdAt: any, seenAt: any, id: any, displayName?: string | null | undefined, avatar: string, stats: { __typename?: 'UserStats', votes: number, comments: number } }> | null | undefined } | null | undefined };
+export type UsersQuery = { __typename?: 'Query', users?: { __typename?: 'UsersConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: string | null | undefined, endCursor?: string | null | undefined }, nodes?: Array<{ __typename?: 'User', email: string, createdAt: any, seenAt: any, role: UserRole, id: any, displayName?: string | null | undefined, avatar: string, stats: { __typename?: 'UserStats', votes: number, comments: number } }> | null | undefined } | null | undefined };
 
 export type MembersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MembersQuery = { __typename?: 'Query', members: Array<{ __typename?: 'User', email: string, createdAt: any, seenAt: any, id: any, displayName?: string | null | undefined, avatar: string, stats: { __typename?: 'UserStats', votes: number, comments: number } }> };
+export type MembersQuery = { __typename?: 'Query', members: Array<{ __typename?: 'User', email: string, createdAt: any, seenAt: any, role: UserRole, id: any, displayName?: string | null | undefined, avatar: string, stats: { __typename?: 'UserStats', votes: number, comments: number } }> };
 
 export const BoardSummaryFragmentDoc = gql`
     fragment boardSummary on Board {
@@ -1171,6 +1171,7 @@ export const UserFragmentDoc = gql`
   email
   createdAt
   seenAt
+  role
   stats {
     votes
     comments

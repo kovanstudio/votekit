@@ -19,18 +19,18 @@ public class InviteResolversOnQuery
   public async Task<IEnumerable<Invite>> Invites([Project] Project project, [ScopedService] VotekitCtx db)
   {
     return await db.Invites
-      .Where(x => x.ProjectId == project.Id && x.Status != InviteStatus.Deleted)
+      .Where(x => x.ProjectId == project.Id && x.Status == InviteStatus.Waiting)
       .OrderByDescending(x => x.CreatedAt)
       .ToListAsync();
   }
-  
+
   [UseVotekitCtx]
   public async Task<Invite?> LookupInvite(
-    [Project] Project project, 
+    [Project] Project project,
     [ScopedService] VotekitCtx db,
     [Service] IInviteService inviteService,
     string token
-    )
+  )
   {
     var data = inviteService.DecodeToken(token);
 
@@ -38,7 +38,8 @@ public class InviteResolversOnQuery
       return null;
 
     var (id, createdAt) = data.Value;
-    return await db.Invites.FirstOrDefaultAsync(i => i.ProjectId == project.Id && i.Id == id);
+
+    return await db.Invites.FirstOrDefaultAsync(i => i.ProjectId == project.Id && i.Id == id && i.Status == InviteStatus.Waiting);
   }
 }
 
