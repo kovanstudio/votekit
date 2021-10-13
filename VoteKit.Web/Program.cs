@@ -72,9 +72,9 @@ public static class Program
     // Services
     builder.Services.AddHttpContextAccessor();
 
-    if (builder.Configuration["DB"] == "pg")
+    if (builder.Configuration["DB:Provider"] == "pg")
       builder.Services.AddDbContextFactory<VotekitCtx>(options =>
-        options.UseNpgsql(builder.Configuration["PG"], o => { o.MigrationsAssembly("VoteKit.Migrations.PostgreSQL"); })
+        options.UseNpgsql(builder.Configuration["DB:ConnectionString"], o => { o.MigrationsAssembly("VoteKit.Migrations.PostgreSQL"); })
       );
     else
       builder.Services.AddDbContextFactory<VotekitCtx>(options =>

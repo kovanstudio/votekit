@@ -4,60 +4,59 @@ using MailKit.Security;
 using Microsoft.Extensions.Configuration;
 using MimeKit;
 
-namespace VoteKit.Services.Implementations
+namespace VoteKit.Services.Implementations;
+
+public class MailKitEmailServiceOptions
 {
-  public class MailKitEmailServiceOptions
+  public string From { get; set; } = null!;
+
+  public string SmtpHost { get; set; } = null!;
+  public int SmtpPort { get; set; }
+  public string SmtpUser { get; set; } = null!;
+  public string SmtpPass { get; set; } = null!;
+}
+
+public class MailKitEmailService : IEmailService
+{
+  private readonly MailKitEmailServiceOptions _options;
+
+  public MailKitEmailService(IConfiguration configuration)
   {
-    public string From { get; set; } = null!;
-    
-    public string SMTPHost { get; set; } = null!;
-    public int SMTPPort { get; set; }
-    public string SMTPUser { get; set; } = null!;
-    public string SMTPPass { get; set; } = null!;
+    _options = configuration.GetSection("Email").Get<MailKitEmailServiceOptions>();
   }
-  
-  public class MailKitEmailService : IEmailService
+
+  public async Task SendEmailAsync(MailMessage message)
   {
-    private readonly MailKitEmailServiceOptions _options;
-
-    public MailKitEmailService(IConfiguration configuration)
+    var mimeMessage = new MimeMessage()
     {
-      _options = configuration.GetSection("Email").Get<MailKitEmailServiceOptions>();
-    }
+      Subject = message.Subject
+    };
 
-    public async Task SendEmailAsync(MailMessage message)
-    {
-      var mimeMessage = new MimeMessage()
-      {
-        Subject = message.Subject,
-      };
-      
-      mimeMessage.From.Add(MailboxAddress.Parse(_options.From));
+    mimeMessage.From.Add(MailboxAddress.Parse(_options.From));
 
-      foreach (var to in message.ToEmails)
-        mimeMessage.To.Add(MailboxAddress.Parse(to));
+    foreach (var to in message.ToEmails)
+      mimeMessage.To.Add(MailboxAddress.Parse(to));
 
-      foreach (var to in message.BccEmails)
-        mimeMessage.To.Add(MailboxAddress.Parse(to));
+    foreach (var to in message.BccEmails)
+      mimeMessage.To.Add(MailboxAddress.Parse(to));
 
-      var bodyBuilder = new BodyBuilder();
+    var bodyBuilder = new BodyBuilder();
 
-      if (!string.IsNullOrWhiteSpace(message.TextContent))
-        bodyBuilder.TextBody = message.TextContent;
-      
-      if (!string.IsNullOrWhiteSpace(message.HtmlContent))
-        bodyBuilder.HtmlBody = message.HtmlContent;
+    if (!string.IsNullOrWhiteSpace(message.TextContent))
+      bodyBuilder.TextBody = message.TextContent;
 
-      mimeMessage.Body = bodyBuilder.ToMessageBody();
-      
-      using var smtp = new SmtpClient();
-      await smtp.ConnectAsync(_options.SMTPHost, _options.SMTPPort, SecureSocketOptions.StartTls);
+    if (!string.IsNullOrWhiteSpace(message.HtmlContent))
+      bodyBuilder.HtmlBody = message.HtmlContent;
 
-      if (!string.IsNullOrWhiteSpace(_options.SMTPUser))
-        await smtp.AuthenticateAsync(_options.SMTPUser, _options.SMTPPass);
+    mimeMessage.Body = bodyBuilder.ToMessageBody();
 
-      await smtp.SendAsync(mimeMessage);
-      await smtp.DisconnectAsync(true);
-    }
+    using var smtp = new SmtpClient();
+    await smtp.ConnectAsync(_options.SmtpHost, _options.SmtpPort, SecureSocketOptions.StartTls);
+
+    if (!string.IsNullOrWhiteSpace(_options.SmtpUser))
+      await smtp.AuthenticateAsync(_options.SmtpUser, _options.SmtpPass);
+
+    await smtp.SendAsync(mimeMessage);
+    await smtp.DisconnectAsync(true);
   }
 }
