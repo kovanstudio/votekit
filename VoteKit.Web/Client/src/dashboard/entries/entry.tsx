@@ -4,25 +4,21 @@ import { Link, Redirect, useHistory, useParams } from "react-router-dom";
 import TextareaAutosize from "react-textarea-autosize";
 import { Status, Upvotes } from "../components/entry";
 import { Checkbox, Select } from "../../components/form";
-import { AttachIcon } from "../../components/icon";
 import { SelectBoard, SelectMember, SelectStatus } from "../components/selectors";
 import { TimeAgo } from "../../components/time";
 import "../css/modules/entry.scss";
 import { schema } from "../gql/client";
-import { useBoard, useConfig, useMe, useProject } from "../state";
+import { useMe, useProject } from "../state";
 import { EntrySections } from "./sections";
 import { EditEntryModal } from "./modal-edit";
 import { Markdown } from "../../components/markdown";
 import { useOverrides } from "../../lib/useOverrides";
-import { confirmDialog } from "../../lib/dialog";
 
 export function EntryRoutes() {
-  return <Entry />;
+  return <Entry/>;
 }
 
 export function Entry() {
-  const project = useProject();
-
   const { boardSlug, entrySlug } = useParams();
 
   const entryRes = schema.useLookupEntryQuery({
@@ -32,19 +28,19 @@ export function Entry() {
     },
   });
 
-  if (entryRes.loading) return <div className="spinner-overlay" />;
-  if (!entryRes.data?.lookupEntry) return <Redirect to="/" />;
+  if (entryRes.loading) return <div className="spinner-overlay"/>;
+  if (!entryRes.data?.lookupEntry) return <Redirect to="/"/>;
 
   const entry = entryRes.data.lookupEntry;
 
   return (
     <div className="container container-main group-entry">
       <div className="group-entry-content">
-        <EntryContent entry={entry} />
-        <EntrySections entry={entry} />
+        <EntryContent entry={entry}/>
+        <EntrySections entry={entry}/>
       </div>
       <nav className="nav group-entry-nav">
-        <EntryDetails entry={entry} />
+        <EntryDetails entry={entry}/>
       </nav>
     </div>
   );
@@ -55,15 +51,15 @@ function EntryContent({ entry }: { entry: schema.EntryFragment }) {
 
   return (
     <div className="panel entry">
-      {editing ? <EditEntryModal entry={entry} onClose={() => setEditing(false)} /> : null}
+      {editing ? <EditEntryModal entry={entry} onClose={() => setEditing(false)}/> : null}
       <div className="entry-header">
         <div className="row">
           <h2>{entry.title}</h2>
 
-          <EntryContentUpvoters entry={entry} />
+          <EntryContentUpvoters entry={entry}/>
 
           <aside className="score">
-            <Upvotes entry={entry} />
+            <Upvotes entry={entry}/>
           </aside>
         </div>
 
@@ -71,9 +67,9 @@ function EntryContent({ entry }: { entry: schema.EntryFragment }) {
           {entry.isPrivate ? <span className="entry-status entry-status-private">Internal</span> : null}
           {entry.isLocked ? <span className="entry-status entry-status-locked">Locked</span> : null}
           {entry.isArchived ? <span className="entry-status entry-status-archived">Archived</span> : null}
-          <Status entry={entry} className="m-r-15" />
+          <Status entry={entry} className="m-r-15"/>
           <div className="actions">
-            <TimeAgo value={entry.createdAt} className="m-r-15" />
+            <TimeAgo value={entry.createdAt} className="m-r-15"/>
             <a
               href="#"
               onClick={(e) => {
@@ -90,15 +86,13 @@ function EntryContent({ entry }: { entry: schema.EntryFragment }) {
       </div>
 
       <div className="entry-footer">
-        <EntryCommentForm entry={entry} />
+        <EntryCommentForm entry={entry}/>
       </div>
     </div>
   );
 }
 
 function EntryContentUpvoters({ entry }: { entry: schema.EntryFragment }) {
-  const project = useProject();
-
   const entryUpvoters = schema.useEntryUpvotersQuery({
     variables: {
       entryId: entry.id,
@@ -117,7 +111,7 @@ function EntryContentUpvoters({ entry }: { entry: schema.EntryFragment }) {
 
       {upvoters.nodes.slice(0, 6).map((u) => (
         <Link to={`/people/${u.id}`} key={u.id}>
-          <img src={u.avatar} />
+          <img src={u.avatar} alt="User avatar"/>
         </Link>
       ))}
     </div>
@@ -127,7 +121,6 @@ function EntryContentUpvoters({ entry }: { entry: schema.EntryFragment }) {
 function EntryDetails({ entry }: { entry: schema.EntryFragment }) {
   const history = useHistory();
   const project = useProject();
-  const config = useConfig();
 
   const [data, update, { isDirty }] = useOverrides(
     {
@@ -161,12 +154,13 @@ function EntryDetails({ entry }: { entry: schema.EntryFragment }) {
       } else {
         update(null);
       }
-    } catch {}
+    } catch {
+    }
   };
 
   return (
     <div className="panel-narrow entry-details">
-      {entrySaveRes.loading ? <div className="spinner-overlay"></div> : null}
+      {entrySaveRes.loading ? <div className="spinner-overlay"/> : null}
       <h4 className="m-b-20">Details</h4>
       <form
         className="form-options"
@@ -183,7 +177,7 @@ function EntryDetails({ entry }: { entry: schema.EntryFragment }) {
           <label className="option-label">Board</label>
 
           <div className="option-value">
-            <SelectBoard project={project} value={data.boardId} onChange={(boardId) => update({ boardId })} />
+            <SelectBoard project={project} value={data.boardId} onChange={(boardId) => update({ boardId })}/>
           </div>
         </div>
 
@@ -191,7 +185,7 @@ function EntryDetails({ entry }: { entry: schema.EntryFragment }) {
           <label className="option-label">Status</label>
 
           <div className="option-value">
-            <SelectStatus project={project} value={data.statusId} onChange={(statusId) => update({ statusId })} />
+            <SelectStatus project={project} value={data.statusId} onChange={(statusId) => update({ statusId })}/>
           </div>
         </div>
 
@@ -211,7 +205,7 @@ function EntryDetails({ entry }: { entry: schema.EntryFragment }) {
 
         <div className="option">
           <div className="option-value">
-            <Checkbox label="Internal Entry" checked={data.isPrivate} onChange={(e) => update({ isPrivate: e.target.checked })} />
+            <Checkbox label="Internal Entry" checked={data.isPrivate} onChange={(e) => update({ isPrivate: e.target.checked })}/>
             <p className="checkbox-description">Internal entries are hidden from the outside users and only visible to your team members</p>
           </div>
         </div>
@@ -220,8 +214,8 @@ function EntryDetails({ entry }: { entry: schema.EntryFragment }) {
 
         {isDirty() ? (
           <div className="actions">
-            <input type="reset" className="btn-light" value="Cancel" />
-            <input type="submit" value="Save" />
+            <input type="reset" className="btn-light" value="Cancel"/>
+            <input type="submit" value="Save"/>
           </div>
         ) : entry.isArchived ? (
           <div className="actions">
@@ -270,7 +264,7 @@ const commentVisibilityOptions = [
 
 function EntryCommentForm({ entry }: { entry: schema.EntryFragment }) {
   const me = useMe();
-  
+
   const [focus, setFocus] = React.useState(false);
 
   const [content, setContent] = React.useState("");
@@ -298,32 +292,33 @@ function EntryCommentForm({ entry }: { entry: schema.EntryFragment }) {
 
       setContent("");
       setIsPrivate(false);
-    } catch (e) {}
+    } catch (e) {
+    }
   };
 
   //TODO: Delete
-  
+
   return (
     <form className="entry-comment-form" onSubmit={handleSubmit}>
-      {addCommentRes.loading ? <div className="spinner-overlay"></div> : null}
+      {addCommentRes.loading ? <div className="spinner-overlay"/> : null}
 
       <aside className="comment-icon">
-        <img src={me.avatar} />
+        <img src={me.avatar} alt="User avatar"/>
       </aside>
 
       <div className="comment-body">
         <TextareaAutosize
-          onKeyDown={(e) => {
+          onKeyDown={async (e) => {
             if (e.key == "Enter" && e.shiftKey) {
-              handleSubmit(e).then((r) => {});
+              await handleSubmit(e);
             }
           }}
-          onFocus={(e) => setFocus(true)}
+          onFocus={() => setFocus(true)}
           className="input-control"
           placeholder="Leave a comment..."
           value={content}
           onChange={(e) => setContent(e.target.value)}
-        ></TextareaAutosize>
+        />
       </div>
 
       <motion.div
@@ -348,10 +343,10 @@ function EntryCommentForm({ entry }: { entry: schema.EntryFragment }) {
               onChange={(e) => setIsPrivate(e.value == "private")}
               options={commentVisibilityOptions}
               value={commentVisibilityOptions.find((v) => v.value == (isPrivate ? "private" : "public"))}
-            ></Select>
+            />
           </div>
 
-          <input type="submit" value="Add Comment" />
+          <input type="submit" value="Add Comment"/>
         </div>
       </motion.div>
     </form>

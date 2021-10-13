@@ -71,7 +71,7 @@ public partial class Mutation
     [Required]
     [MinLength(4, ErrorMessage = "Password should be at least 4 characters long")]
     public string Password { get; set; } = null!;
-    
+
     public string? InviteToken { get; set; }
   }
 
@@ -103,7 +103,7 @@ public partial class Mutation
 
       var (id, createdAt) = data.Value;
       var invite = await db.Invites.FirstOrDefaultAsync(i => i.ProjectId == project.Id && i.Id == id);
-      
+
       if (invite == null)
         throw new VoteKitException("Invalid invite token", "INVALID_INVITE_TOKEN");
 
@@ -157,7 +157,7 @@ public partial class Mutation
       if (!user.CheckPassword(input.CurrentPassword))
         throw new GqlException("Current password is not valid", "INVALID_PASSWORD");
     }
-      
+
     db.Attach(user);
 
     user.Password = input.Password;
@@ -171,7 +171,6 @@ public partial class Mutation
   public record SaveUserInput(
     [Required] [EmailAddress(ErrorMessage = "A valid email address is required")]
     string Email,
-
     [Required(ErrorMessage = "Display name is required.")]
     string DisplayName
   );
@@ -203,13 +202,12 @@ public partial class Mutation
 
     return user;
   }
-    
+
   public class RemoveUserInput
   {
-    [Required]
-    public Guid UserId { get; set; }
+    [Required] public Guid UserId { get; set; }
   }
-    
+
   [Authorize(Policy = "Admin")]
   [UseVotekitCtx]
   public async Task<OperationResult> RemoveUserAsync(
@@ -234,14 +232,14 @@ public partial class Mutation
 
     return OperationResult.Success;
   }
-    
+
   public class BeginPasswordlessLoginInput
   {
     [Required]
     [EmailAddress(ErrorMessage = "A valid email address is required")]
     public string Email { get; set; } = null!;
   }
-    
+
   public async Task<string> BeginPasswordlessLogin(
     [Service] IDataProtectionProvider protectorProvider,
     [Service] IEmailService emailService,
@@ -250,7 +248,7 @@ public partial class Mutation
   )
   {
     var protector = protectorProvider.CreateProtector("VoteKit.Public.MutationUserResolvers");
-        
+
     var secret = RandomLoginToken();
     var projectid = project.Id.ToByteArray();
     var mail = Encoding.UTF8.GetBytes(input.Email);
@@ -261,14 +259,22 @@ public partial class Mutation
 
     await emailService.SendEmailAsync(new MailMessage
     {
-      Subject = $"{project.Name} - Login Token",
+      Subject = $"{project.Name} - Complete Login",
       ToEmails = new List<string> { input.Email },
-      TextContent = $"Use {secretString} to log in!"
+      TextContent = string.Join("\r\n",
+        $"Hi there!",
+        $"",
+        $"You have left your email address for logging in to {project.Name}",
+        $"Please use the following token:",
+        $"{secretString}",
+        $"",
+        $"Thank you!"
+      )
     });
 
     return Base62.Encoding.Encode(protector.Protect(tokenBytes));
   }
-    
+
   private byte[] RandomLoginToken()
   {
     var secret = new byte[6];
@@ -276,15 +282,13 @@ public partial class Mutation
     rnd.GetBytes(secret);
     return secret.Select(x => (byte)(x % 10)).ToArray();
   }
-    
+
   public class CompletePasswordlessLoginInput
   {
-    [Required]
-    public string Token { get; set; } = null!;
-    [Required]
-    public string Code { get; set; } = null!;
+    [Required] public string Token { get; set; } = null!;
+    [Required] public string Code { get; set; } = null!;
   }
-    
+
   [UseVotekitCtx]
   public async Task<User> CompletePasswordlessLogin(
     [ScopedService] VotekitCtx db,
@@ -308,8 +312,7 @@ public partial class Mutation
 
     var secretString = string.Join("", secret.Select(x => x.ToString()));
 
-    //TODO: Master password
-    if (secretString != input.Code.Trim() && input.Code != "aaaaaa")
+    if (secretString != input.Code.Trim())
       throw new VoteKitException("Unable to verify code. Please try again", "INVALID_CODE");
 
     if (DateTime.UtcNow - date > TimeSpan.FromMinutes(20))
