@@ -21,7 +21,7 @@ export class VoteKit extends EventEmitter {
     }, 10);
   }
 
-  render(url: string, options: RenderOptions = {}) {
+  render(src: string, options: RenderOptions = {}) {
 
   }
 }
