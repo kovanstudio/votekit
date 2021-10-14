@@ -5,48 +5,33 @@ const { env, argv } = require("process");
 
 const dev = env.NODE_ENV == "development" || argv.includes("--dev");
 
-const cache = new Map();
+let config = {
+  entryPoints: ["src/dashboard/index.tsx", "src/feed/index.tsx"],
+  bundle: true,
+  outdir: "../wwwroot/client/dashboard",
+  external: ["/images/*"],
+  treeShaking: true,
+  plugins: [sassPlugin({})],
+  define: {
+    "process.env.NODE_ENV": dev ? '"development"' : '"production"',
+  },
+  inject: ["src/react-shim.js"],
+};
 
-function build() {
-  Promise.all([
-    esbuild.build({
-      entryPoints: ["src/dashboard/index.tsx"],
-      bundle: true,
-      outdir: "../wwwroot/client/dashboard",
-      external: ["/images/*"],
-      treeShaking: "ignore-annotations",
-      plugins: [sassPlugin({})],
-      define: {
-        "process.env.NODE_ENV": dev ? '"development"' : '"production"',
-      },
-      inject: ["src/react-shim.js"],
-      minify: !dev,
-      sourcemap: dev,
-    }),
-    esbuild.build({
-      entryPoints: ["src/feed/index.tsx"],
-      bundle: true,
-      outdir: "../wwwroot/client/feed",
-      external: ["/images/*"],
-      treeShaking: "ignore-annotations",
-      plugins: [sassPlugin({})],
-      define: {
-        "process.env.NODE_ENV": dev ? '"development"' : '"production"',
-      },
-      inject: ["src/react-shim.js"],
-      minify: !dev,
-      sourcemap: dev,
-    })
-  ])
-    .then(() => console.log("  ✔ Built client assets"))
-    .catch((e) => console.error(e.message));
-}
-
-if (dev) {
-  const watcher = chokidar.watch("src", { ignoreInitial: true });
-
-  watcher.on("ready", build);
-  watcher.on("change", build);
+if (!dev) {
+  esbuild.buildSync(config);
 } else {
-  build();
+  esbuild.build({
+    ...config,
+    minify: false,
+    sourcemap: true,
+    watch: {
+      onRebuild(error, result) {
+        if (error) console.error('[esbuild] watch build failed:', error)
+        else console.log('[esbuild] watch build succeeded')
+      },
+    }
+  }).then(res => {
+    console.log("[esbuild] initial build complete");
+  })
 }

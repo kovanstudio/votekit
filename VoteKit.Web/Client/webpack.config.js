@@ -20,7 +20,7 @@ class StatsPlugin {
         }),
         {}
       );
-      
+
       fs.writeFile(path.resolve(__dirname, "../wwwroot/client/assets.json"), Buffer.from(JSON.stringify(assets, null, "  "), "utf8"), next);
     });
   }
@@ -36,6 +36,7 @@ module.exports = {
     path: path.resolve(__dirname, "../wwwroot/client"),
     publicPath: dev ? "/client/" : "/client/",
     //filename: "[contenthash].js",
+    chunkFilename: "[contenthash].js",
     filename: "[name].js"
   },
   resolve: {
@@ -61,7 +62,7 @@ module.exports = {
           MiniCssExtractPlugin.loader,
           {
             loader: "css-loader",
-            options: {url: false}
+            options: { url: false }
           },
           {
             loader: "sass-loader",
@@ -78,7 +79,7 @@ module.exports = {
   plugins: [
     new MiniCssExtractPlugin({
       //filename: "[contenthash].css"
-    }), 
+    }),
     //new StatsPlugin()
   ],
   cache: { type: "filesystem" },
