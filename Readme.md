@@ -43,10 +43,10 @@ It is recommended to use the environment variable approach. All environment vari
 
 ### Database Provider
 ```shell
-# In order to use PostgreSQL instead of the default SQLite database, set the DB variable to "PG"
-VK_DB__Provider = "pg"
+# In order to use PostgreSQL instead of the default SQLite database, set the DB variable to "pg"
+VK_DB__Provider="pg"
 # Also provide a connection string
-VK_DB__ConnectionString = "export VK_PG="Host=localhost;Port=5432;Database=votekit;Username=root;Password=root""
+VK_DB__ConnectionString="Host=localhost;Port=5432;Database=votekit;Username=root;Password=root"
 ```
 
 ### Mail
