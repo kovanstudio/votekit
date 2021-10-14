@@ -1,5 +1,9 @@
 import EventEmitter from "./eventEmitter";
 
+type RenderOptions = {
+  ssoToken?: string
+};
+
 export class VoteKit extends EventEmitter {
   log: any[];
 
@@ -11,7 +15,27 @@ export class VoteKit extends EventEmitter {
     super();
 
     this.log = [];
+
+    setTimeout(() => {
+      this.trigger("init", this);
+    }, 10);
+  }
+
+  render(url: string, options: RenderOptions = {}) {
+
   }
 }
 
-export default new VoteKit({});
+let mod;
+
+if (window["votekit"]) {
+  if (window["votekit"].loaded) {
+    mod = window["votekit"];
+  } else {
+    mod = new VoteKit(window["votekit"]);
+  }
+} else {
+  mod = new VoteKit({});
+}
+
+export default mod;
