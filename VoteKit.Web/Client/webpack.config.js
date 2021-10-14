@@ -30,7 +30,14 @@ module.exports = {
   mode: dev ? "development" : "production",
   entry: {
     dashboard: "./src/dashboard/index.tsx",
-    feed: "./src/feed/index.tsx"
+    feed: "./src/feed/index.tsx",
+    widget: {
+      import: "./src/widget/index.ts",
+      library: {
+        name: "votekit",
+        type: "window"
+      }
+    }
   },
   output: {
     path: path.resolve(__dirname, "../wwwroot/client"),
