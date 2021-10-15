@@ -10,9 +10,7 @@ namespace VoteKit.Data.Models;
 [Table("projects")]
 public class Project
 {
-  [Key]
-  [Column("id")]
-  public Guid Id { get; set; }
+  [Key] [Column("id")] public Guid Id { get; set; }
 
   [Required(ErrorMessage = "Project name is required")]
   [MaxLength(250, ErrorMessage = "Project name can not be longer than 250 characters")]
@@ -26,24 +24,21 @@ public class Project
   [Column("logo_image_id")]
   [ForeignKey("LogoImage")]
   public Guid? LogoImageId { get; set; }
+
   public Image? LogoImage { get; set; }
 
   [Column("favicon_image_id")]
   [ForeignKey("FaviconImage")]
   public Guid? FaviconImageId { get; set; }
+
   public Image? FaviconImage { get; set; }
 
-  [Column("created_at")]
-  public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+  [Column("created_at")] public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+  [Column("sso_key")] public Guid? SsoKey { get; set; }
 
-  [InverseProperty("Project")]
-  public List<User> Users { get; set; } = null!;
-
-  [InverseProperty("Project")]
-  public List<Board> Boards { get; set; } = null!;
-
-  [InverseProperty("Project")]
-  public List<Status> Statuses { get; set; } = null!;
+  [InverseProperty("Project")] public List<User> Users { get; set; } = null!;
+  [InverseProperty("Project")] public List<Board> Boards { get; set; } = null!;
+  [InverseProperty("Project")] public List<Status> Statuses { get; set; } = null!;
 
   public static Project Create(string name)
   {
@@ -55,19 +50,19 @@ public class Project
 
     project.Statuses = new List<Status>
     {
-      new Status { Id = Guid.NewGuid(), ProjectId = project.Id, Name = "Open", SortIndex = 0, Color = "666666", IsDefault = true },
-      new Status { Id = Guid.NewGuid(), ProjectId = project.Id, Name = "Under Review", SortIndex = 1, Color = "FCC400", IsInRoadmap = true },
-      new Status { Id = Guid.NewGuid(), ProjectId = project.Id, Name = "Planned", SortIndex = 2, Color = "9900EF", IsInRoadmap = true },
-      new Status { Id = Guid.NewGuid(), ProjectId = project.Id, Name = "In Progress", SortIndex = 3, Color = "3778FF", IsInRoadmap = true },
-      new Status { Id = Guid.NewGuid(), ProjectId = project.Id, Name = "Complete", SortIndex = 4, Color = "00831E" },
-      new Status { Id = Guid.NewGuid(), ProjectId = project.Id, Name = "Closed", SortIndex = 5, Color = "FF4772" },
+      new() { Id = Guid.NewGuid(), ProjectId = project.Id, Name = "Open", SortIndex = 0, Color = "666666", IsDefault = true },
+      new() { Id = Guid.NewGuid(), ProjectId = project.Id, Name = "Under Review", SortIndex = 1, Color = "FCC400", IsInRoadmap = true },
+      new() { Id = Guid.NewGuid(), ProjectId = project.Id, Name = "Planned", SortIndex = 2, Color = "9900EF", IsInRoadmap = true },
+      new() { Id = Guid.NewGuid(), ProjectId = project.Id, Name = "In Progress", SortIndex = 3, Color = "3778FF", IsInRoadmap = true },
+      new() { Id = Guid.NewGuid(), ProjectId = project.Id, Name = "Complete", SortIndex = 4, Color = "00831E" },
+      new() { Id = Guid.NewGuid(), ProjectId = project.Id, Name = "Closed", SortIndex = 5, Color = "FF4772" }
     };
 
     var board = Board.Create(project.Id, "Feature Requests");
 
     board.Entries = new List<Entry>
     {
-      new Entry
+      new()
       {
         Id = Guid.NewGuid(),
         BoardId = board.Id,

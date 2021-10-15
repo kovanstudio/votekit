@@ -547,6 +547,10 @@ namespace VoteKit.Migrations.PostgreSQL.Migrations
                         .HasColumnType("varchar(250)")
                         .HasColumnName("name");
 
+                    b.Property<Guid?>("SsoKey")
+                        .HasColumnType("uuid")
+                        .HasColumnName("sso_key");
+
                     b.Property<string>("Website")
                         .HasColumnType("varchar(250)")
                         .HasColumnName("website");

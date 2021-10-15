@@ -437,6 +437,7 @@ export type Project = {
   logoImage?: Maybe<Image>;
   logoURL: Scalars['String'];
   name: Scalars['String'];
+  ssoKey: Scalars['String'];
   website?: Maybe<Scalars['String']>;
 };
 

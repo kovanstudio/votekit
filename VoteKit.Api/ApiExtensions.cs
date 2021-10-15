@@ -66,7 +66,7 @@ public static class ApiExtensions
     endpoints.MapGraphQL("/gql");
   }
 }
-  
+
 public class MyCustomHttpResultSerializer : DefaultHttpResultSerializer
 {
   public override HttpStatusCode GetStatusCode(IExecutionResult result)
@@ -85,7 +85,7 @@ public class HttpRequestInterceptor : DefaultHttpRequestInterceptor
   )
   {
     base.OnCreateAsync(context, requestExecutor, requestBuilder, cancellationToken);
-      
+
     requestBuilder.TryAddProperty(nameof(Project), context.GetProject());
 
     return default;
@@ -106,13 +106,13 @@ public class UseVotekitCtxAttribute : ObjectFieldDescriptorAttribute
     descriptor.UseDbContext<VotekitCtx>();
   }
 }
-  
+
 public abstract class ExplicitObjectType<T> : ObjectType<T>
 {
   protected override void Configure(IObjectTypeDescriptor<T> descriptor)
   {
     base.Configure(descriptor);
-      
+
     descriptor.BindFields(BindingBehavior.Explicit);
   }
 }
