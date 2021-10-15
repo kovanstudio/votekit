@@ -45,7 +45,10 @@ export default class Frame extends EventEmitter {
     url.searchParams.set("locale", navigator.language.slice(0, 2).toLowerCase());
 
     for (const dataKey in this.data) {
-      url.searchParams.set(dataKey, this.data[dataKey]);
+      let val = this.data[dataKey];
+
+      if (typeof val !== "undefined" && val !== null)
+        url.searchParams.set(dataKey, this.data[dataKey]);
     }
 
     document.body.appendChild(this.wrapper);
@@ -57,7 +60,7 @@ export default class Frame extends EventEmitter {
     let wrapper = document.createElement("div");
 
     wrapper.innerHTML = `<iframe name="announcekit-frame" allowfullscreen="true" allow="fullscreen" title="AnnounceKit Widget" sandbox="allow-same-origin allow-scripts allow-top-navigation allow-popups allow-popups-to-escape-sandbox allow-forms allow-downloads"></iframe>`;
-    wrapper.className = "announcekit-frame-wrapper";
+    wrapper.className = "votekit-frame-wrapper";
 
     let frame = wrapper.firstChild as HTMLIFrameElement;
 
