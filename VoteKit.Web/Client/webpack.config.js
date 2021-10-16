@@ -35,7 +35,8 @@ module.exports = {
       import: "./src/widget/index.ts",
       library: {
         name: "votekit",
-        type: "window"
+        type: "window",
+        export: "default"
       }
     }
   },

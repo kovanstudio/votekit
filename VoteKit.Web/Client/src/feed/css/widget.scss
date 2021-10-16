@@ -1,0 +1,20 @@
+body.mode-widget {
+  padding: 0;
+  
+  header.main {
+    .container {
+      border-left-width: 30px;
+      border-right-width: 30px;
+    }
+  }
+
+  section.main {
+    .container {
+      border: 0;
+
+      .panel {
+        border-radius: 0;
+      }
+    }
+  }
+}

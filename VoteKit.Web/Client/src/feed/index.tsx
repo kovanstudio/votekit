@@ -1,10 +1,9 @@
 import "./css/index.scss";
 import React from "react";
 import ReactDom from "react-dom";
-import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { Provider, schema } from "./gql/client";
 import { ConfigProvider, MeProvider, ProjectProvider } from "./state";
-import { PlusIcon, SearchIcon } from "../components/icon";
 import { Board } from "./board/board";
 import { MainHeader } from "./header";
 import { LoginHandler } from "./account/login";
@@ -12,20 +11,21 @@ import { AddEntry } from "./entry/add";
 import { Roadmap } from "./roadmap";
 
 const AccountSettings = React.lazy(() => import("./account/index"))
+const WidgetController = React.lazy(() => import("./widget/controller"))
 
-function Root({ id, basename }) {
+function Root({ id, basename, mode }) {
   return (
     <Provider>
       <Router basename={basename}>
-        <React.Suspense fallback={<div className="spinner-overlay" />}>
-          <App />
+        <React.Suspense fallback={<div className="spinner-overlay"/>}>
+          <App mode={mode}/>
         </React.Suspense>
       </Router>
     </Provider>
   );
 }
 
-function App() {
+function App({ mode }) {
   const config = schema.useConfigQuery();
   const project = schema.useProjectQuery();
   const me = schema.useMeQuery();
@@ -42,8 +42,9 @@ function App() {
     <ConfigProvider value={config.data.config}>
       <ProjectProvider value={project.data.project}>
         <MeProvider value={me.data.me}>
-          <LoginHandler/>
+          {mode == "widget" ? <WidgetController/> : null}
 
+          <LoginHandler/>
           <MainHeader/>
           <Switch>
             <Route path="/" exact component={Roadmap}/>
@@ -62,16 +63,17 @@ function Error404() {
   return <div>Not Found</div>;
 }
 
-const piElement = document.querySelector<HTMLInputElement>("#votekit-project");
+const fcelem = document.querySelector<HTMLInputElement>("#votekit-feed-config");
 
-if (piElement) {
-  let projectInfo;
+if (fcelem) {
+  let feedConfig;
 
   try {
-    projectInfo = JSON.parse(piElement.value);
-  } catch (e) {}
+    feedConfig = JSON.parse(fcelem.value);
+  } catch (e) {
+  }
 
-  if (projectInfo) {
-    ReactDom.render(<Root {...projectInfo} />, document.getElementById("app"));
+  if (feedConfig) {
+    ReactDom.render(<Root {...feedConfig} />, document.getElementById("app"));
   }
 }

@@ -12,27 +12,34 @@ namespace VoteKit.Web.Controllers;
 
 public class FeedController : Controller
 {
-  public record IndexModel(Project Project);
-
-  [HttpGet("/")]
-  public IActionResult Index()
+  public enum FeedMode
   {
-    var project = HttpContext.GetProject();
-
-    if (project == null)
-      return Redirect("/dashboard/setup");
-
-    return View("Index", new IndexModel(project));
+    Standalone,
+    Widget
   }
 
+  public record FeedParameters(
+    string? Mode
+  );
+
+  public record IndexModel(
+    Project Project,
+    FeedMode Mode = FeedMode.Standalone
+  );
+
   [HttpGet("/{**all}")]
-  public IActionResult CatchAll()
+  public IActionResult CatchAll([FromQuery] FeedParameters? parameters)
   {
     var project = HttpContext.GetProject();
 
     if (project == null)
-      return NotFound();
+    {
+      if (Request.Path == "/")
+        return Redirect("/dashboard/setup");
+      else
+        return NotFound();
+    }
 
-    return View("Index", new IndexModel(project));
+    return View("Index", new IndexModel(project, parameters?.Mode == "widget" ? FeedMode.Widget : FeedMode.Standalone));
   }
 }

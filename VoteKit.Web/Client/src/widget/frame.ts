@@ -9,7 +9,7 @@ export default class Frame extends EventEmitter {
   data: any;
   destroyed = false;
 
-  constructor({ src, data }) {
+  constructor({ src, data }: { src: URL, data: { [key: string]: string } }) {
     super();
 
     this.src = src;
@@ -98,11 +98,16 @@ export default class Frame extends EventEmitter {
     });
 
     Object.assign(this.wrapper.style, {
-      position: "absolute",
       width: 0,
       height: 0,
       overflow: "hidden",
       top: "-1000em",
+      position: "fixed",
+      opacity: 0,
+      zIndex: 2147483001,
+      transform: "",
+      transition: "all 0.25s ease-in",
+      pointerEvents: "none",
     });
   }
 

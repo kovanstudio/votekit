@@ -29,6 +29,10 @@ export class VoteKit extends EventEmitter {
   }
 
   render(src: string, options: RenderOptions = {}) {
+    if (!src) {
+      return;
+    }
+
     if (this.activeWidget) {
       this.activeWidget.destroy();
     }

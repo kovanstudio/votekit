@@ -1,4 +1,5 @@
 ﻿@using Microsoft.Extensions.Configuration
+@using VoteKit.Web.Controllers
 @model VoteKit.Web.Controllers.FeedController.IndexModel
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
@@ -16,12 +17,14 @@
     <link rel="stylesheet" href="~/client/feed.css" asp-append-version="true">
   </head>
 
-  <body>
-    @Html.Hidden("votekit-project", Json.Serialize(new
+  <body class=@(Model.Mode == FeedController.FeedMode.Widget ? "mode-widget" : "")>
+    @Html.Hidden("votekit-feed-config", Json.Serialize(new
     {
       Model!.Project.Id,
-      Model!.Project.Name
+      Model!.Project.Name,
+      Mode = Model!.Mode.ToString().ToLowerInvariant()
     }))
+
     <div id="app"></div>
     <script src="~/client/feed.js" asp-append-version="true"></script>
   </body>
