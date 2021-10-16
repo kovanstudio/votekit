@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using VoteKit.Auth;
 using VoteKit.Data.Models;
+using VoteKit.Services;
 
 namespace VoteKit.Web.Controllers;
 
@@ -19,7 +20,8 @@ public class FeedController : Controller
   }
 
   public record FeedParameters(
-    string? Mode
+    string? Mode,
+    string? SsoToken
   );
 
   public record IndexModel(
@@ -28,7 +30,7 @@ public class FeedController : Controller
   );
 
   [HttpGet("/{**all}")]
-  public IActionResult CatchAll([FromQuery] FeedParameters? parameters)
+  public IActionResult CatchAll([FromQuery] FeedParameters? parameters, [FromServices] ISsoService ssoService)
   {
     var project = HttpContext.GetProject();
 
