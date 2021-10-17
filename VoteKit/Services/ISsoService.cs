@@ -14,4 +14,5 @@ public interface ISsoService
   );
 
   UserInfo? DecodeSsoToken(string secret, string token);
+  Task<string> GetSsoKey(Project project);
 }

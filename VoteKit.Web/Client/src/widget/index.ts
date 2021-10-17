@@ -1,16 +1,6 @@
 import EventEmitter from "./eventEmitter";
 import Widget, { RenderOptions } from "./widget";
 
-/**
-
- window.votekit = (window.votekit || { 
-  queue: [], 
-  on: function(n,x) { window.votekit.queue.push("on", [n,x]) }), 
-  render: function(s,o) { window.votekit.queue.push("render", [s,o]) }) 
-};
-
- */
-
 export class VoteKit extends EventEmitter {
   activeWidget?: Widget;
 
@@ -32,7 +22,7 @@ export class VoteKit extends EventEmitter {
 
       if (vk != null) {
         e.preventDefault();
-        
+
         this.render(vk.href, {
           ssoToken: vk.getAttribute("data-votekit-sso-token")
         })

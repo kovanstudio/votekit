@@ -41,7 +41,7 @@ export default class Frame extends EventEmitter {
     let url = new URL(this.src.toString());
 
     url.searchParams.set("mode", "widget");
-    url.searchParams.set("mobile", "true");
+    url.searchParams.set("mobile", mobile ? "true" : "false");
     url.searchParams.set("locale", navigator.language.slice(0, 2).toLowerCase());
 
     for (const dataKey in this.data) {

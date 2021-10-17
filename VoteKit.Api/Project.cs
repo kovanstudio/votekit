@@ -46,17 +46,9 @@ public class ProjectResolvers
   }
 
   [Authorize(Policy = "Admin")]
-  [UseVotekitCtx]
-  public async Task<string> SsoKey([Parent] Project project, [ScopedService] VotekitCtx db)
+  public async Task<string> SsoKey([Parent] Project project, [Service] ISsoService ssoService)
   {
-    if (project.SsoKey == null)
-    {
-      db.Attach(project);
-      project.SsoKey = Guid.NewGuid();
-      await db.SaveChangesWithValidationAsync();
-    }
-
-    return project.SsoKey.Value.ToString().ToLowerInvariant();
+    return await ssoService.GetSsoKey(project);
   }
 }
 

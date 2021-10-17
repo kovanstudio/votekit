@@ -1,6 +1,6 @@
 body.mode-widget {
   padding: 0;
-  
+
   header.main {
     .container {
       border-left-width: 30px;
@@ -14,6 +14,12 @@ body.mode-widget {
 
       .panel {
         border-radius: 0;
+      }
+
+      &.container-wide {
+        border-right: 30px solid transparent;
+        border-left: 30px solid transparent;
+        border-bottom: 30px solid transparent;
       }
     }
   }
