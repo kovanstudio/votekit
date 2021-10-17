@@ -11,7 +11,7 @@ function TextareaAutosizeImpl(props, ref) {
       onInput={(e) => {
         setHeight((e.target as HTMLInputElement).scrollHeight);
       }}
-    ></textarea>
+    />
   );
 }
 

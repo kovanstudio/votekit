@@ -30,30 +30,35 @@ export default class Widget extends EventEmitter {
   render() {
     this.renderBackdrop();
 
-    this.frame.load();
-
-    const style = {
-      opacity: 1,
-      transform: "translateX(-50%)",
-      left: "50%",
-      right: 0,
-      top: "10vh",
-      bottom: 0,
+    this.frame.css({
       maxWidth: "800px",
       maxHeight: "80vh",
       width: "70vw",
-      height: "80vh",
-      pointerEvents: "auto",
+      height: "0",
       borderRadius: "4px",
       boxShadow: "0 2px 13px 0 rgba(0,0,0,0.19)",
-    };
+      transform: "translateX(-50%)",
+      left: "50%",
+    });
 
-    this.frame.css(style);
+    this.frame.on("INIT", ({ payload: { size } }) => {
+      this.frame.css({
+        opacity: 1,
+        top: "10vh",
+        pointerEvents: "auto",
+        transition: "all 0.25s ease-in",
+        width: `${size.width}px`,
+        height: `${size.height}px`
+      })
+    });
 
     this.frame.on("RESIZE", ({ payload }) => {
-      console.log('res', payload)
       this.frame.css({ width: `${payload.width}px`, height: `${payload.height}px` })
     });
+
+    this.frame.on("clickoutside", () => this.close())
+
+    this.frame.load();
   }
 
   renderBackdrop() {
@@ -76,7 +81,17 @@ export default class Widget extends EventEmitter {
     setTimeout(() => Object.assign(this.backdrop.style, { opacity: 1 }), 10);
   }
 
+  close() {
+    if (this.backdrop?.parentElement) {
+      Object.assign(this.backdrop.style, { opacity: 0, pointerEvents: "none" });
+      setTimeout(() => this.backdrop.parentElement?.removeChild(this.backdrop), 200);
+    }
+
+    this.frame.css({ opacity: 0, pointerEvents: "none" });
+    setTimeout(() => this.frame.destroy(), 200);
+  }
+
   destroy() {
-    if (this.backdrop) this.backdrop.parentElement?.removeChild(this.backdrop);
+    this.close();
   }
 }

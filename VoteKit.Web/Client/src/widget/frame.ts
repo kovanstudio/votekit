@@ -74,11 +74,11 @@ export default class Frame extends EventEmitter {
     });
 
     document.addEventListener("click", (e) => {
-      this.trigger("$clickoutside");
+      this.trigger("clickoutside");
     });
 
     document.addEventListener("touchstart", (e) => {
-      this.trigger("$clickoutside");
+      this.trigger("clickoutside");
     });
   }
 
@@ -106,7 +106,6 @@ export default class Frame extends EventEmitter {
       opacity: 0,
       zIndex: 2147483001,
       transform: "",
-      transition: "all 0.25s ease-in",
       pointerEvents: "none",
     });
   }

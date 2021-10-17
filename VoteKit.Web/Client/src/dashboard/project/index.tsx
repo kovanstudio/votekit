@@ -1,32 +1,34 @@
 import * as React from "react";
-import { BoardProvider, ProjectProvider, useProject } from "../state";
-import { Redirect, Route, Switch, useParams } from "react-router-dom";
+import { ProjectProvider, useMe } from "../state";
+import { Redirect, Route, Switch } from "react-router-dom";
 import { schema } from "../gql/client";
 import { ProjectEntries } from "./entries/entries";
 import { ProjectSelector } from "./selector";
 import CreateProject from "./create";
 import { PeopleRoutes } from "./people/people";
+import { UserRole } from "../../gql/dashboard/schema";
 
 const ProjectSettings = React.lazy(() => import("./settings/settings"));
 
 export function ProjectRoutes() {
-  const { data, loading } = schema.useProjectQuery();
+  const me = useMe();
+  const { data, loading } = schema.useProjectQuery({ variables: { includeDetails: me.role == UserRole.Admin } });
 
   if (loading) {
-    return <div className="spinner-overlay" />;
+    return <div className="spinner-overlay"/>;
   }
 
   if (!data?.project) {
-    return <Redirect to="/" />;
+    return <Redirect to="/"/>;
   }
 
   return (
     <ProjectProvider value={data.project}>
       <Switch>
-        <Route path={`/`} exact component={ProjectEntries} />
-        <Route path={`/people`} component={PeopleRoutes} />
-        <Route path={`/settings`} component={ProjectSettings} />
-        <Route render={() => <Redirect to="/" />} />
+        <Route path={`/`} exact component={ProjectEntries}/>
+        <Route path={`/people`} component={PeopleRoutes}/>
+        <Route path={`/settings`} component={ProjectSettings}/>
+        <Route render={() => <Redirect to="/"/>}/>
       </Switch>
     </ProjectProvider>
   );
@@ -35,10 +37,10 @@ export function ProjectRoutes() {
 export function ProjectsRoutes() {
   return (
     <Switch>
-      <Route path="/projects" exact component={ProjectSelector} />
-      <Route path="/projects/create" exact component={CreateProject} />
+      <Route path="/projects" exact component={ProjectSelector}/>
+      <Route path="/projects/create" exact component={CreateProject}/>
 
-      <Route render={() => <Redirect to="/" />} />
+      <Route render={() => <Redirect to="/"/>}/>
     </Switch>
   );
 }

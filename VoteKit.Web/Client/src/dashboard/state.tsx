@@ -3,7 +3,7 @@ import { schema } from "./gql/client";
 
 const ConfigContext = React.createContext<schema.ConfigFragment>(null);
 const MeContext = React.createContext<schema.MeFragment>(null);
-const ProjectContext = React.createContext<schema.ProjectFragment>(null);
+const ProjectContext = React.createContext<schema.ProjectQuery["project"]>(null);
 const BoardContext = React.createContext<schema.BoardFragment>(null);
 
 export const ConfigProvider = ConfigContext.Provider;

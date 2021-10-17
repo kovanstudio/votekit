@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="~/client/feed.css" asp-append-version="true">
   </head>
 
-  <body class=@(Model.Mode == FeedController.FeedMode.Widget ? "mode-widget" : "")>
+  <body class=@(Model!.Mode == FeedController.FeedMode.Widget ? "mode-widget" : "")>
     @Html.Hidden("votekit-feed-config", Json.Serialize(new
     {
       Model!.Project.Id,

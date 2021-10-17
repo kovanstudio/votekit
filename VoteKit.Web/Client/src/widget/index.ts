@@ -26,6 +26,18 @@ export class VoteKit extends EventEmitter {
     setTimeout(() => {
       this.trigger("init", this);
     }, 10);
+
+    document.addEventListener("click", e => {
+      let vk = (e.target as Element).closest("a[data-votekit]") as HTMLAnchorElement;
+
+      if (vk != null) {
+        e.preventDefault();
+        
+        this.render(vk.href, {
+          ssoToken: vk.getAttribute("data-votekit-sso-token")
+        })
+      }
+    });
   }
 
   render(src: string, options: RenderOptions = {}) {

@@ -10,6 +10,7 @@ import { ProjectStatusesSettings } from "./statuses";
 import { PlusIcon } from "../../../components/icon";
 import { schema } from "../../gql/client";
 import { UserRole } from "../../../gql/feed/schema";
+import { ProjectWidgetSettings } from "./widget";
 
 const BoardSettings = React.lazy(() => import("./boards/boards"));
 
@@ -34,13 +35,18 @@ export function ProjectSettings() {
               </NavLink>
             </li>
             <li className="nav-item">
-              <NavLink exact to={`/settings/team`}>
+              <NavLink to={`/settings/team`}>
                 Team Management
               </NavLink>
             </li>
             <li className="nav-item">
-              <NavLink exact to={`/settings/statuses`}>
+              <NavLink to={`/settings/statuses`}>
                 Entry Statuses
+              </NavLink>
+            </li>
+            <li className="nav-item">
+              <NavLink to={`/settings/widget`}>
+                Widget Setup
               </NavLink>
             </li>
           </ul>
@@ -52,6 +58,7 @@ export function ProjectSettings() {
       <Switch>
         <Route path={`/settings`} exact component={ProjectGeneralSettings}/>
         <Route path={`/settings/team`} component={ProjectTeamSettings}/>
+        <Route path={`/settings/widget`} component={ProjectWidgetSettings}/>
         <Route path={`/settings/statuses`} component={ProjectStatusesSettings}/>
         <Route path={`/settings/boards/create`} component={CreateBoard}/>
         <Route path={`/settings/boards/:boardSlug`} component={BoardSettings}/>

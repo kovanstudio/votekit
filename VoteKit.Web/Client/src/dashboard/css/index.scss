@@ -88,7 +88,7 @@ h6 {
 }
 
 pre {
-  font-family: "Monaco", "Menlo", "Courier", "Courier New", "Andale Mono", "Bitstream Vera Sans Mono", "Lucida Console", "Consolas", "Droid Sans Mono";
+  font-family: "Monaco", "Menlo", "Courier", "Courier New", "Andale Mono", "Bitstream Vera Sans Mono", "Lucida Console", "Consolas", "Droid Sans Mono", serif;
   display: block;
   background: rgba(0, 0, 0, 0.03);
   padding: 10px;
@@ -137,7 +137,7 @@ pre {
   border-radius: 0.25rem;
   line-height: 1.25;
   margin: 1rem 0 32px;
-  
+
   &:last-child {
     margin-bottom: 0;
   }
@@ -263,6 +263,7 @@ pre {
   }
 }
 
+.btn,
 input[type="submit"],
 input[type="reset"],
 button {

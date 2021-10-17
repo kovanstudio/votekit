@@ -110,3 +110,24 @@
     }
   }
 }
+
+.project-settings-widget {
+  textarea.embed-code {
+    font-family: "Monaco", "Menlo", "Courier", "Courier New", "Andale Mono", "Bitstream Vera Sans Mono", "Lucida Console", "Consolas", "Droid Sans Mono", serif;
+    display: block;
+    padding: 10px;
+    position: relative;
+    line-height: 1.5;
+    overflow-x: auto;
+    background-color: #0e1b2a;
+    font-size: 12px;
+    color: #ffffff;
+    resize: none;
+    border-radius: 4px;
+    width: 100%;
+    border: 0;
+    white-space: pre;
+    outline: 0;
+    margin: 0;
+  }
+}

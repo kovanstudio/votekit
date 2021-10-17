@@ -6,9 +6,11 @@ fragment project on Project {
   faviconURL
 }
 
-query project {
+query project($includeDetails: Boolean! = false) {
   project {
     ...project
+    
+    ssoKey @include(if: $includeDetails)
   }
 }
 
@@ -54,39 +56,3 @@ mutation addInvite($input: AddInviteInput!) {
 mutation removeInvite($input: RemoveInviteInput!) {
   removeInvite(input: $input)
 }
-
-#
-#fragment projectDomain on ProjectDomain {
-#  id
-#  hostname
-#  isVerified
-#}
-#
-#
-#
-#mutation createProject($input: CreateProjectInput!) {
-#  createProject(input: $input) {
-#    ...project
-#  }
-#}
-#
-
-#
-#query projectDomain($id: ID) {
-#  project(id: $id) {
-#    id
-#
-#    domain {
-#      ...projectDomain
-#    }
-#  }
-#}
-
-#mutation saveProjectDomain($input: SaveProjectDomainInput!) {
-#  saveProjectDomain(input: $input) {
-#    ...projectDomain
-#  }
-#}
-#
-#
-

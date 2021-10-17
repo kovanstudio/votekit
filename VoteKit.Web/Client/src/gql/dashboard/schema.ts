@@ -891,10 +891,12 @@ export type ConfigQuery = { __typename?: 'Query', config: { __typename?: 'Config
 
 export type ProjectFragment = { __typename?: 'Project', id: any, name: string, website?: string | null | undefined, logoURL: string, faviconURL: string };
 
-export type ProjectQueryVariables = Exact<{ [key: string]: never; }>;
+export type ProjectQueryVariables = Exact<{
+  includeDetails?: Scalars['Boolean'];
+}>;
 
 
-export type ProjectQuery = { __typename?: 'Query', project?: { __typename?: 'Project', id: any, name: string, website?: string | null | undefined, logoURL: string, faviconURL: string } | null | undefined };
+export type ProjectQuery = { __typename?: 'Query', project?: { __typename?: 'Project', ssoKey?: string | null | undefined, id: any, name: string, website?: string | null | undefined, logoURL: string, faviconURL: string } | null | undefined };
 
 export type SaveProjectMutationVariables = Exact<{
   input: SaveProjectInput;
@@ -1830,9 +1832,10 @@ export type ConfigQueryHookResult = ReturnType<typeof useConfigQuery>;
 export type ConfigLazyQueryHookResult = ReturnType<typeof useConfigLazyQuery>;
 export type ConfigQueryResult = Apollo.QueryResult<ConfigQuery, ConfigQueryVariables>;
 export const ProjectDocument = gql`
-    query project {
+    query project($includeDetails: Boolean! = false) {
   project {
     ...project
+    ssoKey @include(if: $includeDetails)
   }
 }
     ${ProjectFragmentDoc}`;
@@ -1849,6 +1852,7 @@ export const ProjectDocument = gql`
  * @example
  * const { data, loading, error } = useProjectQuery({
  *   variables: {
+ *      includeDetails: // value for 'includeDetails'
  *   },
  * });
  */

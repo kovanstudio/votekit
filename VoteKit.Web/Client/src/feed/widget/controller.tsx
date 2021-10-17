@@ -11,7 +11,7 @@ export default function WidgetController() {
   }, [])
 
   useEffect(() => {
-    post("INIT")
+    post("INIT", { size: { width: document.body.clientWidth, height: document.body.clientHeight } })
   }, []);
 
   return <div/>
