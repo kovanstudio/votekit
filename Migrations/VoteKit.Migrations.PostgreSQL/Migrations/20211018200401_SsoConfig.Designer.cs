@@ -2,48 +2,55 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using VoteKit.Data;
 
 #nullable disable
 
-namespace VoteKit.Migrations.SQLite.Migrations
+namespace VoteKit.Migrations.PostgreSQL.Migrations
 {
     [DbContext(typeof(VotekitCtx))]
-    partial class VotekitCtxModelSnapshot : ModelSnapshot
+    [Migration("20211018200401_SsoConfig")]
+    partial class SsoConfig
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "6.0.0-rc.1.21452.10");
+            modelBuilder
+                .HasAnnotation("ProductVersion", "6.0.0-rc.1.21452.10")
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
+
+            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("VoteKit.Data.Models.Activity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT")
+                        .HasColumnType("uuid")
                         .HasColumnName("id");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
 
                     b.Property<Guid?>("EntryId")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("uuid")
                         .HasColumnName("entry_id");
 
                     b.Property<string>("Metadata")
                         .IsRequired()
-                        .HasColumnType("TEXT")
+                        .HasColumnType("text")
                         .HasColumnName("metadata");
 
                     b.Property<string>("Type")
                         .IsRequired()
-                        .HasColumnType("TEXT")
+                        .HasColumnType("text")
                         .HasColumnName("type");
 
                     b.Property<Guid?>("UserId")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("uuid")
                         .HasColumnName("user_id");
 
                     b.HasKey("Id");
@@ -59,7 +66,7 @@ namespace VoteKit.Migrations.SQLite.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT")
+                        .HasColumnType("uuid")
                         .HasColumnName("id");
 
                     b.Property<string>("Color")
@@ -68,19 +75,19 @@ namespace VoteKit.Migrations.SQLite.Migrations
                         .HasColumnName("accent_color");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
 
                     b.Property<bool>("IsListed")
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("boolean")
                         .HasColumnName("is_listed");
 
                     b.Property<bool>("IsPrivate")
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("boolean")
                         .HasColumnName("is_private");
 
                     b.Property<bool>("IsSeoIndexed")
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("boolean")
                         .HasColumnName("is_seo_indexed");
 
                     b.Property<string>("Name")
@@ -90,7 +97,7 @@ namespace VoteKit.Migrations.SQLite.Migrations
                         .HasColumnName("name");
 
                     b.Property<Guid>("ProjectId")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("uuid")
                         .HasColumnName("project_id");
 
                     b.Property<string>("Slug")
@@ -110,37 +117,37 @@ namespace VoteKit.Migrations.SQLite.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT")
+                        .HasColumnType("uuid")
                         .HasColumnName("id");
 
                     b.Property<string>("Content")
                         .IsRequired()
                         .HasMaxLength(3000)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("character varying(3000)")
                         .HasColumnName("content");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
 
                     b.Property<Guid>("EntryId")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("uuid")
                         .HasColumnName("entry_id");
 
                     b.Property<bool>("IsPrivate")
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("boolean")
                         .HasColumnName("is_private");
 
                     b.Property<Guid?>("ReplyToId")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("uuid")
                         .HasColumnName("reply_to_id");
 
                     b.Property<Guid?>("ReplyToRootId")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("uuid")
                         .HasColumnName("reply_to_root_id");
 
                     b.Property<Guid?>("UserId")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("uuid")
                         .HasColumnName("user_id");
 
                     b.HasKey("Id");
@@ -159,15 +166,15 @@ namespace VoteKit.Migrations.SQLite.Migrations
             modelBuilder.Entity("VoteKit.Data.Models.CommentLike", b =>
                 {
                     b.Property<Guid>("CommentId")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("uuid")
                         .HasColumnName("comment_id");
 
                     b.Property<Guid>("UserId")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("uuid")
                         .HasColumnName("user_id");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
 
                     b.HasKey("CommentId", "UserId");
@@ -181,20 +188,20 @@ namespace VoteKit.Migrations.SQLite.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT")
+                        .HasColumnType("uuid")
                         .HasColumnName("id");
 
                     b.Property<string>("FriendlyName")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("text")
                         .HasColumnName("friendly_name");
 
                     b.Property<string>("Owner")
                         .IsRequired()
-                        .HasColumnType("TEXT")
+                        .HasColumnType("text")
                         .HasColumnName("owner");
 
                     b.Property<string>("Xml")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("text")
                         .HasColumnName("xml");
 
                     b.HasKey("Id");
@@ -206,40 +213,40 @@ namespace VoteKit.Migrations.SQLite.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT")
+                        .HasColumnType("uuid")
                         .HasColumnName("id");
 
                     b.Property<Guid?>("AssignedUserId")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("uuid")
                         .HasColumnName("assigned_user_id");
 
                     b.Property<Guid>("BoardId")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("uuid")
                         .HasColumnName("board_id");
 
                     b.Property<string>("Content")
                         .HasMaxLength(262144)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("character varying(262144)")
                         .HasColumnName("content");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
 
                     b.Property<bool>("IsArchived")
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("boolean")
                         .HasColumnName("is_archived");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("boolean")
                         .HasColumnName("is_deleted");
 
                     b.Property<bool>("IsLocked")
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("boolean")
                         .HasColumnName("is_locked");
 
                     b.Property<bool>("IsPrivate")
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("boolean")
                         .HasColumnName("is_private");
 
                     b.Property<string>("Slug")
@@ -248,7 +255,7 @@ namespace VoteKit.Migrations.SQLite.Migrations
                         .HasColumnName("slug");
 
                     b.Property<Guid>("StatusId")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("uuid")
                         .HasColumnName("status_id");
 
                     b.Property<string>("Title")
@@ -258,7 +265,7 @@ namespace VoteKit.Migrations.SQLite.Migrations
                         .HasColumnName("title");
 
                     b.Property<Guid?>("UserId")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("uuid")
                         .HasColumnName("user_id");
 
                     b.HasKey("Id");
@@ -281,15 +288,15 @@ namespace VoteKit.Migrations.SQLite.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT")
+                        .HasColumnType("uuid")
                         .HasColumnName("id");
 
                     b.Property<Guid>("EntryId")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("uuid")
                         .HasColumnName("entry_id");
 
                     b.Property<Guid>("FieldOptionId")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("uuid")
                         .HasColumnName("field_option_id");
 
                     b.HasKey("Id");
@@ -308,11 +315,11 @@ namespace VoteKit.Migrations.SQLite.Migrations
                         .HasColumnName("slug");
 
                     b.Property<Guid>("BoardId")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("uuid")
                         .HasColumnName("board_id");
 
                     b.Property<Guid>("EntryId")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("uuid")
                         .HasColumnName("entry_id");
 
                     b.HasKey("Slug", "BoardId");
@@ -327,15 +334,15 @@ namespace VoteKit.Migrations.SQLite.Migrations
             modelBuilder.Entity("VoteKit.Data.Models.EntrySubscription", b =>
                 {
                     b.Property<Guid>("EntryId")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("uuid")
                         .HasColumnName("entry_id");
 
                     b.Property<Guid>("UserId")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("uuid")
                         .HasColumnName("user_id");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
 
                     b.HasKey("EntryId", "UserId");
@@ -350,19 +357,19 @@ namespace VoteKit.Migrations.SQLite.Migrations
             modelBuilder.Entity("VoteKit.Data.Models.EntryVote", b =>
                 {
                     b.Property<Guid>("EntryId")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("uuid")
                         .HasColumnName("entry_id");
 
                     b.Property<Guid>("UserId")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("uuid")
                         .HasColumnName("user_id");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
 
                     b.Property<byte>("Delta")
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("smallint")
                         .HasColumnName("delta");
 
                     b.HasKey("EntryId", "UserId");
@@ -378,15 +385,15 @@ namespace VoteKit.Migrations.SQLite.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT")
+                        .HasColumnType("uuid")
                         .HasColumnName("id");
 
                     b.Property<bool>("IsListed")
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("boolean")
                         .HasColumnName("is_listed");
 
                     b.Property<bool>("IsPrivate")
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("boolean")
                         .HasColumnName("is_private");
 
                     b.Property<string>("Name")
@@ -395,7 +402,7 @@ namespace VoteKit.Migrations.SQLite.Migrations
                         .HasColumnName("name");
 
                     b.Property<Guid>("ProjectId")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("uuid")
                         .HasColumnName("project_id");
 
                     b.Property<string>("Type")
@@ -414,7 +421,7 @@ namespace VoteKit.Migrations.SQLite.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT")
+                        .HasColumnType("uuid")
                         .HasColumnName("id");
 
                     b.Property<string>("Color")
@@ -422,7 +429,7 @@ namespace VoteKit.Migrations.SQLite.Migrations
                         .HasColumnName("color");
 
                     b.Property<Guid>("FieldId")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("uuid")
                         .HasColumnName("field_id");
 
                     b.Property<string>("Value")
@@ -441,36 +448,36 @@ namespace VoteKit.Migrations.SQLite.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT")
+                        .HasColumnType("uuid")
                         .HasColumnName("id");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
 
                     b.Property<int>("FileSize")
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("integer")
                         .HasColumnName("file_size");
 
                     b.Property<string>("Format")
                         .IsRequired()
-                        .HasColumnType("TEXT")
+                        .HasColumnType("text")
                         .HasColumnName("format");
 
                     b.Property<int>("Height")
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("integer")
                         .HasColumnName("height");
 
                     b.Property<Guid>("ProjectId")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("uuid")
                         .HasColumnName("project_id");
 
                     b.Property<Guid?>("UserId")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("uuid")
                         .HasColumnName("user_id");
 
                     b.Property<int>("Width")
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("integer")
                         .HasColumnName("width");
 
                     b.HasKey("Id");
@@ -486,11 +493,11 @@ namespace VoteKit.Migrations.SQLite.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT")
+                        .HasColumnType("uuid")
                         .HasColumnName("id");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
 
                     b.Property<string>("Email")
@@ -499,19 +506,19 @@ namespace VoteKit.Migrations.SQLite.Migrations
                         .HasColumnName("email");
 
                     b.Property<Guid>("ProjectId")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("uuid")
                         .HasColumnName("project_id");
 
                     b.Property<string>("Role")
                         .IsRequired()
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT")
+                        .HasColumnType("text")
                         .HasDefaultValue("Admin")
                         .HasColumnName("role");
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasColumnType("TEXT")
+                        .HasColumnType("text")
                         .HasColumnName("status");
 
                     b.HasKey("Id");
@@ -526,19 +533,19 @@ namespace VoteKit.Migrations.SQLite.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT")
+                        .HasColumnType("uuid")
                         .HasColumnName("id");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
 
                     b.Property<Guid?>("FaviconImageId")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("uuid")
                         .HasColumnName("favicon_image_id");
 
                     b.Property<Guid?>("LogoImageId")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("uuid")
                         .HasColumnName("logo_image_id");
 
                     b.Property<string>("Name")
@@ -563,19 +570,19 @@ namespace VoteKit.Migrations.SQLite.Migrations
             modelBuilder.Entity("VoteKit.Data.Models.SsoConfig", b =>
                 {
                     b.Property<Guid>("ProjectId")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("uuid")
                         .HasColumnName("project_id");
 
                     b.Property<string>("LoginUrl")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("text")
                         .HasColumnName("login_url");
 
                     b.Property<string>("LogoutUrl")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("text")
                         .HasColumnName("logout_url");
 
                     b.Property<Guid>("SsoKey")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("uuid")
                         .HasColumnName("key");
 
                     b.HasKey("ProjectId");
@@ -587,7 +594,7 @@ namespace VoteKit.Migrations.SQLite.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT")
+                        .HasColumnType("uuid")
                         .HasColumnName("id");
 
                     b.Property<string>("Color")
@@ -596,11 +603,11 @@ namespace VoteKit.Migrations.SQLite.Migrations
                         .HasColumnName("color");
 
                     b.Property<bool>("IsDefault")
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("boolean")
                         .HasColumnName("is_default");
 
                     b.Property<bool>("IsInRoadmap")
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("boolean")
                         .HasColumnName("is_in_roadmap");
 
                     b.Property<string>("Name")
@@ -609,11 +616,11 @@ namespace VoteKit.Migrations.SQLite.Migrations
                         .HasColumnName("name");
 
                     b.Property<Guid>("ProjectId")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("uuid")
                         .HasColumnName("project_id");
 
                     b.Property<int>("SortIndex")
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("integer")
                         .HasColumnName("sort_index");
 
                     b.HasKey("Id");
@@ -627,11 +634,11 @@ namespace VoteKit.Migrations.SQLite.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT")
+                        .HasColumnType("uuid")
                         .HasColumnName("id");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
 
                     b.Property<string>("DisplayName")
@@ -644,7 +651,7 @@ namespace VoteKit.Migrations.SQLite.Migrations
                         .HasColumnName("email");
 
                     b.Property<bool>("IsBanned")
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("boolean")
                         .HasColumnName("is_banned");
 
                     b.Property<string>("PasswordHash")
@@ -657,16 +664,16 @@ namespace VoteKit.Migrations.SQLite.Migrations
                         .HasColumnName("password_salt");
 
                     b.Property<Guid>("ProjectId")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("uuid")
                         .HasColumnName("project_id");
 
                     b.Property<string>("Role")
                         .IsRequired()
-                        .HasColumnType("TEXT")
+                        .HasColumnType("text")
                         .HasColumnName("role");
 
                     b.Property<DateTime>("SeenAt")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("timestamp with time zone")
                         .HasColumnName("seen_at");
 
                     b.HasKey("Id");

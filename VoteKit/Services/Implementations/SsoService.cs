@@ -71,22 +71,23 @@ public class SsoService : ISsoService
     return null;
   }
 
-  public async Task<string> GetSsoKey(Project project)
+  public async Task<SsoConfig> GetSsoConfig(Project project)
   {
-    if (project.SsoKey == null)
+    await using var db = await _db.CreateDbContextAsync();
+    var config = await db.SsoConfigs.FindAsync(project.Id);
+
+    if (config == null)
     {
-      await using var db = await _db.CreateDbContextAsync();
-      var projectCopy = await db.Projects.FindAsync(project.Id);
+      config = new SsoConfig
+      {
+        ProjectId = project.Id,
+        SsoKey = Guid.NewGuid()
+      };
 
-      if (projectCopy == null)
-        throw new ArgumentException("Invalid project");
-
-      project.SsoKey = Guid.NewGuid();
-      projectCopy.SsoKey = project.SsoKey;
-
+      await db.SsoConfigs.AddAsync(config);
       await db.SaveChangesWithValidationAsync();
     }
 
-    return project.SsoKey.Value.ToString().ToLowerInvariant();
+    return config;
   }
 }

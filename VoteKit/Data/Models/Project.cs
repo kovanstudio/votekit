@@ -34,11 +34,12 @@ public class Project
   public Image? FaviconImage { get; set; }
 
   [Column("created_at")] public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-  [Column("sso_key")] public Guid? SsoKey { get; set; }
 
   [InverseProperty("Project")] public List<User> Users { get; set; } = null!;
   [InverseProperty("Project")] public List<Board> Boards { get; set; } = null!;
   [InverseProperty("Project")] public List<Status> Statuses { get; set; } = null!;
+
+  [InverseProperty("Project")] public SsoConfig? SsoConfig { get; set; }
 
   public static Project Create(string name)
   {

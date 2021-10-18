@@ -52,8 +52,8 @@ public class FeedController : Controller
 
     if (parameters?.SsoToken != null)
     {
-      var ssoKey = await ssoService.GetSsoKey(project);
-      var userInfo = ssoService.DecodeSsoToken(ssoKey, parameters.SsoToken);
+      var ssoConfig = await ssoService.GetSsoConfig(project);
+      var userInfo = ssoService.DecodeSsoToken(ssoConfig.SsoKeyString, parameters.SsoToken);
 
       if (userInfo != null)
         await using (var db = await _db.CreateDbContextAsync())

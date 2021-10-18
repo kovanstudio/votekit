@@ -552,10 +552,6 @@ namespace VoteKit.Migrations.PostgreSQL.Migrations
                         .HasColumnType("varchar(250)")
                         .HasColumnName("name");
 
-                    b.Property<Guid?>("SsoKey")
-                        .HasColumnType("uuid")
-                        .HasColumnName("sso_key");
-
                     b.Property<string>("Website")
                         .HasColumnType("varchar(250)")
                         .HasColumnName("website");
@@ -567,6 +563,29 @@ namespace VoteKit.Migrations.PostgreSQL.Migrations
                     b.HasIndex("LogoImageId");
 
                     b.ToTable("projects");
+                });
+
+            modelBuilder.Entity("VoteKit.Data.Models.SsoConfig", b =>
+                {
+                    b.Property<Guid>("ProjectId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("project_id");
+
+                    b.Property<string>("LoginUrl")
+                        .HasColumnType("text")
+                        .HasColumnName("login_url");
+
+                    b.Property<string>("LogoutUrl")
+                        .HasColumnType("text")
+                        .HasColumnName("logout_url");
+
+                    b.Property<Guid>("SsoKey")
+                        .HasColumnType("uuid")
+                        .HasColumnName("key");
+
+                    b.HasKey("ProjectId");
+
+                    b.ToTable("sso_configs");
                 });
 
             modelBuilder.Entity("VoteKit.Data.Models.Status", b =>
@@ -916,6 +935,15 @@ namespace VoteKit.Migrations.PostgreSQL.Migrations
                     b.Navigation("LogoImage");
                 });
 
+            modelBuilder.Entity("VoteKit.Data.Models.SsoConfig", b =>
+                {
+                    b.HasOne("VoteKit.Data.Models.Project", "Project")
+                        .WithOne("SsoConfig")
+                        .HasForeignKey("VoteKit.Data.Models.SsoConfig", "ProjectId");
+
+                    b.Navigation("Project");
+                });
+
             modelBuilder.Entity("VoteKit.Data.Models.Status", b =>
                 {
                     b.HasOne("VoteKit.Data.Models.Project", "Project")
@@ -969,6 +997,8 @@ namespace VoteKit.Migrations.PostgreSQL.Migrations
             modelBuilder.Entity("VoteKit.Data.Models.Project", b =>
                 {
                     b.Navigation("Boards");
+
+                    b.Navigation("SsoConfig");
 
                     b.Navigation("Statuses");
 
