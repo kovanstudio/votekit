@@ -37,6 +37,11 @@ namespace VoteKit.Migrations.PostgreSQL.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("entry_id");
 
+                    b.Property<string>("Metadata")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("metadata");
+
                     b.Property<string>("Type")
                         .IsRequired()
                         .HasColumnType("text")

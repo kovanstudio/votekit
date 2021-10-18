@@ -69,6 +69,7 @@ public static class Program
     if (!Directory.Exists(builder.Configuration["DataDir"]))
       Directory.CreateDirectory(builder.Configuration["DataDir"]);
 
+
     // Services
     builder.Services.AddHttpContextAccessor();
 
