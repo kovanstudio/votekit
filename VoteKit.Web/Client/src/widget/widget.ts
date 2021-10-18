@@ -47,13 +47,12 @@ export default class Widget extends EventEmitter {
         top: "10vh",
         pointerEvents: "auto",
         transition: "all 0.25s ease-in",
-        width: `${size.width}px`,
         height: `${size.height}px`
       })
     });
 
     this.frame.on("RESIZE", ({ payload }) => {
-      this.frame.css({ width: `${payload.width}px`, height: `${payload.height}px` })
+      this.frame.css({ height: `${payload.height}px` })
     });
 
     this.frame.on("clickoutside", () => this.close())
