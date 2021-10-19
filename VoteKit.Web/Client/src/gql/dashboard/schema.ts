@@ -915,7 +915,7 @@ export type ProjectQueryVariables = Exact<{
 }>;
 
 
-export type ProjectQuery = { __typename?: 'Query', project?: { __typename?: 'Project', id: any, name: string, website?: string | null | undefined, logoURL: string, faviconURL: string, ssoConfig?: { __typename?: 'SsoConfig', id: any, ssoKey?: string | null | undefined } | null | undefined } | null | undefined };
+export type ProjectQuery = { __typename?: 'Query', project?: { __typename?: 'Project', id: any, name: string, website?: string | null | undefined, logoURL: string, faviconURL: string, ssoConfig?: { __typename?: 'SsoConfig', id: any, loginUrl?: string | null | undefined, logoutUrl?: string | null | undefined, ssoKey?: string | null | undefined } | null | undefined } | null | undefined };
 
 export type SaveProjectMutationVariables = Exact<{
   input: SaveProjectInput;
@@ -958,6 +958,15 @@ export type RemoveInviteMutationVariables = Exact<{
 
 
 export type RemoveInviteMutation = { __typename?: 'Mutation', removeInvite: OperationResult };
+
+export type SsoConfigFragment = { __typename?: 'SsoConfig', id: any, loginUrl?: string | null | undefined, logoutUrl?: string | null | undefined, ssoKey?: string | null | undefined };
+
+export type SaveSsoConfigMutationVariables = Exact<{
+  input: SaveSsoConfigInput;
+}>;
+
+
+export type SaveSsoConfigMutation = { __typename?: 'Mutation', saveSsoConfig: { __typename?: 'SsoConfig', id: any, loginUrl?: string | null | undefined, logoutUrl?: string | null | undefined, ssoKey?: string | null | undefined } };
 
 export type StatusSummaryFragment = { __typename?: 'Status', id: any, name: string, color: string };
 
@@ -1185,6 +1194,14 @@ export const InviteFragmentDoc = gql`
   email
   createdAt
   token
+}
+    `;
+export const SsoConfigFragmentDoc = gql`
+    fragment ssoConfig on SsoConfig {
+  id
+  loginUrl
+  logoutUrl
+  ssoKey
 }
     `;
 export const UserFragmentDoc = gql`
@@ -1855,12 +1872,12 @@ export const ProjectDocument = gql`
   project {
     ...project
     ssoConfig @include(if: $includeDetails) {
-      id
-      ssoKey
+      ...ssoConfig
     }
   }
 }
-    ${ProjectFragmentDoc}`;
+    ${ProjectFragmentDoc}
+${SsoConfigFragmentDoc}`;
 
 /**
  * __useProjectQuery__
@@ -2090,6 +2107,39 @@ export function useRemoveInviteMutation(baseOptions?: Apollo.MutationHookOptions
 export type RemoveInviteMutationHookResult = ReturnType<typeof useRemoveInviteMutation>;
 export type RemoveInviteMutationResult = Apollo.MutationResult<RemoveInviteMutation>;
 export type RemoveInviteMutationOptions = Apollo.BaseMutationOptions<RemoveInviteMutation, RemoveInviteMutationVariables>;
+export const SaveSsoConfigDocument = gql`
+    mutation saveSsoConfig($input: SaveSsoConfigInput!) {
+  saveSsoConfig(input: $input) {
+    ...ssoConfig
+  }
+}
+    ${SsoConfigFragmentDoc}`;
+export type SaveSsoConfigMutationFn = Apollo.MutationFunction<SaveSsoConfigMutation, SaveSsoConfigMutationVariables>;
+
+/**
+ * __useSaveSsoConfigMutation__
+ *
+ * To run a mutation, you first call `useSaveSsoConfigMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSaveSsoConfigMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [saveSsoConfigMutation, { data, loading, error }] = useSaveSsoConfigMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useSaveSsoConfigMutation(baseOptions?: Apollo.MutationHookOptions<SaveSsoConfigMutation, SaveSsoConfigMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<SaveSsoConfigMutation, SaveSsoConfigMutationVariables>(SaveSsoConfigDocument, options);
+      }
+export type SaveSsoConfigMutationHookResult = ReturnType<typeof useSaveSsoConfigMutation>;
+export type SaveSsoConfigMutationResult = Apollo.MutationResult<SaveSsoConfigMutation>;
+export type SaveSsoConfigMutationOptions = Apollo.BaseMutationOptions<SaveSsoConfigMutation, SaveSsoConfigMutationVariables>;
 export const StatusesDocument = gql`
     query statuses {
   statuses {

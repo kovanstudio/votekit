@@ -1,0 +1,12 @@
+fragment ssoConfig on SsoConfig {
+    id
+    loginUrl
+    logoutUrl
+    ssoKey
+}
+
+mutation saveSsoConfig($input: SaveSsoConfigInput!) {
+    saveSsoConfig(input: $input) {
+        ...ssoConfig
+    }
+}

@@ -763,9 +763,9 @@ export type VoteEntryInput = {
   entryId: Scalars['UUID'];
 };
 
-export type BoardSummaryFragment = { __typename?: 'Board', id: any, name: string, slug: string, color: string };
+export type BoardSummaryFragment = { __typename?: 'Board', id: any, name: string, slug: string, color: string, isListed: boolean };
 
-export type BoardFragment = { __typename?: 'Board', id: any, name: string, slug: string, color: string };
+export type BoardFragment = { __typename?: 'Board', id: any, name: string, slug: string, color: string, isListed: boolean };
 
 export type BoardQueryVariables = Exact<{
   boardId?: Maybe<Scalars['UUID']>;
@@ -773,12 +773,12 @@ export type BoardQueryVariables = Exact<{
 }>;
 
 
-export type BoardQuery = { __typename?: 'Query', board?: { __typename?: 'Board', id: any, name: string, slug: string, color: string } | null | undefined };
+export type BoardQuery = { __typename?: 'Query', board?: { __typename?: 'Board', id: any, name: string, slug: string, color: string, isListed: boolean } | null | undefined };
 
 export type BoardsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type BoardsQuery = { __typename?: 'Query', boards: Array<{ __typename?: 'Board', id: any, name: string, slug: string, color: string }> };
+export type BoardsQuery = { __typename?: 'Query', boards: Array<{ __typename?: 'Board', id: any, name: string, slug: string, color: string, isListed: boolean }> };
 
 export type CommentFragment = { __typename?: 'Comment', id: any, content: string, createdAt: any, isPrivate: boolean, likedByMe: boolean, user?: { __typename?: 'User', id: any, displayName?: string | null | undefined, avatar: string, email: string } | null | undefined, stats: { __typename?: 'CommentStats', likes: number, replies: number } };
 
@@ -972,6 +972,7 @@ export const BoardSummaryFragmentDoc = gql`
   name
   slug
   color
+  isListed
 }
     `;
 export const BoardFragmentDoc = gql`

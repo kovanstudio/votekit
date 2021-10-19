@@ -3,6 +3,7 @@ fragment boardSummary on Board {
   name
   slug
   color
+  isListed
 }
 
 fragment board on Board {

@@ -16,12 +16,12 @@ public partial class Query
   {
     return db.Boards.Where(s => s.ProjectId == project.Id).OrderBy(b => b.CreatedAt);
   }
-    
+
   [UseVotekitCtx]
   public async Task<Board?> Board([Project] Project project, [ScopedService] VotekitCtx db, Guid? id, string? slug)
   {
     var query = db.Boards.Where(b => b.ProjectId == project.Id);
-      
+
     if (id.HasValue)
       query = query.Where(b => b.Id == id);
     else if (slug != null)
@@ -32,21 +32,21 @@ public partial class Query
     return await query.FirstOrDefaultAsync();
   }
 }
-  
+
 public class BoardType : ExplicitObjectType<Board>
 {
   protected override void Configure(IObjectTypeDescriptor<Board> descriptor)
   {
     base.Configure(descriptor);
-      
+
     descriptor.Field(p => p.Id);
     descriptor.Field(p => p.Name);
     descriptor.Field(p => p.Slug);
     descriptor.Field(p => p.Color);
     descriptor.Field(p => p.ProjectId);
     descriptor.Field(p => p.CreatedAt);
-    descriptor.Field(p => p.IsPrivate).Authorize("Editor");;
-    descriptor.Field(p => p.IsSeoIndexed).Authorize("Editor");;
-    descriptor.Field(p => p.IsListed).Authorize("Editor");
+    descriptor.Field(p => p.IsListed);
+    descriptor.Field(p => p.IsPrivate).Authorize("Editor");
+    descriptor.Field(p => p.IsSeoIndexed).Authorize("Editor");
   }
 }

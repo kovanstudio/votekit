@@ -1,3 +1,4 @@
 ﻿{
+  "name": "VoteKit Schema",
   "schemaPath": "./schema.graphql"
 }

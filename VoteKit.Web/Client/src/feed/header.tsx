@@ -6,19 +6,20 @@ import { useProject } from "./state";
 export function MainHeader() {
   const project = useProject();
   const boards = schema.useBoardsQuery();
-  
+
   return (
     <header className="main">
       <div className="container">
-        <img className="logo" src={project.logoURL == "/images/logo-placeholder.jpg" ? "/images/feed/header-logo.svg" : project.logoURL} />
+        <img className="logo" src={project.logoURL == "/images/logo-placeholder.jpg" ? "/images/feed/header-logo.svg" : project.logoURL}
+             alt="Project Logo"/>
 
         <div className="navigation">
           <NavLink to="/" exact>Roadmap</NavLink>
 
-          {boards.data?.boards.map(b => <NavLink to={`/${b.slug}`} key={b.id}>{b.name}</NavLink>)}
+          {boards.data?.boards.filter(b => b.isListed).map(b => <NavLink to={`/${b.slug}`} key={b.id}>{b.name}</NavLink>)}
         </div>
-        
-        <UserNavigation />
+
+        <UserNavigation/>
       </div>
     </header>
   );
@@ -35,7 +36,7 @@ function UserNavigation() {
     <div className="m-l-auto flex">
       <div className="avatar">
         <Link to={"/account/settings"}>
-          <img src={data.me.avatar} alt="Member Avatar" />
+          <img src={data.me.avatar} alt="Member Avatar"/>
         </Link>
       </div>
     </div>

@@ -3,14 +3,15 @@ import "../../css/modules/settings.scss";
 import * as React from "react";
 import { NavLink, Redirect, Route, Switch } from "react-router-dom";
 import { useMe, useProject } from "../../state";
-import { ProjectGeneralSettings } from "./general";
-import { ProjectTeamSettings } from "./team";
 import { CreateBoard } from "./boards/create";
-import { ProjectStatusesSettings } from "./statuses";
 import { PlusIcon } from "../../../components/icon";
 import { schema } from "../../gql/client";
 import { UserRole } from "../../../gql/feed/schema";
+import { ProjectGeneralSettings } from "./general";
+import { ProjectTeamSettings } from "./team";
+import { ProjectStatusesSettings } from "./statuses";
 import { ProjectWidgetSettings } from "./widget";
+import { ProjectSsoSettings } from "./sso";
 
 const BoardSettings = React.lazy(() => import("./boards/boards"));
 
@@ -49,6 +50,11 @@ export function ProjectSettings() {
                 Widget Setup
               </NavLink>
             </li>
+            <li className="nav-item">
+              <NavLink to={`/settings/sso`}>
+                Single Sign On
+              </NavLink>
+            </li>
           </ul>
         </section>
 
@@ -59,6 +65,7 @@ export function ProjectSettings() {
         <Route path={`/settings`} exact component={ProjectGeneralSettings}/>
         <Route path={`/settings/team`} component={ProjectTeamSettings}/>
         <Route path={`/settings/widget`} component={ProjectWidgetSettings}/>
+        <Route path={`/settings/sso`} component={ProjectSsoSettings}/>
         <Route path={`/settings/statuses`} component={ProjectStatusesSettings}/>
         <Route path={`/settings/boards/create`} component={CreateBoard}/>
         <Route path={`/settings/boards/:boardSlug`} component={BoardSettings}/>

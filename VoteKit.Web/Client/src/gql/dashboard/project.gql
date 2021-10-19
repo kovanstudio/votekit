@@ -1,61 +1,60 @@
 fragment project on Project {
-  id
-  name
-  website
-  logoURL
-  faviconURL
+    id
+    name
+    website
+    logoURL
+    faviconURL
 }
 
 query project($includeDetails: Boolean! = false) {
-  project {
-    ...project
-    
-    ssoConfig @include(if: $includeDetails) {
-      id
-      ssoKey
+    project {
+        ...project
+
+        ssoConfig @include(if: $includeDetails) {
+            ...ssoConfig
+        }
     }
-  }
 }
 
 mutation saveProject($input: SaveProjectInput!) {
-  saveProject(input: $input) {
-    ...project
-  }
+    saveProject(input: $input) {
+        ...project
+    }
 }
 
 fragment invite on Invite {
-  id
-  email
-  createdAt
-  token
+    id
+    email
+    createdAt
+    token
 }
 
 query lookupInvite($token: String!) {
-  lookupInvite(token: $token) {
-    ...invite
-  }
+    lookupInvite(token: $token) {
+        ...invite
+    }
 }
 
 query projectMembersAndInvites {
-  members {
-    ...user
-  }
+    members {
+        ...user
+    }
 
-  invites {
-    ...invite
-  }
+    invites {
+        ...invite
+    }
 }
 
 mutation removeUser($input: RemoveUserInput!) {
-  removeUser(input: $input)
+    removeUser(input: $input)
 }
 
 mutation addInvite($input: AddInviteInput!) {
-  addInvite(input: $input) {
-    id
-  }
+    addInvite(input: $input) {
+        id
+    }
 }
 
 mutation removeInvite($input: RemoveInviteInput!) {
-  removeInvite(input: $input)
+    removeInvite(input: $input)
 }

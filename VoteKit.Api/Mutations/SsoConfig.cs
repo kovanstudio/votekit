@@ -13,8 +13,8 @@ public partial class Mutation
 {
   public class SaveSsoConfigInput
   {
-    [Url] public string? LoginUrl { get; set; }
-    [Url] public string? LogoutUrl { get; set; }
+    [Url] public string LoginUrl { get; set; } = null!;
+    [Url] public string LogoutUrl { get; set; } = null!;
   }
 
   [Authorize(Policy = "Admin")]
@@ -30,11 +30,8 @@ public partial class Mutation
 
     db.Attach(ssoConfig);
 
-    if (input.LoginUrl != null)
-      ssoConfig.LoginUrl = string.IsNullOrWhiteSpace(input.LoginUrl) ? null : input.LoginUrl;
-
-    if (input.LogoutUrl != null)
-      ssoConfig.LogoutUrl = string.IsNullOrWhiteSpace(input.LogoutUrl) ? null : input.LogoutUrl;
+    ssoConfig.LoginUrl = string.IsNullOrWhiteSpace(input.LoginUrl) ? null : input.LoginUrl;
+    ssoConfig.LogoutUrl = string.IsNullOrWhiteSpace(input.LogoutUrl) ? null : input.LogoutUrl;
 
     await db.SaveChangesWithValidationAsync();
 
