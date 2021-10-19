@@ -272,6 +272,7 @@ export type Mutation = {
   saveEntry: Entry;
   savePassword: OperationResult;
   saveProject: Project;
+  saveSsoConfig: SsoConfig;
   saveStatus: Status;
   saveUser: User;
   subscribeEntry: Entry;
@@ -373,6 +374,11 @@ export type MutationSavePasswordArgs = {
 
 export type MutationSaveProjectArgs = {
   input: SaveProjectInput;
+};
+
+
+export type MutationSaveSsoConfigArgs = {
+  input: SaveSsoConfigInput;
 };
 
 
@@ -590,6 +596,11 @@ export type SaveProjectInput = {
   logoImageId?: Maybe<Scalars['UUID']>;
   name?: Maybe<Scalars['String']>;
   website?: Maybe<Scalars['String']>;
+};
+
+export type SaveSsoConfigInput = {
+  loginUrl?: Maybe<Scalars['String']>;
+  logoutUrl?: Maybe<Scalars['String']>;
 };
 
 export type SaveStatusInput = {
