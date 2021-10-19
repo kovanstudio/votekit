@@ -40,7 +40,7 @@ export function ProjectWidgetSettings() {
       <p className="m-y-10">If you wish to provide your own user data to VoteKit, you can do so with the SSO feature. You users will seamlessly be
         logged into the VoteKit interface using this feature.</p>
       <h5 className="m-y-10">Your SSO Secret:</h5>
-      <TextareaAutosize className="embed-code m-y-10" value={project.ssoKey}/>
+      <TextareaAutosize className="embed-code m-y-10" value={project.ssoConfig.ssoKey}/>
       <h5 className="m-y-10 m-t-30">Create a JWT token using the given secret (sample node.js code):</h5>
       <TextareaAutosize className="embed-code m-y-10" value={[
         `const jwt = require('jsonwebtoken');`,
@@ -52,7 +52,7 @@ export function ProjectWidgetSettings() {
         '  // you can have additional attributes',
         `};`,
         '',
-        `const ssoToken = jwt.sign(user, '${project.ssoKey}', { algorithm: 'HS256' });`,
+        `const ssoToken = jwt.sign(user, '${project.ssoConfig.ssoKey}', { algorithm: 'HS256' });`,
       ].join("\r\n")}/>
 
       <h5 className="m-y-10 m-t-30">Provide the token to render method:</h5>

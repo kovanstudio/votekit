@@ -3,8 +3,6 @@ import { ProjectProvider, useMe } from "../state";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { schema } from "../gql/client";
 import { ProjectEntries } from "./entries/entries";
-import { ProjectSelector } from "./selector";
-import CreateProject from "./create";
 import { PeopleRoutes } from "./people/people";
 import { UserRole } from "../../gql/dashboard/schema";
 
@@ -31,16 +29,5 @@ export function ProjectRoutes() {
         <Route render={() => <Redirect to="/"/>}/>
       </Switch>
     </ProjectProvider>
-  );
-}
-
-export function ProjectsRoutes() {
-  return (
-    <Switch>
-      <Route path="/projects" exact component={ProjectSelector}/>
-      <Route path="/projects/create" exact component={CreateProject}/>
-
-      <Route render={() => <Redirect to="/"/>}/>
-    </Switch>
   );
 }

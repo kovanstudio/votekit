@@ -10,7 +10,10 @@ query project($includeDetails: Boolean! = false) {
   project {
     ...project
     
-    ssoKey @include(if: $includeDetails)
+    ssoConfig @include(if: $includeDetails) {
+      id
+      ssoKey
+    }
   }
 }
 

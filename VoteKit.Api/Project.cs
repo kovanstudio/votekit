@@ -46,9 +46,9 @@ public class ProjectResolvers
   }
 
   [Authorize(Policy = "Admin")]
-  public async Task<string> SsoKey([Parent] Project project, [Service] ISsoService ssoService)
+  public async Task<SsoConfig> SsoConfig([Parent] Project project, [Service] ISsoService ssoService)
   {
-    return (await ssoService.GetSsoConfig(project)).SsoKeyString;
+    return await ssoService.GetSsoConfig(project);
   }
 }
 

@@ -437,7 +437,7 @@ export type Project = {
   logoImage?: Maybe<Image>;
   logoURL: Scalars['String'];
   name: Scalars['String'];
-  ssoKey: Scalars['String'];
+  ssoConfig: SsoConfig;
   website?: Maybe<Scalars['String']>;
 };
 
@@ -604,6 +604,14 @@ export type SaveStatusInput = {
 export type SaveUserInput = {
   displayName: Scalars['String'];
   email: Scalars['String'];
+};
+
+export type SsoConfig = {
+  __typename?: 'SsoConfig';
+  id: Scalars['UUID'];
+  loginUrl?: Maybe<Scalars['String']>;
+  logoutUrl?: Maybe<Scalars['String']>;
+  ssoKey?: Maybe<Scalars['String']>;
 };
 
 export type Status = {

@@ -437,7 +437,7 @@ export type Project = {
   logoImage?: Maybe<Image>;
   logoURL: Scalars['String'];
   name: Scalars['String'];
-  ssoKey: Scalars['String'];
+  ssoConfig: SsoConfig;
   website?: Maybe<Scalars['String']>;
 };
 
@@ -604,6 +604,14 @@ export type SaveStatusInput = {
 export type SaveUserInput = {
   displayName: Scalars['String'];
   email: Scalars['String'];
+};
+
+export type SsoConfig = {
+  __typename?: 'SsoConfig';
+  id: Scalars['UUID'];
+  loginUrl?: Maybe<Scalars['String']>;
+  logoutUrl?: Maybe<Scalars['String']>;
+  ssoKey?: Maybe<Scalars['String']>;
 };
 
 export type Status = {
@@ -896,7 +904,7 @@ export type ProjectQueryVariables = Exact<{
 }>;
 
 
-export type ProjectQuery = { __typename?: 'Query', project?: { __typename?: 'Project', ssoKey?: string | null | undefined, id: any, name: string, website?: string | null | undefined, logoURL: string, faviconURL: string } | null | undefined };
+export type ProjectQuery = { __typename?: 'Query', project?: { __typename?: 'Project', id: any, name: string, website?: string | null | undefined, logoURL: string, faviconURL: string, ssoConfig?: { __typename?: 'SsoConfig', id: any, ssoKey?: string | null | undefined } | null | undefined } | null | undefined };
 
 export type SaveProjectMutationVariables = Exact<{
   input: SaveProjectInput;
@@ -1835,7 +1843,10 @@ export const ProjectDocument = gql`
     query project($includeDetails: Boolean! = false) {
   project {
     ...project
-    ssoKey @include(if: $includeDetails)
+    ssoConfig @include(if: $includeDetails) {
+      id
+      ssoKey
+    }
   }
 }
     ${ProjectFragmentDoc}`;
