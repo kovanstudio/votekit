@@ -15,6 +15,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="data\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="SixLabors.ImageSharp.Web" Version="1.0.3" />
   </ItemGroup>
 
