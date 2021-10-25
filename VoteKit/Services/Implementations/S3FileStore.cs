@@ -21,7 +21,7 @@ public class S3FileStore : IFileStore
 {
   public class FileMetadata : IFileMetadata
   {
-    public string FullPath { get; init; }
+    public string FullPath { get; init; } = "";
     public long Size { get; init; }
     public DateTime? LastModification { get; init; }
   }

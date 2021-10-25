@@ -1,88 +1,88 @@
 fragment userSummary on User {
-  id
-  displayName
-  avatar
+    id
+    displayName
+    avatar
 }
 
 fragment user on User {
-  ...userSummary
-  
-  email
-  createdAt
-  seenAt
-  role
+    ...userSummary
 
-  stats {
-    votes
-    comments
-  }
+    email
+    createdAt
+    seenAt
+    role
+
+    stats {
+        votes
+        comments
+    }
 }
 
 fragment me on User {
-  ...user
+    ...user
 }
 
 query me {
-  me {
-    ...me
-  }
+    me {
+        ...me
+    }
 }
 
 mutation login($input: LoginInput!) {
-  login(input: $input)
+    login(input: $input)
 }
 
 mutation logout {
-  logout
+    logout
 }
 
 mutation register($input: RegisterInput!) {
-  register(input: $input) {
-    ...me
-  }
+    register(input: $input) {
+        id
+    }
 }
 
 mutation saveMember($input: SaveUserInput!) {
-  saveUser(input: $input) {
-    ...me
-  }
+    saveUser(input: $input) {
+        ...me
+    }
 }
 
 mutation savePassword($input: SavePasswordInput!) {
-  savePassword(input: $input)
+    savePassword(input: $input)
 }
 
 query user($id: UUID!) {
-  user(id: $id) {
-    ...user
-  }
+    user(id: $id) {
+        ...user
+    }
 }
 
 fragment usersConnection on UsersConnection {
-  totalCount
+    totalCount
 
-  pageInfo {
-    ...pageInfo
-  }
+    pageInfo {
+        ...pageInfo
+    }
 
-  nodes {
-    ...user
-  }
+    nodes {
+        ...user
+    }
 }
 
 query users(
-  $orderBy: UsersOrderByInput
-  $input: UsersInput
-  $after: String
-  $before: String
+    $orderBy: UsersOrderByInput
+    $input: UsersInput
+    $after: String
+    $before: String
 ) {
-  users(orderBy: $orderBy, input: $input, after: $after, before: $before) {
-    ...usersConnection
-  }
+    users(orderBy: $orderBy, input: $input, after: $after, before: $before) {
+        ...usersConnection
+    }
 }
 
 query members {
-  members {
-    ...user
-  }
+    members {
+        ...user
+    }
 }

@@ -13,7 +13,7 @@ public class FileSystemFileStore : IFileStore
 {
   public class FileMetadata : IFileMetadata
   {
-    public string FullPath { get; init; }
+    public string FullPath { get; init; } = "";
     public long Size { get; init; }
     public DateTime? LastModification { get; init; }
   }
@@ -27,7 +27,12 @@ public class FileSystemFileStore : IFileStore
 
   public Task<IFileMetadata> GetMetadataAsync(string fullPath, CancellationToken cancellationToken = default)
   {
-    var path = Path.Join(_rootPath, fullPath);
+    var path = Path.Join(_rootPath, fullPath)!;
+    var dirname = Path.GetDirectoryName(path);
+
+    if (dirname == null)
+      throw new ArgumentException();
+
     var info = new FileInfo(path);
 
     if (!info.Exists)
@@ -43,7 +48,11 @@ public class FileSystemFileStore : IFileStore
 
   public Task<Stream> GetAsync(string fullPath, CancellationToken cancellationToken = default)
   {
-    var path = Path.Join(_rootPath, fullPath);
+    var path = Path.Join(_rootPath, fullPath)!;
+    var dirname = Path.GetDirectoryName(path);
+
+    if (dirname == null)
+      throw new ArgumentException();
 
     if (!File.Exists(path))
       throw new FileNotFoundException();
@@ -53,10 +62,14 @@ public class FileSystemFileStore : IFileStore
 
   public async Task PutAsync(string fullPath, Stream file, CancellationToken cancellationToken = default)
   {
-    var path = Path.Join(_rootPath, fullPath);
+    var path = Path.Join(_rootPath, fullPath)!;
+    var dirname = Path.GetDirectoryName(path);
 
-    if (!Directory.Exists(Path.GetDirectoryName(path)))
-      Directory.CreateDirectory(Path.GetDirectoryName(path));
+    if (dirname == null)
+      throw new ArgumentException();
+
+    if (!Directory.Exists(dirname))
+      Directory.CreateDirectory(dirname);
 
     await using var outfile = File.OpenWrite(path);
     await file.CopyToAsync(outfile, cancellationToken);

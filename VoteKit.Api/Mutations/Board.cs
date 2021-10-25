@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using HotChocolate;
 using HotChocolate.AspNetCore.Authorization;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
 using VoteKit.Api.Validation;
@@ -16,14 +17,11 @@ public partial class Mutation
 {
   public class AddBoardInput
   {
-    [Required]
-    public string Name { get; set; } = string.Empty;
-    [Required]
-    public string Slug { get; set; } = string.Empty;
-    [Required]
-    public bool IsPrivate { get; set; }
+    [Required] public string Name { get; set; } = string.Empty;
+    [Required] public string Slug { get; set; } = string.Empty;
+    [Required] public bool IsPrivate { get; set; }
   }
-    
+
   [Authorize(Policy = "Admin")]
   [UseVotekitCtx]
   public async Task<Board> AddBoard([Project] Project project, [ScopedService] VotekitCtx db, [Validatable] AddBoardInput input)
@@ -43,14 +41,17 @@ public partial class Mutation
     {
       throw new GqlException("Board URL already in use. Please try another one.", "DUPLICATE_SLUG");
     }
+    catch (Exception e) when (e.InnerException is SqliteException { SqliteErrorCode: 19 })
+    {
+      throw new GqlException("Board URL already in use. Please try another one.", "DUPLICATE_SLUG");
+    }
 
     return board;
   }
-    
+
   public class SaveBoardInput
   {
-    [Required]
-    public Guid BoardId { get; set; }
+    [Required] public Guid BoardId { get; set; }
     public string? Name { get; set; }
     public string? Slug { get; set; }
     public bool? IsListed { get; set; }
@@ -58,7 +59,7 @@ public partial class Mutation
     public bool? IsSeoIndexed { get; set; }
     public string? Color { get; set; }
   }
-    
+
   [Authorize(Policy = "Admin")]
   [UseVotekitCtx]
   public async Task<Board> SaveBoard([Project] Project project, [ScopedService] VotekitCtx db, [Validatable] SaveBoardInput input)
@@ -86,16 +87,19 @@ public partial class Mutation
     {
       throw new GqlException("Board URL already in use. Please try another one.", "DUPLICATE_SLUG");
     }
+    catch (Exception e) when (e.InnerException is SqliteException { SqliteErrorCode: 19 })
+    {
+      throw new GqlException("Board URL already in use. Please try another one.", "DUPLICATE_SLUG");
+    }
 
     return board;
   }
-    
+
   public class RemoveBoardInput
   {
-    [Required]
-    public Guid BoardId { get; set; }
+    [Required] public Guid BoardId { get; set; }
   }
-    
+
   [Authorize(Policy = "Admin")]
   [UseVotekitCtx]
   public async Task<OperationResult> RemoveBoard([Project] Project project, [ScopedService] VotekitCtx db, [Validatable] RemoveBoardInput input)

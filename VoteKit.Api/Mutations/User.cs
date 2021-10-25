@@ -9,6 +9,7 @@ using HotChocolate;
 using HotChocolate.Types;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.DataProtection;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
 using VoteKit.Api.Validation;
@@ -127,6 +128,10 @@ public partial class Mutation
     {
       throw new GqlException("Email address already in use", "DUPLICATE_EMAIL");
     }
+    catch (Exception e) when (e.InnerException is SqliteException aa)
+    {
+      throw new GqlException("Email address already in use", "DUPLICATE_EMAIL");
+    }
 
     await accessor.SetUserAsync(user);
 
@@ -202,6 +207,10 @@ public partial class Mutation
       await db.SaveChangesWithValidationAsync();
     }
     catch (Exception e) when (e.InnerException is PostgresException { SqlState: "23505" })
+    {
+      throw new GqlException("Email address already in use", "DUPLICATE_EMAIL");
+    }
+    catch (Exception e) when (e.InnerException is SqliteException { SqliteErrorCode: 19 })
     {
       throw new GqlException("Email address already in use", "DUPLICATE_EMAIL");
     }

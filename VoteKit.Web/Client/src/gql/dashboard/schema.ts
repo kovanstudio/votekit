@@ -924,19 +924,19 @@ export type SaveProjectMutationVariables = Exact<{
 
 export type SaveProjectMutation = { __typename?: 'Mutation', saveProject: { __typename?: 'Project', id: any, name: string, website?: string | null | undefined, logoURL: string, faviconURL: string } };
 
-export type InviteFragment = { __typename?: 'Invite', id: any, email: string, createdAt: any, token?: string | null | undefined };
+export type InviteFragment = { __typename?: 'Invite', id: any, email: string, createdAt: any };
 
 export type LookupInviteQueryVariables = Exact<{
   token: Scalars['String'];
 }>;
 
 
-export type LookupInviteQuery = { __typename?: 'Query', lookupInvite?: { __typename?: 'Invite', id: any, email: string, createdAt: any, token?: string | null | undefined } | null | undefined };
+export type LookupInviteQuery = { __typename?: 'Query', lookupInvite?: { __typename?: 'Invite', id: any, email: string, createdAt: any } | null | undefined };
 
 export type ProjectMembersAndInvitesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ProjectMembersAndInvitesQuery = { __typename?: 'Query', members: Array<{ __typename?: 'User', email: string, createdAt: any, seenAt: any, role: UserRole, id: any, displayName?: string | null | undefined, avatar: string, stats: { __typename?: 'UserStats', votes: number, comments: number } }>, invites: Array<{ __typename?: 'Invite', id: any, email: string, createdAt: any, token?: string | null | undefined }> };
+export type ProjectMembersAndInvitesQuery = { __typename?: 'Query', members: Array<{ __typename?: 'User', email: string, createdAt: any, seenAt: any, role: UserRole, id: any, displayName?: string | null | undefined, avatar: string, stats: { __typename?: 'UserStats', votes: number, comments: number } }>, invites: Array<{ __typename?: 'Invite', token?: string | null | undefined, id: any, email: string, createdAt: any }> };
 
 export type RemoveUserMutationVariables = Exact<{
   input: RemoveUserInput;
@@ -1026,7 +1026,7 @@ export type RegisterMutationVariables = Exact<{
 }>;
 
 
-export type RegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'User', email: string, createdAt: any, seenAt: any, role: UserRole, id: any, displayName?: string | null | undefined, avatar: string, stats: { __typename?: 'UserStats', votes: number, comments: number } } };
+export type RegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'User', id: any } };
 
 export type SaveMemberMutationVariables = Exact<{
   input: SaveUserInput;
@@ -1193,7 +1193,6 @@ export const InviteFragmentDoc = gql`
   id
   email
   createdAt
-  token
 }
     `;
 export const SsoConfigFragmentDoc = gql`
@@ -1981,6 +1980,7 @@ export const ProjectMembersAndInvitesDocument = gql`
   }
   invites {
     ...invite
+    token
   }
 }
     ${UserFragmentDoc}
@@ -2369,10 +2369,10 @@ export type LogoutMutationOptions = Apollo.BaseMutationOptions<LogoutMutation, L
 export const RegisterDocument = gql`
     mutation register($input: RegisterInput!) {
   register(input: $input) {
-    ...me
+    id
   }
 }
-    ${MeFragmentDoc}`;
+    `;
 export type RegisterMutationFn = Apollo.MutationFunction<RegisterMutation, RegisterMutationVariables>;
 
 /**

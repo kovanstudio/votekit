@@ -26,7 +26,6 @@ fragment invite on Invite {
     id
     email
     createdAt
-    token
 }
 
 query lookupInvite($token: String!) {
@@ -42,6 +41,7 @@ query projectMembersAndInvites {
 
     invites {
         ...invite
+        token
     }
 }
 
