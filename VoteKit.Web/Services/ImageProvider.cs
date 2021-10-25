@@ -8,36 +8,60 @@ using Microsoft.Extensions.FileProviders;
 using SixLabors.ImageSharp.Web;
 using SixLabors.ImageSharp.Web.Providers;
 using SixLabors.ImageSharp.Web.Resolvers;
+using VoteKit.Services;
 
-namespace VoteKit.Web.Services
+namespace VoteKit.Web.Services;
+
+public class ImageProvider : IImageProvider
 {
-  public class ImageProvider : IImageProvider
+  public class ImageResolver : IImageResolver
   {
-    private readonly string _rootPath;
+    private readonly IFileStore _fileStore;
+    private readonly IFileMetadata _metadata;
 
-    public ImageProvider(IConfiguration configuration, IWebHostEnvironment host)
+    public ImageResolver(IFileStore fileStore, IFileMetadata metadata)
     {
-      _rootPath = Path.Combine(configuration["DataDir"] ?? Path.Combine(host.ContentRootPath, "data"), "img");
+      _fileStore = fileStore;
+      _metadata = metadata;
     }
 
-    public bool IsValidRequest(HttpContext context)
+    public Task<ImageMetadata> GetMetaDataAsync()
     {
-      return context.Request.Path.Value?.StartsWith("/img") ?? false;
+      return Task.FromResult(new ImageMetadata(_metadata.LastModification ?? DateTime.Now, _metadata.Size));
     }
 
-    public Task<IImageResolver> GetAsync(HttpContext context)
+    public Task<Stream> OpenReadAsync()
     {
-      var fp = new PhysicalFileProvider(_rootPath);
-      var fi = fp.GetFileInfo(context.Request.Path.Value!.Substring("/img".Length));
-
-      if (!fi.Exists)
-        return Task.FromResult<IImageResolver>(null!);
-
-      var metadata = new ImageMetadata(fi.LastModified.UtcDateTime, fi.Length);
-      return Task.FromResult<IImageResolver>(new PhysicalFileSystemResolver(fi, metadata));
+      return _fileStore.GetAsync(_metadata.FullPath);
     }
-
-    public ProcessingBehavior ProcessingBehavior => ProcessingBehavior.All;
-    public Func<HttpContext, bool> Match { get; set; } = _ => true;
   }
+
+  private readonly IFileStore _fileStore;
+
+  public ImageProvider(IFileStore fileStore)
+  {
+    _fileStore = fileStore;
+  }
+
+  public bool IsValidRequest(HttpContext context)
+  {
+    return context.Request.Path.Value?.StartsWith("/img/") ?? false;
+  }
+
+  public async Task<IImageResolver?> GetAsync(HttpContext context)
+  {
+    try
+    {
+      var fi = await _fileStore.GetMetadataAsync(context.Request.Path.Value!);
+      return new ImageResolver(_fileStore, fi);
+    }
+    catch (FileNotFoundException)
+    {
+    }
+
+    return null;
+  }
+
+  public ProcessingBehavior ProcessingBehavior => ProcessingBehavior.All;
+  public Func<HttpContext, bool> Match { get; set; } = _ => true;
 }

@@ -16,7 +16,11 @@ public static class ApplicationServiceExtensions
     else
       services.AddSingleton<IEmailService, NoOpEmailService>();
 
-    services.AddSingleton<IFileStore, FileSystemFileStore>();
+    if (conf["Storage:Service"] == "S3")
+      services.AddSingleton<IFileStore, S3FileStore>();
+    else
+      services.AddSingleton<IFileStore, FileSystemFileStore>();
+
     services.AddSingleton<ISsoService, SsoService>();
 
     services.AddDataServices();
