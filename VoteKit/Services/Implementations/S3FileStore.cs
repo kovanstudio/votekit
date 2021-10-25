@@ -37,6 +37,8 @@ public class S3FileStore : IFileStore
 
   public async Task<IFileMetadata> GetMetadataAsync(string fullPath, CancellationToken cancellationToken = default)
   {
+    if (fullPath.StartsWith("/")) fullPath = fullPath.Substring(1);
+
     try
     {
       var res = await _amazonS3.GetObjectMetadataAsync(new GetObjectMetadataRequest
@@ -60,6 +62,8 @@ public class S3FileStore : IFileStore
 
   public async Task<Stream> GetAsync(string fullPath, CancellationToken cancellationToken = default)
   {
+    if (fullPath.StartsWith("/")) fullPath = fullPath.Substring(1);
+
     try
     {
       var res = await _amazonS3.GetObjectAsync(new GetObjectRequest
@@ -78,6 +82,8 @@ public class S3FileStore : IFileStore
 
   public async Task PutAsync(string fullPath, Stream file, CancellationToken cancellationToken = default)
   {
+    if (fullPath.StartsWith("/")) fullPath = fullPath.Substring(1);
+
     await _amazonS3.PutObjectAsync(new PutObjectRequest
     {
       BucketName = _options.Bucket,
