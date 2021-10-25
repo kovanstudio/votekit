@@ -1,13 +1,14 @@
 fragment project on Project {
-  id
-  name
-  website
-  logoURL
-  faviconURL
+    id
+    name
+    website
+    logoURL
+    faviconURL
+    authMethod
 }
 
 query project {
-  project {
-    ...project
-  }
+    project {
+        ...project
+    }
 }

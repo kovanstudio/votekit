@@ -22,6 +22,14 @@ public partial class Query
   }
 }
 
+public enum ProjectAuthMethod
+{
+  None,
+  Password,
+  Mail,
+  Redirect
+}
+
 [ExtendObjectType(typeof(Project))]
 public class ProjectResolvers
 {
@@ -43,6 +51,22 @@ public class ProjectResolvers
   public async Task<string> FaviconURL([Parent] Project project, [Service] IProjectService projects)
   {
     return await projects.FaviconUrlAsync(project);
+  }
+
+  public async Task<ProjectAuthMethod> AuthMethod(
+    [Parent] Project project,
+    [Service] ISsoService ssoService,
+    [Service] IEmailService emailService
+  )
+  {
+    var ssoConfig = await ssoService.GetSsoConfig(project);
+
+    if (ssoConfig.LoginUrl != null)
+      return ProjectAuthMethod.Redirect;
+    else if (emailService.IsOperational)
+      return ProjectAuthMethod.Mail;
+
+    return ProjectAuthMethod.Password;
   }
 
   [Authorize(Policy = "Admin")]

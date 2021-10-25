@@ -436,6 +436,7 @@ export type PageInfo = {
 
 export type Project = {
   __typename?: 'Project';
+  authMethod: ProjectAuthMethod;
   createdAt: Scalars['DateTime'];
   faviconImage?: Maybe<Image>;
   faviconURL: Scalars['String'];
@@ -446,6 +447,13 @@ export type Project = {
   ssoConfig: SsoConfig;
   website?: Maybe<Scalars['String']>;
 };
+
+export enum ProjectAuthMethod {
+  Mail = 'MAIL',
+  None = 'NONE',
+  Password = 'PASSWORD',
+  Redirect = 'REDIRECT'
+}
 
 export type Query = {
   __typename?: 'Query';

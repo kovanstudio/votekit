@@ -436,6 +436,7 @@ export type PageInfo = {
 
 export type Project = {
   __typename?: 'Project';
+  authMethod: ProjectAuthMethod;
   createdAt: Scalars['DateTime'];
   faviconImage?: Maybe<Image>;
   faviconURL: Scalars['String'];
@@ -446,6 +447,13 @@ export type Project = {
   ssoConfig: SsoConfig;
   website?: Maybe<Scalars['String']>;
 };
+
+export enum ProjectAuthMethod {
+  Mail = 'MAIL',
+  None = 'NONE',
+  Password = 'PASSWORD',
+  Redirect = 'REDIRECT'
+}
 
 export type Query = {
   __typename?: 'Query';
@@ -903,12 +911,12 @@ export type ConfigQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type ConfigQuery = { __typename?: 'Query', config: { __typename?: 'Config', basePath: string, emptyGuid: any } };
 
-export type ProjectFragment = { __typename?: 'Project', id: any, name: string, website?: string | null | undefined, logoURL: string, faviconURL: string };
+export type ProjectFragment = { __typename?: 'Project', id: any, name: string, website?: string | null | undefined, logoURL: string, faviconURL: string, authMethod: ProjectAuthMethod };
 
 export type ProjectQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ProjectQuery = { __typename?: 'Query', project?: { __typename?: 'Project', id: any, name: string, website?: string | null | undefined, logoURL: string, faviconURL: string } | null | undefined };
+export type ProjectQuery = { __typename?: 'Query', project?: { __typename?: 'Project', id: any, name: string, website?: string | null | undefined, logoURL: string, faviconURL: string, authMethod: ProjectAuthMethod } | null | undefined };
 
 export type StatusFragment = { __typename?: 'Status', id: any, name: string, color: string, sortIndex: number, isInRoadmap: boolean };
 
@@ -1070,6 +1078,7 @@ export const ProjectFragmentDoc = gql`
   website
   logoURL
   faviconURL
+  authMethod
 }
     `;
 export const MeFragmentDoc = gql`
