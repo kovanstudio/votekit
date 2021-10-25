@@ -42,7 +42,7 @@ export function LoginHandler() {
 
   if (!show) return null;
 
-  return <LoginModal onClose={handleClose} />;
+  return <LoginModal onClose={handleClose}/>;
 }
 
 export function LoginModal({ onClose }) {
@@ -66,23 +66,23 @@ export function LoginModal({ onClose }) {
 
                 <ul className="bullets">
                   <li>
-                    <CheckIcon /> Vote, comment, and give feedback
+                    <CheckIcon/> Vote, comment, and give feedback
                   </li>
                   <li>
-                    <CheckIcon /> Keep your data after closing the browser
+                    <CheckIcon/> Keep your data after closing the browser
                   </li>
                   <li>
-                    <CheckIcon /> Get notified when someone responds
+                    <CheckIcon/> Get notified when someone responds
                   </li>
                 </ul>
 
                 <aside className="options">
                   <div className="option" onClick={() => setMode("email")}>
-                    <MailIcon /> Continue with Email
+                    <MailIcon/> Continue with Email
                   </div>
                 </aside>
 
-                <p>By continuing, you are indicating that you agree to the Nolt Terms of Service and Privacy Policy.</p>
+                <p>By continuing, you are indicating that you agree to the Terms of Service and Privacy Policy.</p>
               </div>
             </motion.div>
           ) : null}
@@ -95,7 +95,7 @@ export function LoginModal({ onClose }) {
               exit={{ height: "0", opacity: 0, zIndex: 0 }}
               key={"email"}
             >
-              <MailLogin setMode={setMode} onClose={onClose} />
+              <MailLogin setMode={setMode} onClose={onClose}/>
             </motion.div>
           ) : null}
         </AnimatePresence>
@@ -132,7 +132,7 @@ function MailLogin({ setMode, onClose }) {
 
   return (
     <>
-      {beginLoading || completeLoading ? <div className="spinner-overlay" /> : null}
+      {beginLoading || completeLoading ? <div className="spinner-overlay"/> : null}
 
       <div className="panel-header">
         <a
@@ -142,7 +142,7 @@ function MailLogin({ setMode, onClose }) {
             setMode("info");
           }}
         >
-          <ChevronLeftIcon />
+          <ChevronLeftIcon/>
         </a>
         <span className={"m-r-auto m-l-auto"}>Sign In With Email</span>
       </div>
@@ -171,7 +171,8 @@ function MailLogin({ setMode, onClose }) {
 
                 onClose();
               }
-            } catch (e) {}
+            } catch (e) {
+            }
           }}
         >
           <div className="flex flex-col m-gap-t-def">
@@ -187,7 +188,7 @@ function MailLogin({ setMode, onClose }) {
                     className="input-control flex-grow"
                     type="text"
                   />
-                  <input type="submit" value="Submit" className="m-l-10" />
+                  <input type="submit" value="Submit" className="m-l-10"/>
                 </div>
                 {beginError ? <p className="m-t-15 m-b-0 alert alert-error">{beginError.message}</p> : null}
               </>
@@ -198,8 +199,8 @@ function MailLogin({ setMode, onClose }) {
                 </p>
 
                 <div className="flex m-t-15">
-                  <input ref={codeRef} value={code} onChange={(e) => setCode(e.target.value)} className="input-control flex-grow" type="text" />
-                  <input type="submit" value="Submit" className="m-l-10" />
+                  <input ref={codeRef} value={code} onChange={(e) => setCode(e.target.value)} className="input-control flex-grow" type="text"/>
+                  <input type="submit" value="Submit" className="m-l-10"/>
                 </div>
 
                 {completeError ? <p className="m-t-15 m-b-0 alert alert-error">{completeError.message}</p> : null}
@@ -207,7 +208,7 @@ function MailLogin({ setMode, onClose }) {
             )}
           </div>
         </form>
-        <p className="m-t-30">By continuing, you are indicating that you agree to the Nolt Terms of Service and Privacy Policy.</p>
+        <p className="m-t-30">By continuing, you are indicating that you agree to the Terms of Service and Privacy Policy.</p>
       </div>
     </>
   );
@@ -216,7 +217,7 @@ function MailLogin({ setMode, onClose }) {
 function CheckIcon() {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-      <path fill="#31AF91" d="M8 16A8 8 0 108 0a8 8 0 000 16z" />
+      <path fill="#31AF91" d="M8 16A8 8 0 108 0a8 8 0 000 16z"/>
       <path
         fill="#fff"
         d="M6.787 12.15L3.1 8.462a.12.12 0 010-.174l1.062-1.063a.12.12 0 01.175 0l2.538 2.538 4.775-4.776a.12.12 0 01.175 0l1.063 1.063a.12.12 0 010 .175L6.963 12.15a.12.12 0 01-.175 0z"
