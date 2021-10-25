@@ -6,6 +6,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -60,6 +61,8 @@ public static class Program
   private static WebApplication BuildApplication(string[] args)
   {
     var builder = WebApplication.CreateBuilder();
+
+    builder.WebHost.UseUrls("http://localhost:3000", "https://localhost:3001");
 
     // Config
     builder.Configuration.AddEnvironmentVariables("VK_");

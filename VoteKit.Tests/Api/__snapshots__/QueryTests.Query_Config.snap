@@ -1,7 +1,7 @@
 ﻿{
   "data": {
     "config": {
-      "basePath": "http://localhost:5000/",
+      "basePath": "http://localhost:3000/",
       "emptyGuid": "00000000-0000-0000-0000-000000000000"
     }
   }

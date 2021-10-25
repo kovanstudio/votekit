@@ -13,7 +13,7 @@ const check = () => {
   socket.once('error', onError);
   socket.once('timeout', onError);
 
-  socket.connect(5000, "127.0.0.1", () => {
+  socket.connect(3000, "127.0.0.1", () => {
     socket.end();
     process.exit(0);
   });

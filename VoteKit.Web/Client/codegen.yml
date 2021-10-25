@@ -1,6 +1,6 @@
 ﻿generates:
   src/gql/dashboard/schema.ts:
-    schema: http://localhost:5000/gql
+    schema: http://localhost:3000/gql
     documents: "src/gql/dashboard/**/*.gql"
     plugins:
       - typescript
@@ -8,9 +8,9 @@
       - typescript-react-apollo
     config:
       withHooks: true
-        
+  
   src/gql/feed/schema.ts:
-    schema: http://localhost:5000/gql
+    schema: http://localhost:3000/gql
     documents: "src/gql/feed/**/*.gql"
     plugins:
       - typescript
@@ -18,9 +18,9 @@
       - typescript-react-apollo
     config:
       withHooks: true
-      
+  
   src/gql/schema.graphql:
-    schema: http://localhost:5000/gql
+    schema: http://localhost:3000/gql
     plugins:
       - schema-ast
     config:

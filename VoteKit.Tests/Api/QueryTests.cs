@@ -27,7 +27,7 @@ public class QueryTests : IAsyncLifetime
   {
     var config = new ConfigurationBuilder().AddInMemoryCollection(new Dictionary<string, string>
     {
-      { "HTTP:BasePath", "http://localhost:5000/" }
+      { "HTTP:BasePath", "http://localhost:3000/" }
     }).Build();
 
     _requestExecutor = await new ServiceCollection()

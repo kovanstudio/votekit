@@ -32,7 +32,7 @@ tasks:
 
   ngrok:
     cmds:
-      - ngrok http -region eu --subdomain votekit-{{.USER}} --log=stdout 5000 > /dev/null || true
+      - ngrok http -region eu --subdomain votekit-{{.USER}} --log=stdout 3000 > /dev/null || true
 
   wait-server:
     cmds:
