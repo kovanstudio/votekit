@@ -1,66 +1,17 @@
 ﻿import "../css/modules/login.scss";
 import Modal from "../../components/modal";
-import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronLeftIcon } from "../../components/icon";
-import { schema, setLoginHandler } from "../gql/client";
-import { useMe, useProject } from "../state";
+import { schema } from "../gql/client";
+import { useProject } from "../state";
 
-const LoginContext = createContext<() => Promise<schema.MeFragment>>(null);
-
-export function useEnsureMe() {
-  return useContext(LoginContext);
-}
-
-export function LoginHandler() {
-  const ensureMe = useEnsureMe();
+export default function LoginModal({ onClose }) {
+  const [mode, setMode] = useState("info");
 
   useEffect(() => {
-    setLoginHandler(ensureMe);
-    return () => setLoginHandler(null);
+    (document.activeElement as HTMLElement)?.blur()
   }, []);
-
-  return null;
-}
-
-export function LoginProvider({ children }) {
-  let me = useMe();
-
-  const [show, setShow] = useState(false);
-  const promise = useRef<any>(null);
-  const resolver = useRef<any>(null);
-
-  const ensureMe = useCallback(() => {
-    if (!!me)
-      return Promise.resolve(me);
-
-    if (promise.current)
-      return promise.current;
-
-    return promise.current = new Promise(res => {
-      setShow(true);
-
-      resolver.current = (arg) => {
-        resolver.current = null;
-        promise.current = null;
-        res(arg);
-      };
-    });
-  }, [me]);
-
-  const handleClose = () => {
-    resolver.current?.();
-    setShow(false);
-  };
-
-  return <LoginContext.Provider value={ensureMe}>
-    {show ? <LoginModal onClose={handleClose}/> : null}
-    {children}
-  </LoginContext.Provider>
-}
-
-export function LoginModal({ onClose }) {
-  const [mode, setMode] = useState("info");
 
   return (
     <Modal onClose={onClose}>

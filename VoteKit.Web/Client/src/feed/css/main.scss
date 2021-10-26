@@ -1,12 +1,12 @@
 ﻿@use "vars.scss" as vars;
 
-:root {
+body {
   --text-color: #575757;
   --accent-color: #4053ff;
   --color-primary: #4053ff;
   --color-seperator: #eeeeee;
   --color-border: #e6e6e6;
-  
+
   --container-width: 800px;
   --container-wide-width: 980px;
 }
@@ -188,7 +188,7 @@ button {
   max-width: var(--container-width);
   display: flex;
   align-items: flex-start;
-  
+
   &.container-wide {
     max-width: var(--container-wide-width);
   }
@@ -231,7 +231,7 @@ header.main {
     height: 36px;
     border-radius: 18px;
   }
-  
+
   img.logo {
     height: 34px;
     width: auto;
@@ -269,7 +269,7 @@ section.main {
 
   .panel-body {
     padding: 30px;
-    
+
     & > hr {
       border: 0;
       border-bottom: 1px solid #e4e4e4;

@@ -1,5 +1,5 @@
 ﻿import { schema } from "../gql/client";
-import { useMe, useProject } from "../state";
+import { useEnsureMe, useMe, useProject } from "../state";
 import { Markdown } from "../../components/markdown";
 import { AttachIcon, ChevronDownIcon, ChevronUpIcon } from "../../components/icon";
 import { TimeAgo } from "../../components/time";
@@ -33,10 +33,10 @@ export default function CommentsPage({ entry, after }: { entry: schema.EntryFrag
   return (
     <>
       {comments.nodes.map((c) => (
-        <Comment comment={c} key={c.id} />
+        <Comment comment={c} key={c.id}/>
       ))}
 
-      {loadedNext ? <CommentsPage entry={entry} after={comments.pageInfo.endCursor} /> : null}
+      {loadedNext ? <CommentsPage entry={entry} after={comments.pageInfo.endCursor}/> : null}
 
       {!loadedNext && comments.pageInfo.hasNextPage ? (
         <div
@@ -45,7 +45,7 @@ export default function CommentsPage({ entry, after }: { entry: schema.EntryFrag
             setLoadedNext(true);
           }}
         >
-          <ChevronDownIcon />
+          <ChevronDownIcon/>
         </div>
       ) : null}
     </>
@@ -55,7 +55,7 @@ export default function CommentsPage({ entry, after }: { entry: schema.EntryFrag
 function Comment({ comment }: { comment: schema.CommentFragment }) {
   const project = useProject();
   const me = useMe();
-  
+
   const postedByMe = me && comment.user?.id == me.id;
   const [editing, setEditing] = useState(false);
 
@@ -66,14 +66,14 @@ function Comment({ comment }: { comment: schema.CommentFragment }) {
   const [commentVote] = schema.useVoteCommentMutation();
 
   if (editing) {
-    return <CommentEditor comment={comment} onClose={(e) => setEditing(false)} />;
+    return <CommentEditor comment={comment} onClose={(e) => setEditing(false)}/>;
   }
 
   return (
     <div className="comment" key={comment.id} data-comment-id={comment.id}>
       <span className="comment-icon">
         <a href={"#"}>
-          <img src={comment.user?.avatar || "/images/logo-placeholder.jpg"} />
+          <img src={comment.user?.avatar || "/images/logo-placeholder.jpg"}/>
         </a>
       </span>
       <Markdown className="comment-body">{comment.content}</Markdown>
@@ -89,13 +89,14 @@ function Comment({ comment }: { comment: schema.CommentFragment }) {
                   },
                 },
               });
-            } catch {}
+            } catch {
+            }
           }}
         >
-          {comment.likedByMe ? <ChevronDownIcon className="m-r-5" /> : <ChevronUpIcon className="m-r-5" />} {comment.stats.likes}
+          {comment.likedByMe ? <ChevronDownIcon className="m-r-5"/> : <ChevronUpIcon className="m-r-5"/>} {comment.stats.likes}
         </small>
         <small className="m-r-15">
-          <TimeAgo value={comment.createdAt} />
+          <TimeAgo value={comment.createdAt}/>
         </small>
 
         {comment.user ? (
@@ -214,6 +215,7 @@ const commentVisibilityOptions = [
 export function CommentForm({ entry }: { entry: schema.EntryFragment }) {
   const project = useProject();
   const me = useMe();
+  const ensureMe = useEnsureMe();
 
   const [focus, setFocus] = useState(false);
 
@@ -271,7 +273,10 @@ export function CommentForm({ entry }: { entry: schema.EntryFragment }) {
               });
             }
           }}
-          onFocus={(e) => setFocus(true)}
+          onFocus={async (e) => {
+            setFocus(true)
+            await ensureMe();
+          }}
           className="input-control"
           placeholder="Leave a comment..."
           value={content}

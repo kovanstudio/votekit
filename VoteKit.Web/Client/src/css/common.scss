@@ -1,3 +1,10 @@
+:root {
+  --text-color: #575757;
+  --color-primary: #7e37ff;
+  --color-seperator: #eeeeee;
+  --color-border: #e6e6e6;
+}
+
 .relative {
   position: relative;
 }
@@ -178,4 +185,52 @@ ul.property-list {
 
 .text-muted {
   color: #6c757d !important;
+}
+
+.spinner-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 20;
+  background-color: rgba(255, 255, 255, 0.6);
+
+  &::after,
+  &::before {
+    content: "";
+    display: block;
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-left: -20px;
+    margin-top: -20px;
+    opacity: 0;
+    animation: sk-bounce 2s infinite ease-in-out;
+    border-radius: 50%;
+    background-color: var(--color-primary);
+    opacity: 0.6;
+  }
+
+  &::before {
+    animation-delay: -1s;
+  }
+
+  &.absolute {
+    position: absolute;
+  }
+}
+
+@keyframes sk-bounce {
+  0%,
+  100% {
+    transform: scale(0);
+    -webkit-transform: scale(0);
+  }
+  50% {
+    transform: scale(1);
+    -webkit-transform: scale(1);
+  }
 }
