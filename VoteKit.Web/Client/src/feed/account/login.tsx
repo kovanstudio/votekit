@@ -15,6 +15,12 @@ export default function LoginModal({ onClose }) {
     (document.activeElement as HTMLElement)?.blur()
   }, []);
 
+  useEffect(() => {
+    if (project.authMethod == ProjectAuthMethod.Redirect) {
+      document.location = "/api/jwt-login"
+    }
+  }, [project.authMethod]);
+
   return (
     <Modal onClose={onClose}>
       <div className="modal modal-login panel" style={{ width: "400px" }}>
@@ -44,9 +50,22 @@ export default function LoginModal({ onClose }) {
                 </ul>
 
                 <aside className="options">
-                  <div className="option" onClick={() => setMode(project.authMethod == ProjectAuthMethod.Mail ? "email" : "password")}>
-                    <MailIcon/> Continue with Email
-                  </div>
+                  {project.authMethod == ProjectAuthMethod.Password ? <>
+                    <div className="option" onClick={() => setMode("password")}>
+                      <MailIcon/> Log in
+                    </div>
+                    <div className="option m-t-20" onClick={() => setMode("register")}>
+                      Register New Account
+                    </div>
+                  </> : null}
+
+                  {project.authMethod == ProjectAuthMethod.Mail ? <>
+                    <div className="option" onClick={() => setMode("email")}>
+                      <MailIcon/> Continue with Email
+                    </div>
+                  </> : null}
+
+
                 </aside>
 
                 <p>By continuing, you are indicating that you agree to the Terms of Service and Privacy Policy.</p>
@@ -75,6 +94,18 @@ export default function LoginModal({ onClose }) {
               key={"password"}
             >
               <PasswordLogin setMode={setMode} onClose={onClose}/>
+            </motion.div>
+          ) : null}
+
+          {mode == "register" ? (
+            <motion.div
+              className="login-password"
+              initial={{ height: "0", opacity: 0 }}
+              animate={{ height: "auto", opacity: 1, zIndex: 1 }}
+              exit={{ height: "0", opacity: 0, zIndex: 0 }}
+              key={"register"}
+            >
+              <Register setMode={setMode} onClose={onClose}/>
             </motion.div>
           ) : null}
         </AnimatePresence>
@@ -198,12 +229,12 @@ function PasswordLogin({ setMode, onClose }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const [register, registerRes] = schema.useRegisterMutation({
+  const [action, acrionRes] = schema.useLoginMutation({
     refetchQueries: ["me"]
   });
 
   return <>
-    {registerRes.loading ? <div className="spinner-overlay"/> : null}
+    {acrionRes.loading ? <div className="spinner-overlay"/> : null}
 
     <div className="panel-header">
       <a
@@ -223,7 +254,7 @@ function PasswordLogin({ setMode, onClose }) {
         e.preventDefault();
 
         try {
-          await register({
+          await action({
             variables: {
               input: {
                 email,
@@ -261,7 +292,83 @@ function PasswordLogin({ setMode, onClose }) {
             />
           </div>
         </div>
-        {registerRes.error ? <aside className="m-gap-t-def m-b-0 alert alert-error">{formatError(registerRes.error)}</aside> : null}
+        {acrionRes.error ? <aside className="m-gap-t-def m-b-0 alert alert-error">{formatError(acrionRes.error)}</aside> : null}
+        <div className="flex flex-col m-gap-t-def">
+          <input type="submit" value="Submit"/>
+        </div>
+      </form>
+    </div>
+  </>
+}
+
+function Register({ setMode, onClose }) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const [action, acrionRes] = schema.useRegisterMutation({
+    refetchQueries: ["me"]
+  });
+
+  return <>
+    {acrionRes.loading ? <div className="spinner-overlay"/> : null}
+
+    <div className="panel-header">
+      <a
+        href="#"
+        onClick={(e) => {
+          e.preventDefault();
+          setMode("info");
+        }}
+      >
+        <ChevronLeftIcon/>
+      </a>
+      <span className={"m-r-auto m-l-auto"}>Sign In With Password</span>
+    </div>
+
+    <div className="panel-body">
+      <form className="w-100" onSubmit={async (e) => {
+        e.preventDefault();
+
+        try {
+          await action({
+            variables: {
+              input: {
+                email,
+                password
+              }
+            }
+          });
+
+          onClose();
+        } catch (e) {
+        }
+      }}>
+        <div className="flex flex-col m-gap-t-def">
+          <label htmlFor="login-email">Email Address</label>
+          <div className="flex">
+            <input
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              id="login-email"
+              className="input-control flex-grow"
+              type="text"
+              placeholder="me@example.com"
+            />
+          </div>
+        </div>
+        <div className="flex flex-col m-gap-t-def">
+          <label htmlFor="login-password">Password</label>
+          <div className="flex">
+            <input
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              id="login-password"
+              className="input-control flex-grow"
+              type="password"
+            />
+          </div>
+        </div>
+        {acrionRes.error ? <aside className="m-gap-t-def m-b-0 alert alert-error">{formatError(acrionRes.error)}</aside> : null}
         <div className="flex flex-col m-gap-t-def">
           <input type="submit" value="Submit"/>
         </div>
