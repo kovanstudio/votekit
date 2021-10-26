@@ -13,8 +13,8 @@ public partial class Mutation
 {
   public class SaveSsoConfigInput
   {
-    [Url] public string LoginUrl { get; set; } = null!;
-    [Url] public string LogoutUrl { get; set; } = null!;
+    [Url] public string? LoginUrl { get; set; } = null!;
+    [Url] public string? LogoutUrl { get; set; } = null!;
   }
 
   [Authorize(Policy = "Admin")]

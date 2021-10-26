@@ -607,8 +607,8 @@ export type SaveProjectInput = {
 };
 
 export type SaveSsoConfigInput = {
-  loginUrl: Scalars['String'];
-  logoutUrl: Scalars['String'];
+  loginUrl?: Maybe<Scalars['String']>;
+  logoutUrl?: Maybe<Scalars['String']>;
 };
 
 export type SaveStatusInput = {
