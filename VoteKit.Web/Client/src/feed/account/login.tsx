@@ -1,48 +1,62 @@
 ﻿import "../css/modules/login.scss";
 import Modal from "../../components/modal";
-import React, { useEffect, useRef, useState } from "react";
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronLeftIcon } from "../../components/icon";
 import { schema, setLoginHandler } from "../gql/client";
-import { useProject } from "../state";
+import { useMe, useProject } from "../state";
+
+const LoginContext = createContext<() => Promise<schema.MeFragment>>(null);
+
+export function useEnsureMe() {
+  return useContext(LoginContext);
+}
 
 export function LoginHandler() {
-  const [show, setShow] = useState(false);
+  const ensureMe = useEnsureMe();
 
+  useEffect(() => {
+    setLoginHandler(ensureMe);
+    return () => setLoginHandler(null);
+  }, []);
+
+  return null;
+}
+
+export function LoginProvider({ children }) {
+  let me = useMe();
+
+  const [show, setShow] = useState(false);
   const promise = useRef<any>(null);
   const resolver = useRef<any>(null);
+
+  const ensureMe = useCallback(() => {
+    if (!!me)
+      return Promise.resolve(me);
+
+    if (promise.current)
+      return promise.current;
+
+    return promise.current = new Promise(res => {
+      setShow(true);
+
+      resolver.current = (arg) => {
+        resolver.current = null;
+        promise.current = null;
+        res(arg);
+      };
+    });
+  }, [me]);
 
   const handleClose = () => {
     resolver.current?.();
     setShow(false);
   };
 
-  useEffect(() => {
-    setLoginHandler(() => {
-      if (promise.current) {
-        return promise.current;
-      }
-
-      promise.current = new Promise((res) => {
-        setShow(true);
-
-        resolver.current = (arg) => {
-          resolver.current = null;
-          promise.current = null;
-
-          res(arg);
-        };
-      });
-
-      return promise.current;
-    });
-
-    return () => setLoginHandler(null);
-  }, []);
-
-  if (!show) return null;
-
-  return <LoginModal onClose={handleClose}/>;
+  return <LoginContext.Provider value={ensureMe}>
+    {show ? <LoginModal onClose={handleClose}/> : null}
+    {children}
+  </LoginContext.Provider>
 }
 
 export function LoginModal({ onClose }) {
