@@ -3,10 +3,12 @@ import Modal from "../../components/modal";
 import React, { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronLeftIcon } from "../../components/icon";
-import { schema } from "../gql/client";
+import { formatError, schema } from "../gql/client";
 import { useProject } from "../state";
+import { ProjectAuthMethod } from "../../gql/feed/schema";
 
 export default function LoginModal({ onClose }) {
+  const project = useProject();
   const [mode, setMode] = useState("info");
 
   useEffect(() => {
@@ -42,7 +44,7 @@ export default function LoginModal({ onClose }) {
                 </ul>
 
                 <aside className="options">
-                  <div className="option" onClick={() => setMode("email")}>
+                  <div className="option" onClick={() => setMode(project.authMethod == ProjectAuthMethod.Mail ? "email" : "password")}>
                     <MailIcon/> Continue with Email
                   </div>
                 </aside>
@@ -61,6 +63,18 @@ export default function LoginModal({ onClose }) {
               key={"email"}
             >
               <MailLogin setMode={setMode} onClose={onClose}/>
+            </motion.div>
+          ) : null}
+
+          {mode == "password" ? (
+            <motion.div
+              className="login-password"
+              initial={{ height: "0", opacity: 0 }}
+              animate={{ height: "auto", opacity: 1, zIndex: 1 }}
+              exit={{ height: "0", opacity: 0, zIndex: 0 }}
+              key={"password"}
+            >
+              <PasswordLogin setMode={setMode} onClose={onClose}/>
             </motion.div>
           ) : null}
         </AnimatePresence>
@@ -152,6 +166,7 @@ function MailLogin({ setMode, onClose }) {
                     id="login-email"
                     className="input-control flex-grow"
                     type="text"
+                    placeholder="me@example.com"
                   />
                   <input type="submit" value="Submit" className="m-l-10"/>
                 </div>
@@ -177,6 +192,82 @@ function MailLogin({ setMode, onClose }) {
       </div>
     </>
   );
+}
+
+function PasswordLogin({ setMode, onClose }) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const [register, registerRes] = schema.useRegisterMutation({
+    refetchQueries: ["me"]
+  });
+
+  return <>
+    {registerRes.loading ? <div className="spinner-overlay"/> : null}
+
+    <div className="panel-header">
+      <a
+        href="#"
+        onClick={(e) => {
+          e.preventDefault();
+          setMode("info");
+        }}
+      >
+        <ChevronLeftIcon/>
+      </a>
+      <span className={"m-r-auto m-l-auto"}>Sign In With Password</span>
+    </div>
+
+    <div className="panel-body">
+      <form className="w-100" onSubmit={async (e) => {
+        e.preventDefault();
+
+        try {
+          await register({
+            variables: {
+              input: {
+                email,
+                password
+              }
+            }
+          });
+
+          onClose();
+        } catch (e) {
+        }
+      }}>
+        <div className="flex flex-col m-gap-t-def">
+          <label htmlFor="login-email">Email Address</label>
+          <div className="flex">
+            <input
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              id="login-email"
+              className="input-control flex-grow"
+              type="text"
+              placeholder="me@example.com"
+            />
+          </div>
+        </div>
+        <div className="flex flex-col m-gap-t-def">
+          <label htmlFor="login-password">Password</label>
+          <div className="flex">
+            <input
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              id="login-password"
+              className="input-control flex-grow"
+              type="password"
+            />
+          </div>
+        </div>
+        {registerRes.error ? <aside className="m-gap-t-def m-b-0 alert alert-error">{formatError(registerRes.error)}</aside> : null}
+        <div className="flex flex-col m-gap-t-def">
+          <input type="submit" value="Submit"/>
+        </div>
+      </form>
+    </div>
+  </>
 }
 
 function CheckIcon() {

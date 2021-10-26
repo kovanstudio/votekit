@@ -1,48 +1,54 @@
 ﻿fragment user on User {
-  id
-  displayName
-  avatar
-  email
+    id
+    displayName
+    avatar
+    email
 }
 
 fragment me on User {
-  ...user
-  
-  hasPassword
+    ...user
+
+    hasPassword
 }
 
 query me {
-  me {
-    ...me
-  }
+    me {
+        ...me
+    }
+}
+
+mutation register($input: RegisterInput!) {
+    register(input: $input) {
+        id
+    }
 }
 
 mutation saveUser($input: SaveUserInput!) {
-  saveUser(input: $input) {
-    ...me
-  }
+    saveUser(input: $input) {
+        ...me
+    }
 }
 
 mutation savePassword($input: SavePasswordInput!) {
-  savePassword(input: $input)
+    savePassword(input: $input)
 }
 
 mutation login($input: LoginInput!) {
-  login(input: $input)
+    login(input: $input)
 }
 
 mutation logout {
-  logout
+    logout
 }
 
 mutation beginPasswordlessLogin($input: BeginPasswordlessLoginInput!) {
-  beginPasswordlessLogin(input: $input)
+    beginPasswordlessLogin(input: $input)
 }
 
 mutation completePasswordlessLogin($input: CompletePasswordlessLoginInput!) {
-  completePasswordlessLogin(input: $input) {
-    ...user
-  }
+    completePasswordlessLogin(input: $input) {
+        ...user
+    }
 }
 
 

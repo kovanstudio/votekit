@@ -3,7 +3,7 @@
   justify-items: center;
   align-items: center;
   overflow: hidden;
-  
+
   .panel-body {
     display: flex;
     flex-direction: column;
@@ -16,44 +16,44 @@
     }
   }
 
-  .login-info, .login-email {
+  .login-info, .login-email, .login-password {
     grid-column-start: 1;
     grid-row-start: 1;
     width: 100%;
     background: white;
   }
-  
+
   .login-info {
     z-index: 1;
-    
+
     header {
       font-size: 1.30em;
       color: #575757;
       font-weight: 500;
     }
-    
+
     ul {
       margin: 30px 0;
-      
+
       li {
         display: flex;
         place-items: center;
         margin-bottom: 10px;
-        
+
         svg {
           height: 1rem;
           margin-right: 8px;
         }
       }
     }
-    
+
     aside.options {
       margin: 0 0 30px 0;
       background: #F9F9F9;
       border-radius: 6px;
       padding: 20px 50px;
       width: 100%;
-      
+
       div.option {
         width: 100%;
         padding: 13px 0;

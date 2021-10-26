@@ -1,6 +1,6 @@
 ﻿import * as React from "react";
 
-import { ApolloClient, ApolloProvider, from, gql, InMemoryCache, useLazyQuery, useMutation, useQuery } from "@apollo/client";
+import { ApolloClient, ApolloError, ApolloProvider, from, gql, InMemoryCache, useLazyQuery, useMutation, useQuery } from "@apollo/client";
 import { HttpLink } from "@apollo/client/link/http";
 import { onError } from "@apollo/client/link/error";
 import { setContext } from "@apollo/client/link/context";
@@ -46,4 +46,12 @@ export { useQuery, useLazyQuery, useMutation, gql, schema };
 
 export function Provider({ children = null }) {
   return <ApolloProvider client={client}>{children}</ApolloProvider>;
+}
+
+export function formatError(err: ApolloError): string {
+  if (err.graphQLErrors != null) {
+    return err.graphQLErrors.map(e => e.message).join(", ");
+  }
+
+  return err.message;
 }
