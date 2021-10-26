@@ -63,7 +63,9 @@ public static class Program
     var builder = WebApplication.CreateBuilder();
 
     if (builder.Environment.IsDevelopment())
-      builder.WebHost.UseUrls("http://localhost:3000", "https://localhost:3001");
+      builder.WebHost.UseUrls("http://*:3000");
+    else
+      builder.WebHost.UseUrls("http://*:80");
 
     // Config
     builder.Configuration.AddEnvironmentVariables("VK_");
