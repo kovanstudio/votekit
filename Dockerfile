@@ -1,4 +1,5 @@
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS backendbuild
+FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:6.0 AS backendbuild
+
 WORKDIR /source
 COPY *.sln .
 
@@ -7,7 +8,14 @@ COPY VoteKit ./VoteKit/
 COPY VoteKit.Api ./VoteKit.Api/
 COPY VoteKit.Web ./VoteKit.Web/
 
-RUN dotnet publish VoteKit.Web -c release -o /app
+ARG TARGETPLATFORM
+
+RUN case ${TARGETPLATFORM} in \
+         "linux/amd64")  RUNTIME=linux-x64  ;; \
+         "linux/arm64")  RUNTIME=linux-arm64  ;; \
+         "linux/arm/v7") RUNTIME=linux-arm  ;; \
+    esac \
+  && dotnet publish VoteKit.Web -c release -r ${RUNTIME} -o /app
 
 FROM --platform=$BUILDPLATFORM node as frontendbuild
 ENV NODE_ENV production
