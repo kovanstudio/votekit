@@ -17,7 +17,7 @@ RUN case ${TARGETPLATFORM} in \
     esac \
   && dotnet publish VoteKit.Web -c release -r ${RUNTIME} -o /app
 
-FROM --platform=$BUILDPLATFORM node as frontendbuild
+FROM --platform=$BUILDPLATFORM node:16 as frontendbuild
 ENV NODE_ENV production
 WORKDIR /app
 ADD VoteKit.Web/Client/package.json VoteKit.Web/Client/package-lock.json /app/
