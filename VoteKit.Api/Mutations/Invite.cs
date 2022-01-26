@@ -36,11 +36,11 @@ public partial class Mutation
   )
   {
     var invite = await db.Invites.FirstOrDefaultAsync(x => x.ProjectId == project.Id && x.Email == input.Email);
-
+    
     if (invite != null)
     {
-      if (DateTimeOffset.Now - invite.CreatedAt < TimeSpan.FromHours(1))
-        throw new GqlException("An invitiation sent recently to this address. Please wait in order to invite again.");
+      if (DateTime.UtcNow - invite.CreatedAt < TimeSpan.FromHours(1))
+        throw new GqlException("An invitiation sent recently to this address. Please wait in order to invite again.", "DUPLICATE_INVITE");
     }
     else
     {

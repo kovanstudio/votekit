@@ -1,5 +1,5 @@
 import * as React from "react";
-import { schema } from "../../gql/client";
+import { formatError, schema } from "../../gql/client";
 import { useMe, useProject } from "../../state";
 import { confirmDialog } from "../../../lib/dialog";
 import { Radio } from "../../../components/form";
@@ -21,7 +21,7 @@ export function ProjectTeamSettings() {
 
   return (
     <div className="flex-col">
-      {projectMembers.loading || removeUserRes.loading || removeInviteRes.loading ? <div className="spinner-overlay"></div> : null}
+      {projectMembers.loading || removeUserRes.loading || removeInviteRes.loading ? <div className="spinner-overlay"/> : null}
 
       <div className="project-settings-team group-settings-content">
         <header className="panel-title">Team Management</header>
@@ -127,13 +127,9 @@ function Invite() {
 
   return (
     <div className="project-settings-team m-t-30 group-settings-content">
-      {loading ? <div className="spinner-overlay"></div> : null}
+      {loading ? <div className="spinner-overlay"/> : null}
 
       <header className="panel-title">Invite Team Member</header>
-
-      {error ? <p className="alert alert-error">{error.message}</p> : null}
-
-      {data?.addInvite ? <p className="alert alert-success">Invitation sent</p> : null}
 
       <form
         className="w-60 flex-no-shrink"
@@ -186,7 +182,8 @@ function Invite() {
           />
         </div>
 
-        {error ? <p className="m-gap-t-def color-danger ws-pre">{error.message}</p> : null}
+        {data?.addInvite ? <p className="alert alert-success">Invitation sent</p> : null}
+        {error ? <p className="m-gap-t-def alert alert-error">{error.message}</p> : null}
 
         <div className="flex m-gap-t-def">
           <input disabled={!email} type="submit" className="btn-primary" value="Send Invite"/>
