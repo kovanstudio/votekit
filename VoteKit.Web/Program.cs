@@ -79,6 +79,7 @@ public static class Program
 
     // Services
     builder.Services.AddHttpContextAccessor();
+    builder.Services.AddResponseCompression();
 
     if (builder.Configuration["DB:Provider"] == "pg")
       builder.Services.AddDbContextFactory<VotekitCtx>(options =>
@@ -135,6 +136,8 @@ public static class Program
     // Application
 
     var app = builder.Build();
+    
+    app.UseResponseCompression();
 
     if (app.Environment.IsDevelopment()) app.UseDeveloperExceptionPage();
 
