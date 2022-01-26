@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -106,6 +107,8 @@ public static class Program
         {
           opts.EventsType = typeof(UserAuthenticationEvents);
           opts.Cookie.Name = "vkauth";
+          opts.Cookie.SameSite = SameSiteMode.None;
+          opts.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
           opts.LoginPath = "/login";
         }
       );
