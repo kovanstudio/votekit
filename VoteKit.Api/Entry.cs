@@ -58,7 +58,7 @@ public class EntryResolversOnQuery
     EntriesOrderBy? orderBy
   )
   {
-    var query = db.Entries.AsQueryable();
+    var query = db.Entries.AsQueryable().Where(e => !e.IsDeleted);
 
     if (!await access.AuthorizeAsync("Editor"))
       query = query.WherePubliclyVisible();

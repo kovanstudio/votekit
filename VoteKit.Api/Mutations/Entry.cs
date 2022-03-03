@@ -238,6 +238,38 @@ public partial class Mutation
 
     return entry;
   }
+  
+  public class RemoveEntryInput
+  {
+    [Required]
+    public Guid EntryId { get; set; }
+  }
+
+  [Authorize(Policy = "Editor")]
+  [UseVotekitCtx]
+  public async Task<OperationResult> RemoveEntry([Project] Project project, [Service] IAccessor accessor, [ScopedService] VotekitCtx db, [Validatable] RemoveEntryInput input)
+  {
+    var entry = await db.Entries.FirstOrDefaultAsync(x => x.Id == input.EntryId && x.Board.ProjectId == project.Id);
+
+    if (entry == null)
+      throw VoteKitException.NotFound;
+
+    var user = await accessor.GetUserAsync();
+
+    var activity = new Activity()
+    {
+      Type = ActivityType.EntryRemove,
+      UserId = user?.Id,
+      EntryId = entry.Id,
+    };
+
+    entry.IsDeleted = true;
+    
+    await db.Activities.AddAsync(activity);
+    await db.SaveChangesWithValidationAsync();
+
+    return OperationResult.Success;
+  }
 
   public class VoteEntryInput
   {

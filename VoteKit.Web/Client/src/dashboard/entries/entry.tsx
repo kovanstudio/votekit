@@ -13,6 +13,7 @@ import { EntrySections } from "./sections";
 import { EditEntryModal } from "./modal-edit";
 import { Markdown } from "../../components/markdown";
 import { useOverrides } from "../../lib/useOverrides";
+import { confirmDialog } from "../../lib/dialog";
 
 export function EntryRoutes() {
   return <Entry/>;
@@ -139,6 +140,10 @@ function EntryDetails({ entry }: { entry: schema.EntryFragment }) {
     refetchQueries: ["projectEntries"],
   });
 
+  const [entryRemove, entryRemoveRes] = schema.useRemoveEntryMutation({
+    refetchQueries: ["projectEntries"],
+  });
+
   const handleSave = async (input = data) => {
     try {
       let oldPathname = entry.pathname;
@@ -228,7 +233,13 @@ function EntryDetails({ entry }: { entry: schema.EntryFragment }) {
             >
               Unarchive
             </button>
-            <button className="btn-danger">Delete</button>
+            <button className="btn-danger" onClick={async (e) => {
+              e.preventDefault();
+              if (!(await confirmDialog("Are you sure?"))) return;
+              await entryRemove({ variables: { input: { entryId: entry.id } } });
+              history.replace("/entries")
+            }}>Delete
+            </button>
           </div>
         ) : (
           <div className="actions">

@@ -108,7 +108,7 @@ public static class Program
         {
           opts.EventsType = typeof(UserAuthenticationEvents);
           opts.Cookie.Name = "vkauth";
-          opts.Cookie.SameSite = SameSiteMode.None;
+          opts.Cookie.SameSite = builder.Environment.IsDevelopment() ? SameSiteMode.Unspecified : SameSiteMode.None;
           opts.Cookie.SecurePolicy = builder.Environment.IsDevelopment() ? CookieSecurePolicy.None : CookieSecurePolicy.Always;
           opts.LoginPath = "/login";
         }

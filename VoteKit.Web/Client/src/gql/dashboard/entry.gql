@@ -101,6 +101,10 @@ mutation saveEntry($input: SaveEntryInput!) {
   }
 }
 
+mutation removeEntry($input: RemoveEntryInput!) {
+  removeEntry(input: $input)
+}
+
 mutation voteEntry($input: VoteEntryInput!) {
   voteEntry(input: $input) {
     ...entry

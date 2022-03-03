@@ -15,7 +15,8 @@ public enum ActivityType
   None,
   EntryCreate,
   EntrySave,
-  EntryUpvote
+  EntryUpvote,
+  EntryRemove,
 }
 
 [Table("activities")]

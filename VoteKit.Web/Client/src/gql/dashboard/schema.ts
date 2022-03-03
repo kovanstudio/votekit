@@ -264,6 +264,7 @@ export type Mutation = {
   register: User;
   removeBoard: OperationResult;
   removeComment: OperationResult;
+  removeEntry: OperationResult;
   removeInvite: OperationResult;
   removeStatus: OperationResult;
   removeUser: OperationResult;
@@ -334,6 +335,11 @@ export type MutationRemoveBoardArgs = {
 
 export type MutationRemoveCommentArgs = {
   input: RemoveCommentInput;
+};
+
+
+export type MutationRemoveEntryArgs = {
+  input: RemoveEntryInput;
 };
 
 
@@ -551,6 +557,10 @@ export type RemoveBoardInput = {
 
 export type RemoveCommentInput = {
   commentId: Scalars['UUID'];
+};
+
+export type RemoveEntryInput = {
+  entryId: Scalars['UUID'];
 };
 
 export type RemoveInviteInput = {
@@ -899,6 +909,13 @@ export type SaveEntryMutationVariables = Exact<{
 
 
 export type SaveEntryMutation = { __typename?: 'Mutation', saveEntry: { __typename?: 'Entry', id: any, title: string, content?: string | null | undefined, slug: string, createdAt: any, isPrivate: boolean, isArchived: boolean, isDeleted: boolean, isLocked: boolean, pathname: string, upvotedByMe: boolean, user?: { __typename?: 'User', id: any, displayName?: string | null | undefined, avatar: string } | null | undefined, assignedUser?: { __typename?: 'User', id: any, displayName?: string | null | undefined, avatar: string } | null | undefined, board: { __typename?: 'Board', id: any, name: string, slug: string, color: string }, status: { __typename?: 'Status', sortIndex: number, isDefault: boolean, isInRoadmap: boolean, id: any, name: string, color: string }, stats: { __typename?: 'EntryStats', votes: number, comments: number, subscriptions: number } } };
+
+export type RemoveEntryMutationVariables = Exact<{
+  input: RemoveEntryInput;
+}>;
+
+
+export type RemoveEntryMutation = { __typename?: 'Mutation', removeEntry: OperationResult };
 
 export type VoteEntryMutationVariables = Exact<{
   input: VoteEntryInput;
@@ -1807,6 +1824,37 @@ export function useSaveEntryMutation(baseOptions?: Apollo.MutationHookOptions<Sa
 export type SaveEntryMutationHookResult = ReturnType<typeof useSaveEntryMutation>;
 export type SaveEntryMutationResult = Apollo.MutationResult<SaveEntryMutation>;
 export type SaveEntryMutationOptions = Apollo.BaseMutationOptions<SaveEntryMutation, SaveEntryMutationVariables>;
+export const RemoveEntryDocument = gql`
+    mutation removeEntry($input: RemoveEntryInput!) {
+  removeEntry(input: $input)
+}
+    `;
+export type RemoveEntryMutationFn = Apollo.MutationFunction<RemoveEntryMutation, RemoveEntryMutationVariables>;
+
+/**
+ * __useRemoveEntryMutation__
+ *
+ * To run a mutation, you first call `useRemoveEntryMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRemoveEntryMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [removeEntryMutation, { data, loading, error }] = useRemoveEntryMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useRemoveEntryMutation(baseOptions?: Apollo.MutationHookOptions<RemoveEntryMutation, RemoveEntryMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<RemoveEntryMutation, RemoveEntryMutationVariables>(RemoveEntryDocument, options);
+      }
+export type RemoveEntryMutationHookResult = ReturnType<typeof useRemoveEntryMutation>;
+export type RemoveEntryMutationResult = Apollo.MutationResult<RemoveEntryMutation>;
+export type RemoveEntryMutationOptions = Apollo.BaseMutationOptions<RemoveEntryMutation, RemoveEntryMutationVariables>;
 export const VoteEntryDocument = gql`
     mutation voteEntry($input: VoteEntryInput!) {
   voteEntry(input: $input) {

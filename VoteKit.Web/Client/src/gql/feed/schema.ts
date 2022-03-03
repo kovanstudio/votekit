@@ -264,6 +264,7 @@ export type Mutation = {
   register: User;
   removeBoard: OperationResult;
   removeComment: OperationResult;
+  removeEntry: OperationResult;
   removeInvite: OperationResult;
   removeStatus: OperationResult;
   removeUser: OperationResult;
@@ -334,6 +335,11 @@ export type MutationRemoveBoardArgs = {
 
 export type MutationRemoveCommentArgs = {
   input: RemoveCommentInput;
+};
+
+
+export type MutationRemoveEntryArgs = {
+  input: RemoveEntryInput;
 };
 
 
@@ -551,6 +557,10 @@ export type RemoveBoardInput = {
 
 export type RemoveCommentInput = {
   commentId: Scalars['UUID'];
+};
+
+export type RemoveEntryInput = {
+  entryId: Scalars['UUID'];
 };
 
 export type RemoveInviteInput = {
